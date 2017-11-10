@@ -25,7 +25,7 @@ namespace _222lllll
             base.draw(g);
             if (motor)
             {
-                Brush brush = new SolidBrush(dopColor);
+                Brush brush = new SolidBrush(Color.Black);
                 g.FillRectangle(brush, startPosX + 22, startPosY + 20, 20, 20);
             }
 
