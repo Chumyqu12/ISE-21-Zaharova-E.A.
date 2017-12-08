@@ -20,11 +20,6 @@ public class Form {
 	
 
 	private JFrame frame;
-	private JButton buttonColor;
-	private JButton buttonDopColor;
-
-	private JButton buttonLoc;
-	private JButton buttonHeat;
 	private JLabel lblNewLabel_1;
 	private ReturnP returnPanel;
 	private JPanel panel;
@@ -36,6 +31,7 @@ public class Form {
 	private JButton buttonGet;
 	private JPanel panel_1;
 	private JList listBoxLevels;
+	private Form2 form2;
 
 	/**
 	 * Launch the application.
@@ -62,26 +58,12 @@ public class Form {
 		color = Color.GREEN.darker();
 		dopColor = Color.GRAY.brighter();
 		
-		buttonColor.setBackground(color);
-		buttonDopColor.setBackground(dopColor);
+	
 
 		
 		listBoxLevels.setSelectedIndex(parking.getCurrentLevel());
 	}
 
-	private void buttonLoc_Click() {
-		ITransport kut =new Lodka(150, 7, 300, 300, color);
-		int place = parking.PutkutiInparking(kut);
-		panel.repaint();
-		JOptionPane.showMessageDialog(frame, "Ваше место " + place);
-	}
-
-	private void buttonHeat_Click() {
-		ITransport kut= new Cutter(150,7,300,250,color,true,dopColor);
-		int place = parking.PutkutiInparking(kut);
-		panel.repaint();
-		JOptionPane.showMessageDialog(frame, "Ваше место " + place);
-	}
 
 	private void buttonGet_Click() {
 		if (listBoxLevels.getSelectedIndex() < 0) {
@@ -115,50 +97,25 @@ public class Form {
 		frame.setBounds(100, 100, 739, 508);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		buttonLoc = new JButton("лодка");
-		buttonLoc.setBounds(291, 436, 122, 23);
-		buttonLoc.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				buttonLoc_Click();
+		JButton btnCreate = new JButton("Create");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				form2 = new Form2((new CallbackKut(){
+
+					@Override
+					public void takekut(ITransport kut) {
+						int place = parking.PutkutiInparking(kut);
+						panel.repaint();
+						JOptionPane.showMessageDialog(frame, "Ваше место " + place);
+						
+					}
+				}));
+				form2.frame.setVisible(true);	
+				
 			}
 		});
-
-		buttonHeat = new JButton("катер");
-		buttonHeat.setBounds(422, 437, 122, 23);
-		buttonHeat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				buttonHeat_Click();
-			}
-		});
-
-		lblNewLabel = new JLabel("Color");
-		lblNewLabel.setBounds(157, 405, 37, 14);
-
-		lblDopcolor = new JLabel("dopColor");
-		lblDopcolor.setBounds(282, 404, 63, 14);
-
-
-
-		buttonColor = new JButton("");
-		buttonColor.setBounds(204, 404, 68, 21);
-		lblNewLabel.setLabelFor(buttonColor);
-
-		buttonColor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				color = JColorChooser.showDialog(frame, "Select a color", color);
-				buttonColor.setBackground(color);
-			}
-		});
-
-		buttonDopColor = new JButton("");
-		buttonDopColor.setBounds(340, 404, 68, 21);
-		lblDopcolor.setLabelFor(buttonDopColor);
-		buttonDopColor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dopColor = JColorChooser.showDialog(frame, "Select a color", dopColor);
-				buttonDopColor.setBackground(dopColor);
-			}
-		});
+		btnCreate.setBounds(433, 406, 97, 25);
+		frame.getContentPane().add(btnCreate);
 
 
 		panelGet = new JPanel();
@@ -220,13 +177,7 @@ public class Form {
 		
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(panel);
-		frame.getContentPane().add(buttonLoc);
-		frame.getContentPane().add(buttonHeat);
 		frame.getContentPane().add(panelGet);
-		frame.getContentPane().add(lblNewLabel);
-		frame.getContentPane().add(buttonColor);
-		frame.getContentPane().add(buttonDopColor);
-		frame.getContentPane().add(lblDopcolor);
 		frame.getContentPane().add(panel_1);
 	}
 }
