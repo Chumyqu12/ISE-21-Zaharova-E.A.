@@ -1,63 +1,55 @@
 
-import java.lang.reflect.Array;
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClassArray<T extends ITransport> {
-	
-	private T[] places;
-	
+
+	private Map<Integer, T> places;
+
+	private int maxCount;
+
 	private T defaultValue;
-	
-	@SuppressWarnings("unchecked")
-	public ClassArray(int size, T defVal, Class<T> TClass ){
-		defaultValue=defVal;
-		places=(T[])Array.newInstance(TClass,size);
-		for(int i=0;i<places.length;i++){
-			places[i]=defaultValue;
-		}
+
+	public ClassArray(int size, T defVal) {
+		defaultValue = defVal;
+		places = new HashMap<>();
+		maxCount = size;
 	}
-	
-	public T Getkut(int index){
-		if(index>-1 && index<places.length){
-			return places[index];
+
+	public T GetKut(int index) {
+		if (places.containsKey(index)) {
+			return places.get(index);
 		}
 		return defaultValue;
 	}
-	
-	public int Add(T kut){
-		for(int i=0;i<places.length;i++){
-			if(CheakFreePlace(i)){
-				places[i]=kut;
+
+	public int Add(T kut) {
+		if (places.size() == maxCount) {
+			return -1;
+		}
+
+		for (int i = 0; i < places.size(); i++) {
+			if (CheakFreePlace(i)) {
+				places.put(i, kut);
 				return i;
 			}
 		}
-		return -1;
+		places.put(places.size(), kut);
+		return places.size() - 1;
 	}
-	
-	public T Get(int index){
-		if(!CheakFreePlace(index)){
-			T kut =places[index];
-			places[index]=defaultValue;
-			return kut;
+
+	public T Get(int index) {
+		if (places.containsKey(index)) {
+			return places.remove(index);
 		}
 		return defaultValue;
 	}
-	
-	private boolean CheakFreePlace(int index)
-    {
-        if (index < 0 || index > places.length)
-        {
-            return false;
-        }
-        if (places[index] == null)
-        {
-            return true;
-        }
-        if (places[index].equals(defaultValue))
-        {
-            return true;
-        }
-        return false;
 
-    }
+	private boolean CheakFreePlace(int index) {
+		return !places.containsKey(index);
+
+	}
+
+
+
 }
