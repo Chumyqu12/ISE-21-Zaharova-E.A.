@@ -13,19 +13,10 @@ public class Form {
 
 	private Parking parking;
 
-	private Color color;
-	private Color dopColor;
-
-
-	
-
 	private JFrame frame;
 	private JLabel lblNewLabel_1;
 	private ReturnP returnPanel;
 	private JPanel panel;
-	private JLabel lblNewLabel;
-	private JLabel lblDopcolor;
-	
 	private JTextField formattedTextField;
 	private JPanel panelGet;
 	private JButton buttonGet;
@@ -54,13 +45,7 @@ public class Form {
 	 */
 	public Form() {
 		parking= new Parking(20);
-		initialize();
-		color = Color.GREEN.darker();
-		dopColor = Color.GRAY.brighter();
-		
-	
-
-		
+		initialize();	
 		listBoxLevels.setSelectedIndex(parking.getCurrentLevel());
 	}
 
@@ -174,6 +159,39 @@ public class Form {
 		panel.setBounds(10, 11, 534, 382);
 		panel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel.setBackground(Color.WHITE);
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu file = new JMenu("Меню");
+		JMenuItem save = new JMenuItem("Сохранить");
+		JMenuItem load = new JMenuItem("загрузить");
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fc = new JFileChooser();  
+				if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {  
+				    try {  
+				        ((Ris) panel).saveParking(fc.getSelectedFile().getPath()); 
+				        JOptionPane.showMessageDialog(frame, "сохранение успешно");
+				    }  
+				    catch (Exception e) {
+				    	System.out.println("что-то пошло не так");
+				    }  
+				} 
+			}
+		});
+		load.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();  
+				if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {  
+					((Ris) panel).loadParking(fc.getSelectedFile().getPath());
+					JOptionPane.showMessageDialog(frame, "Загрузка успешна");
+				}
+			}
+		});
+		file.add(save);
+		file.add(load);
+		menuBar.add(file);
+		frame.setJMenuBar(menuBar);
 		
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(panel);

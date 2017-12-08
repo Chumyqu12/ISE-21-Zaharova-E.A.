@@ -1,9 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Lodka extends WaterTransport {
+public class Lodka extends WaterTransport implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6373973233660241905L;
+
 	public  int getMaxSpeed()
     {
             return super.MaxSpeed;

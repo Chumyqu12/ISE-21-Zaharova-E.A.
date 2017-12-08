@@ -1,5 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Parking {
@@ -60,6 +64,26 @@ public class Parking {
 				g.drawLine(i * placesSizeWidth, j * placesSizeHeight, i * placesSizeWidth + 110, j * placesSizeHeight);
 			}
 			g.drawLine(i * placesSizeWidth, 0, i * placesSizeWidth, 400);
+		}
+	}
+	public void saveData(String fileName){
+		 try {  
+		        FileOutputStream fileStream = new FileOutputStream(fileName);  
+		        ObjectOutputStream os = new ObjectOutputStream(fileStream);  
+		        os.writeObject(parking);  
+		    }  
+		    catch (Exception e) {
+		    	System.out.println("что-то пошло не так");
+		    }
+	}
+	
+	public void loadData(String fileName){
+		try {
+			FileInputStream inStream = new FileInputStream(fileName);
+			ObjectInputStream inObject = new ObjectInputStream(inStream);
+			parking = (	ArrayList<ClassArray<ITransport>> )inObject.readObject();
+		} catch (Exception ex) {
+			System.out.println("что-то пошло не так");
 		}
 	}
 
