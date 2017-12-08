@@ -1,23 +1,28 @@
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 public class Ris extends JPanel {
 	ITransport transport;
-	public Ris(ITransport transport){
-		this.transport=transport;
-	}
+	Parking parking;
 	
+	public Ris(Parking parking) {
+		this.parking=parking;
+	}
+
 	public void paint(Graphics g) {
 		super.paint(g);
-		lodka(g,transport);
-
+		BufferedImage image=new BufferedImage(this.getWidth(),this.getHeight(),BufferedImage.TYPE_INT_RGB);
+		Graphics2D gr=image.createGraphics();
+		gr.setColor(Color.WHITE);
+		gr.fillRect(0, 0, image.getWidth(), image.getHeight());
+		
+		parking.Draw(gr);
+		
+		g.drawImage(image, 0, 0, null);
 	}
-	public void lodka(Graphics g,ITransport transport){
-		if (transport!=null){
-			transport.drawLodka(g);
-		}
-	}
-	
 	
 }
