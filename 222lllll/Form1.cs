@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,13 +16,14 @@ namespace _222lllll
 	
 		Parking parking;
 		Form2 form;
-      
+		private Logger log;
        
         public Form1()
 		{
 
           
             InitializeComponent();
+			log = LogManager.GetCurrentClassLogger();
 			parking = new Parking(5);
 
 			for (int i = 1; i < 6; i++) {
@@ -81,17 +83,35 @@ namespace _222lllll
 
 		private void button6_Click(object sender, EventArgs e)
 		{
+			if (listBox1.SelectedIndex > -1) {
+				string level = listBox1.Items[listBox1.SelectedIndex].ToString();
 
 			if (maskedTextBox1.Text != "")
 			{
-				var car = parking.GetCarInParking(Convert.ToInt32(maskedTextBox1.Text));
+					try
+					{
+						var car = parking.GetCarInParking(Convert.ToInt32(maskedTextBox1.Text));
 
-				Bitmap bmp = new Bitmap(pictureBox2.Width, pictureBox2.Height);
-				Graphics gr = Graphics.FromImage(bmp);
-				car.SetPosition(5, 5);
-				car.drawLodka(gr);
-				pictureBox2.Image = bmp;
-				Draw();
+						Bitmap bmp = new Bitmap(pictureBox2.Width, pictureBox2.Height);
+						Graphics gr = Graphics.FromImage(bmp);
+						car.SetPosition(5, 5);
+						car.drawLodka(gr);
+						pictureBox2.Image = bmp;
+						Draw();
+						log.Info("Забрали с места: " + Convert.ToInt32(maskedTextBox1.Text));
+					}
+					catch (ParkingIndexOutOfRangeException ex)
+					{
+						MessageBox.Show(ex.Message, "Неверный номер",
+							MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message, "Общая ошибка",
+							MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+
+					}
 			}
 		}
 		
@@ -116,6 +136,7 @@ namespace _222lllll
 		{
 			parking.LevelDown();
 			listBox1.SelectedIndex = parking.getCurrentLevel;
+			log.Info("Переход на уровень ниже, текущий уровень :" + parking.getCurrentLevel);
 			Draw();
 		}
 		//Up
@@ -123,6 +144,7 @@ namespace _222lllll
 		{
 			parking.LevelUp();
 			listBox1.SelectedIndex = parking.getCurrentLevel;
+			log.Info("Переход на уровень выше Текущий уровень: " + parking.getCurrentLevel);
 			Draw();
 		}
 
@@ -132,18 +154,27 @@ namespace _222lllll
 			form.AddEvent(AddLodka);
 			form.ShowDialog();
 		}
-		//var lodka = form.getlodka;
+	
 			private void AddLodka(ITransport lodka) {
 			if (lodka != null) {
-				int place = parking.PutCarInParking(lodka);
-				if (place > -1)
+				try
 				{
+					int place = parking.PutCarInParking(lodka);
 					Draw();
-					MessageBox.Show("Your place" + place);
+					log.Info("Добавление на место: " + place);
+					MessageBox.Show("Ваше место: " + place);
 				}
-				else {
-					MessageBox.Show("Sorry");
+				catch (ParkingOverflowException ex)
+				{
+					MessageBox.Show(ex.Message, "Ошибка переполнения",
+						MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Общая ошибка",
+						MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+				
 			}
 		}
 
