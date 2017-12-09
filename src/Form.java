@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -6,20 +5,24 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
-
-
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 public class Form {
 
-	private Parking parking;	
+	private Parking parking;
+
 	private Color color;
 	private Color dopColor;
+
+
 	
 
 	private JFrame frame;
 	private JButton buttonColor;
 	private JButton buttonDopColor;
+
 	private JButton buttonLoc;
 	private JButton buttonHeat;
 	private JLabel lblNewLabel_1;
@@ -27,10 +30,12 @@ public class Form {
 	private JPanel panel;
 	private JLabel lblNewLabel;
 	private JLabel lblDopcolor;
+	
 	private JTextField formattedTextField;
 	private JPanel panelGet;
 	private JButton buttonGet;
-
+	private JPanel panel_1;
+	private JList listBoxLevels;
 
 	/**
 	 * Launch the application.
@@ -52,12 +57,16 @@ public class Form {
 	 * Create the application.
 	 */
 	public Form() {
-		parking = new Parking();
+		parking= new Parking(20);
 		initialize();
 		color = Color.GREEN.darker();
 		dopColor = Color.GRAY.brighter();
+		
 		buttonColor.setBackground(color);
 		buttonDopColor.setBackground(dopColor);
+
+		
+		listBoxLevels.setSelectedIndex(parking.getCurrentLevel());
 	}
 
 	private void buttonLoc_Click() {
@@ -75,29 +84,30 @@ public class Form {
 	}
 
 	private void buttonGet_Click() {
-		
-			
-			try{
-				ITransport kut = parking.GetkutInparking(Integer.parseInt(formattedTextField.getText()));
-				if (kut != null) {
-					kut.SetPosition(5, 5);
-					returnPanel = new ReturnP(kut);
-					returnPanel.setBackground(Color.WHITE);
-					returnPanel.setBounds(10, 94, 139, 201);
-					panelGet.add(returnPanel);
-					
-					panel.repaint();
-				}
+		if (listBoxLevels.getSelectedIndex() < 0) {
+			return;
+		}
+		try {
+			ITransport kut = parking.GetkutInparking(Integer.parseInt(formattedTextField.getText()));
+			if (kut != null) {
+				kut.SetPosition(5, 5);
+				returnPanel = new ReturnP(kut);
+				returnPanel.setBackground(Color.WHITE);
+				returnPanel.setBounds(10, 94, 139, 201);
+				panelGet.add(returnPanel);
 				
-
-			}catch(Exception e){
-				JOptionPane.showMessageDialog(frame, "Что-то пошло не так!");
+				panel.repaint();
 			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frame, "Что-то пошло не так!");
+		}
+
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(UIManager.getColor("Button.background"));
@@ -105,7 +115,7 @@ public class Form {
 		frame.setBounds(100, 100, 739, 508);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		buttonLoc = new JButton("Лодка");
+		buttonLoc = new JButton("лодка");
 		buttonLoc.setBounds(291, 436, 122, 23);
 		buttonLoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,6 +136,8 @@ public class Form {
 
 		lblDopcolor = new JLabel("dopColor");
 		lblDopcolor.setBounds(282, 404, 63, 14);
+
+
 
 		buttonColor = new JButton("");
 		buttonColor.setBounds(204, 404, 68, 21);
@@ -148,7 +160,7 @@ public class Form {
 			}
 		});
 
-	
+
 		panelGet = new JPanel();
 		panelGet.setBounds(554, 153, 159, 306);
 		panelGet.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -159,23 +171,49 @@ public class Form {
 		lblNewLabel_1.setBounds(10, 5, 139, 14);
 		panelGet.add(lblNewLabel_1);
 
-		
 
 		formattedTextField = new JTextField();
 		formattedTextField.setBounds(10, 29, 59, 20);
 		panelGet.add(formattedTextField);
 
-		buttonGet = new JButton("Забрать");
+		buttonGet = new JButton("забрать");
 		buttonGet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				buttonGet_Click();
-				panel.repaint();
 			}
 		});
 		buttonGet.setBounds(10, 60, 111, 23);
 		panelGet.add(buttonGet);
 		
-		panel = new Ris(parking);
+		panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(554, 11, 159, 140);
+		panel_1.setLayout(null);
+
+		JLabel lblNewLabel_2 = new JLabel("\u0423\u0440\u043E\u0432\u043D\u0438:");
+		lblNewLabel_2.setBounds(59, 5, 62, 14);
+		panel_1.add(lblNewLabel_2);
+
+		String[] elements = new String[5];
+		for (int i = 0; i < 5; i++) {
+			elements[i] = "Level" + (i+1);
+		}
+		listBoxLevels = new JList(elements);
+		listBoxLevels.setBounds(10, 18, 139, 111);
+		listBoxLevels.setLayoutOrientation(JList.VERTICAL);
+		listBoxLevels.setVisibleRowCount(0);
+		listBoxLevels.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				parking.setCurrentLevel(listBoxLevels.getSelectedIndex());
+				panel.repaint();
+			}
+
+		});
+		panel_1.add(listBoxLevels);
+		
+		panel = new Ris(parking,listBoxLevels);
 		panel.setBounds(10, 11, 534, 382);
 		panel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel.setBackground(Color.WHITE);
@@ -189,5 +227,6 @@ public class Form {
 		frame.getContentPane().add(buttonColor);
 		frame.getContentPane().add(buttonDopColor);
 		frame.getContentPane().add(lblDopcolor);
+		frame.getContentPane().add(panel_1);
 	}
 }
