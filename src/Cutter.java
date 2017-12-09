@@ -22,5 +22,10 @@ public class Cutter extends Lodka {
     
     
 	}
+	public  void SetdopColor(Color color) {
+		this.dopColor=color;
+
+	}
+	
 
 }

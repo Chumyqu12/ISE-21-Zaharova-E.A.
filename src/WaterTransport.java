@@ -16,6 +16,8 @@ public abstract class WaterTransport implements ITransport  {
 	protected void setMaxSpeed(int MaxSpeed) {
 		this.MaxSpeed = MaxSpeed;
 	}
+	public abstract void SetColor(Color color);
+	
 
       public Color ColorBody;
       public Color getColorBody() {

@@ -118,6 +118,18 @@ public class Lodka extends WaterTransport {
 		
 	}
 
+	@Override
+	public void SetColor(Color color) {
+		this.ColorBody=color;
+
+		
+	}
+
+	@Override
+	public void SetdopColor(Color color) {
+	}
+
+
 	
 
 }
