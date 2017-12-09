@@ -9,11 +9,11 @@ public class ReturnP extends Panel {
 	
 	public void paint(Graphics g) {
 		super.paint(g);
-		kit(g,lodka);
+		kut(g,lodka);
 	
 
 	}
-	public void kit(Graphics g,ITransport lodka){
+	public void kut(Graphics g,ITransport lodka){
 		if (lodka!=null){
 		lodka.drawLodka(g);
 		}
