@@ -113,6 +113,8 @@ public class Lodka extends WaterTransport {
 	
 	public void SetPosition(int x, int y) {
 		// TODO Auto-generated method stub
+		startPosX=x;
+		startPosY=y;
 		
 	}
 
