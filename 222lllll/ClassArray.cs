@@ -23,7 +23,7 @@ namespace _222lllll
 		public static int operator +(ClassArray<T> p, T car) {
 			if (p.places.Count == p.maxCount)
 			{
-				return -1;
+				throw new ParkingOverflowException();
 			}
 			for (int i = 0; i < p.places.Count; i++) {
 				if (p.CheckFreePlace(i)) {
@@ -40,7 +40,7 @@ namespace _222lllll
 				p.places.Remove(index);
 				return car;
 			}
-			return p.defaultValue;
+			throw new ParkingIndexOutOfRangeException();
 		}
 		private bool CheckFreePlace(int index) {
 			return !places.ContainsKey(index); 
