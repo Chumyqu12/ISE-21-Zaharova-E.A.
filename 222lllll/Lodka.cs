@@ -108,6 +108,20 @@ namespace _222lllll
 			startPosX = rand.Next(10, 60);
 			startPosY = rand.Next(10, 60);
 		}
+        public Lodka(string info) {
+            string[] strs = info.Split(';');
+            if (strs.Length == 5) {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                MaxCountPassengers = Convert.ToInt32(strs[1]);
+                Weigth = Convert.ToInt32(strs[2]);
+                vodoizmeshenie = Convert.ToInt32(strs[3]);
+                ColorBody = Color.FromName(strs[4]);
+            }
+            this.countPassengers = 0;
+            Random rand = new Random();
+            startPosX = rand.Next(10, 200);
+            startPosY = rand.Next(10, 200);
+        }
 		public override void moveLodka(Graphics g) {
 			startPosX += (MaxSpeed * 50) / (float)Weigth / (countPassengers == 0 ? 1 : countPassengers);
 			drawLodka(g);
@@ -124,6 +138,10 @@ namespace _222lllll
             g.FillEllipse(brush2, startPosX+10, startPosY+10,  70,  40);
             Brush brush = new SolidBrush(Color.Black);
             g.FillRectangle(brush, startPosX + 47, startPosY+10 , 13, 40);
+        }
+
+        public override string getInfo() {
+            return MaxSpeed + ";" + MaxCountPassengers + ";" + Weigth + ";" + vodoizmeshenie + ";" + ColorBody.Name;
         }
 	}
 }

@@ -17,7 +17,8 @@ namespace _222lllll
 		public Color ColorBody { protected set; get; }
         public Color DopColor { protected set; get; }
         public virtual double Weigth { protected set; get; }
-		public abstract void moveLodka(Graphics g);
+        public abstract string getInfo();
+        public abstract void moveLodka(Graphics g);
 		public abstract void drawLodka(Graphics g);
 		public void SetPosition (int x, int y) {
 			startPosX = x;
