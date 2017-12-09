@@ -1,7 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class Cutter extends Lodka {
+public class Cutter extends Lodka implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 749385594805489794L;
 	private boolean motor;
     private  Color dopColor;
   

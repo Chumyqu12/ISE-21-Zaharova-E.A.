@@ -1,8 +1,14 @@
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClassArray<T extends ITransport> {
+public class ClassArray<T extends ITransport> implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7595082343786554865L;
 
 	private Map<Integer, T> places;
 

@@ -35,5 +35,14 @@ public class Ris extends JPanel {
 
 		g.drawImage(image, 0, 0, null);
 	}
+	public void loadParking(String fileName) {
+		this.parking.loadData(fileName);
+		repaint();
+	}
+
+	public void saveParking(String fileName) {
+		this.parking.saveData(fileName);
+		repaint();
+	}
 	
 }

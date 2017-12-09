@@ -1,8 +1,13 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public abstract class WaterTransport implements ITransport  {
-	  protected int startPosX;
+public abstract class WaterTransport implements ITransport, Serializable {
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6840182876369128826L;
+	protected int startPosX;
       protected int startPosY;
       protected int countPassengers;
       public  double Weigth;
