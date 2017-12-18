@@ -12,11 +12,7 @@ public class Pan {
 		return Check();
 	}
 
-	/*
-	 * public void Init() { water = new Water[2]; potato = new Potato[3]; carrot
-	 * = new Carrot[2]; onion = new Onion[2]; testo = new Testo(); chicken = new
-	 * Chicken(); }
-	 */
+	
 	public void AddWater(Water w) {
 
 		if (water == null) {
