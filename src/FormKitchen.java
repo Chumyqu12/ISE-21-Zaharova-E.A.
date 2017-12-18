@@ -142,12 +142,12 @@ public class FormKitchen {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (potato == null) {
-					JOptionPane.showMessageDialog(null, "Картошки то нет, что чистить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (potato.length == 0) {
-					JOptionPane.showMessageDialog(null, "Картошки то нет, что чистить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
@@ -155,8 +155,8 @@ public class FormKitchen {
 				for (int i = 0; i < potato.length; i++) {
 					knife.Clean_potato(potato[i]);
 				}
-				// button9.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Картошку  можно добавлять в кастрюлю", "Кухня", 0, null);
+				
+				JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГі  Г¬Г®Г¦Г­Г® Г¤Г®ГЎГ ГўГ«ГїГІГј Гў ГЄГ Г±ГІГ°ГѕГ«Гѕ", "ГЉГіГµГ­Гї", 0, null);
 			}
 		});
 		button.setBounds(536, 66, 181, 25);
@@ -166,12 +166,12 @@ public class FormKitchen {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (onion == null) {
-					JOptionPane.showMessageDialog(null, "Лука то нет, что чистить?", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "Г‹ГіГЄГ  ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 				}
 				if (onion.length == 0) {
-					JOptionPane.showMessageDialog(null, "Лука то нет, что чистить?", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "Г‹ГіГЄГ  ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 				}
@@ -179,8 +179,8 @@ public class FormKitchen {
 				for (int i = 0; i < onion.length; ++i) {
 					knife.Clean_onion(onion[i]);
 				}
-				// button11.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Лук  можно добавлять в кастрюлю", "Кухня", 0, null);
+				
+				JOptionPane.showMessageDialog(null, "Г‹ГіГЄ  Г¬Г®Г¦Г­Г® Г¤Г®ГЎГ ГўГ«ГїГІГј Гў ГЄГ Г±ГІГ°ГѕГ«Гѕ", "ГЉГіГµГ­Гї", 0, null);
 			}
 		});
 		button_1.setBounds(536, 104, 181, 25);
@@ -191,12 +191,12 @@ public class FormKitchen {
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (carrot == null) {
-					JOptionPane.showMessageDialog(null, "Моркови то нет, что чистить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (carrot.length == 0) {
-					JOptionPane.showMessageDialog(null, "Моркови то нет, что чистить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® Г·ГЁГ±ГІГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
@@ -204,8 +204,8 @@ public class FormKitchen {
 				for (int i = 0; i < carrot.length; ++i) {
 					knife.Clean_carrots(carrot[i]);
 				}
-				// button12.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Морковь  можно добавлять в кастрюлю", "Кухня", 0, null);
+				
+				JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГј  Г¬Г®Г¦Г­Г® Г¤Г®ГЎГ ГўГ«ГїГІГј Гў ГЄГ Г±ГІГ°ГѕГ«Гѕ", "ГЉГіГµГ­Гї", 0, null);
 
 			}
 		});
@@ -217,8 +217,8 @@ public class FormKitchen {
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				knife.Cutting_c(chicken);
-				JOptionPane.showMessageDialog(null, "Курицу можно добавлять в кастрюлю", "Кухня", 0, null);
-				// button10.Enabled = true;
+				JOptionPane.showMessageDialog(null, "ГЉГіГ°ГЁГ¶Гі Г¬Г®Г¦Г­Г® Г¤Г®ГЎГ ГўГ«ГїГІГј Гў ГЄГ Г±ГІГ°ГѕГ«Гѕ", "ГЉГіГµГ­Гї", 0, null);
+				
 			}
 		});
 		button_4.setBounds(536, 178, 181, 25);
@@ -236,27 +236,27 @@ public class FormKitchen {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (potato == null) {
-					JOptionPane.showMessageDialog(null, "Картошки то нет, что варить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (potato.length == 0) {
-					JOptionPane.showMessageDialog(null, "Картошки то нет, что варить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				for (int i = 0; i < potato.length; ++i) {
 
 					if (potato[i].getHave_scin()) {
-						JOptionPane.showMessageDialog(null, "Картошки надо почистить", "Ошибка логики",
+						JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГЁ Г­Г Г¤Г® ГЇГ®Г·ГЁГ±ГІГЁГІГј", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 								0, null);
 						return;
 					}
 				}
 				pan.AddPotato(potato);
 
-				// buttonAddPan.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Картошку положили", "Кухня", 0, null);
+				
+				JOptionPane.showMessageDialog(null, "ГЉГ Г°ГІГ®ГёГЄГі ГЇГ®Г«Г®Г¦ГЁГ«ГЁ", "ГЉГіГµГ­Гї", 0, null);
 
 			}
 		});
@@ -267,19 +267,19 @@ public class FormKitchen {
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (onion == null) {
-					JOptionPane.showMessageDialog(null, "Лука то нет, что варить?", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "Г‹ГіГЄГ  ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 				}
 				if (onion.length == 0) {
-					JOptionPane.showMessageDialog(null, "Лука то нет, что варить?", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "Г‹ГіГЄГ  ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 				}
 				for (int i = 0; i < onion.length; ++i) {
 
 					if (onion[i].getHave_scin()) {
-						JOptionPane.showMessageDialog(null, "Лук надо почистить", "Ошибка логики", 0,
+						JOptionPane.showMessageDialog(null, "Г‹ГіГЄ Г­Г Г¤Г® ГЇГ®Г·ГЁГ±ГІГЁГІГј", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 								null);
 						return;
 					}
@@ -287,7 +287,7 @@ public class FormKitchen {
 				pan.AddOnion(onion);
 
 				// buttonAddPan.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Лук положили", "Кухня", 0, null);
+				JOptionPane.showMessageDialog(null, "Г‹ГіГЄ ГЇГ®Г«Г®Г¦ГЁГ«ГЁ", "ГЉГіГµГ­Гї", 0, null);
 			}
 		});
 		button_5.setBounds(536, 308, 181, 25);
@@ -298,27 +298,26 @@ public class FormKitchen {
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (carrot == null) {
-					JOptionPane.showMessageDialog(null, "Моркови то нет, что варить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (carrot.length == 0) {
-					JOptionPane.showMessageDialog(null, "Моркови то нет, что варить?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				for (int i = 0; i < carrot.length; ++i) {
 
 					if (carrot[i].getHave_scin()) {
-						JOptionPane.showMessageDialog(null, "Моркови надо почистить", "Ошибка логики",
+						JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГЁ Г­Г Г¤Г® ГЇГ®Г·ГЁГ±ГІГЁГІГј", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 								0, null);
 						return;
 					}
 				}
 				pan.AddCarrot(carrot);
 
-				// buttonAddPan.Enabled = true;
-				JOptionPane.showMessageDialog(null, "Морковь положили", "Кухня", 0, null);
+				JOptionPane.showMessageDialog(null, "ГЊГ®Г°ГЄГ®ГўГј ГЇГ®Г«Г®Г¦ГЁГ«ГЁ", "ГЉГіГµГ­Гї", 0, null);
 			}
 		});
 		button_6.setBounds(536, 344, 181, 25);
@@ -329,12 +328,12 @@ public class FormKitchen {
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (lapsha == null) {
-					JOptionPane.showMessageDialog(null, "Лапши то нет, что варить собрались?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "Г‹Г ГЇГёГЁ ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј Г±Г®ГЎГ°Г Г«ГЁГ±Гј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 
-				JOptionPane.showMessageDialog(null, "Лапша в кастрюле", "Кухня", 0, null);
+				JOptionPane.showMessageDialog(null, "Г‹Г ГЇГёГ  Гў ГЄГ Г±ГІГ°ГѕГ«ГҐ", "ГЉГіГµГ­Гї", 0, null);
 				pan.AddLapsha(lapsha);
 			}
 		});
@@ -346,16 +345,16 @@ public class FormKitchen {
 		button_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (chicken == null) {
-					JOptionPane.showMessageDialog(null, "Курицы то нет, что варить собрались?", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "ГЉГіГ°ГЁГ¶Г» ГІГ® Г­ГҐГІ, Г·ГІГ® ГўГ Г°ГЁГІГј Г±Г®ГЎГ°Г Г«ГЁГ±Гј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (chicken.getcutting()) {
-					JOptionPane.showMessageDialog(null, "Курицу нужно нарезать", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "ГЉГіГ°ГЁГ¶Гі Г­ГіГ¦Г­Г® Г­Г Г°ГҐГ§Г ГІГј", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 				}
-				JOptionPane.showMessageDialog(null, "Курица в кастрюле", "Кухня", 0, null);
+				JOptionPane.showMessageDialog(null, "ГЉГіГ°ГЁГ¶Г  Гў ГЄГ Г±ГІГ°ГѕГ«ГҐ", "ГЉГіГµГ­Гї", 0, null);
 				pan.AddChicken(chicken);
 			}
 		});
@@ -378,16 +377,15 @@ public class FormKitchen {
 					checkBox_1.setSelected(false);
 				}
 				if (!waterTap.getState()) {
-					JOptionPane.showMessageDialog(null, "Воды нет", "Кухня", 0, null);
+					JOptionPane.showMessageDialog(null, "Г‚Г®Г¤Г» Г­ГҐГІ", "ГЉГіГµГ­Гї", 0, null);
 					return;
 				}
 				if(waterTap.getState()){
 				pan.AddWater(waterTap.GetWater());
 				checkBox_1.setSelected(true);
 				checkBox.setSelected(false);
-				// button13.Enabled = true;
-				// radioButton2.Checked = true;
-				JOptionPane.showMessageDialog(null, "Воду залили", "Кухня", 0, null);
+				
+				JOptionPane.showMessageDialog(null, "Г‚Г®Г¤Гі Г§Г Г«ГЁГ«ГЁ", "ГЉГіГµГ­Гї", 0, null);
 				}
 
 			}
@@ -411,7 +409,7 @@ public class FormKitchen {
 		button_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stove.setPan(pan);
-				JOptionPane.showMessageDialog(null, "Кастрюлька на плите", "Кухня", 0, null);
+				JOptionPane.showMessageDialog(null, "ГЉГ Г±ГІГ°ГѕГ«ГјГЄГ  Г­Г  ГЇГ«ГЁГІГҐ", "ГЉГіГµГ­Гї", 0, null);
 			}
 		});
 		button_11.setBounds(28, 284, 181, 25);
@@ -423,21 +421,21 @@ public class FormKitchen {
 				stove.setState(checkBox_2.isSelected());
 				if (!stove.pan1()) {
 
-					JOptionPane.showMessageDialog(null, "У нас не все готово к варке!", "Ошибка логики",
+					JOptionPane.showMessageDialog(null, "Г“ Г­Г Г± Г­ГҐ ГўГ±ГҐ ГЈГ®ГІГ®ГўГ® ГЄ ГўГ Г°ГЄГҐ!", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",
 							0, null);
 					return;
 				}
 				if (!stove.getState()) {
-					JOptionPane.showMessageDialog(null, "Варить собрались энергией космоса или все же включим плиту?",
-							"Ошибка логики", 0, null);
+					JOptionPane.showMessageDialog(null, "Г‚Г Г°ГЁГІГј Г±Г®ГЎГ°Г Г«ГЁГ±Гј ГЅГ­ГҐГ°ГЈГЁГҐГ© ГЄГ®Г±Г¬Г®Г±Г  ГЁГ«ГЁ ГўГ±ГҐ Г¦ГҐ ГўГЄГ«ГѕГ·ГЁГ¬ ГЇГ«ГЁГІГі?",
+							"ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0, null);
 					return;
 				}
 				stove.Cook();
 				if (!stove.getPan().Isready()) {
 					checkBox_2.setSelected(false);
-					JOptionPane.showMessageDialog(null, "ГОТОВО", "Кухня", 0, null);
+					JOptionPane.showMessageDialog(null, "ГѓГЋГ’ГЋГ‚ГЋ", "ГЉГіГµГ­Гї", 0, null);
 				} else {
-					JOptionPane.showMessageDialog(null, "Что-то пошло не так", "Ошибка логики", 0,
+					JOptionPane.showMessageDialog(null, "Г—ГІГ®-ГІГ® ГЇГ®ГёГ«Г® Г­ГҐ ГІГ ГЄ", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ", 0,
 							null);
 					return;
 
@@ -456,13 +454,13 @@ public class FormKitchen {
 					checkBox_1.setSelected(false);
 				}
 				if (!waterTap.getState()) {
-					JOptionPane.showMessageDialog(null, "Воды нет", "Кухня", 0, null);
+					JOptionPane.showMessageDialog(null, "Г‚Г®Г¤Г» Г­ГҐГІ", "ГЉГіГµГ­Гї", 0, null);
 					return;
 				}
 				
 				 if (!waterTap.State)
 		            {
-					 JOptionPane.showMessageDialog(null,"Кран закрыт, как мыть?", "Ошибка логики",0,null);
+					 JOptionPane.showMessageDialog(null,"ГЉГ°Г Г­ Г§Г ГЄГ°Г»ГІ, ГЄГ ГЄ Г¬Г»ГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",0,null);
 		                return;
 		            }
 		           
@@ -479,7 +477,7 @@ public class FormKitchen {
 					}
 
 
-				 JOptionPane.showMessageDialog(null,"Картоху помыли", "Кухня", 0,null);
+				 JOptionPane.showMessageDialog(null,"ГЉГ Г°ГІГ®ГµГі ГЇГ®Г¬Г»Г«ГЁ", "ГЉГіГµГ­Гї", 0,null);
 			}
 		});
 		btnNewButton_1.setBounds(306, 143, 164, 23);
@@ -494,13 +492,13 @@ public class FormKitchen {
 					checkBox_1.setSelected(false);
 				}
 				if (!waterTap.getState()) {
-					JOptionPane.showMessageDialog(null, "воды нет", "Кухня", 0, null);
+					JOptionPane.showMessageDialog(null, "ГўГ®Г¤Г» Г­ГҐГІ", "ГЉГіГµГ­Гї", 0, null);
 					return;
 				}
 				
 				 if (!waterTap.State)
 		            {
-					 JOptionPane.showMessageDialog(null,"Кран закрыт, как мыть?", "Ошибка логики",0,null);
+					 JOptionPane.showMessageDialog(null,"ГЉГ°Г Г­ Г§Г ГЄГ°Г»ГІ, ГЄГ ГЄ Г¬Г»ГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",0,null);
 		                return;
 		            }
 		           
@@ -517,7 +515,7 @@ public class FormKitchen {
 					}
 
 
-				 JOptionPane.showMessageDialog(null,"Морковь помыли", "Кухня", 0,null);
+				 JOptionPane.showMessageDialog(null,"ГЊГ®Г°ГЄГ®ГўГј ГЇГ®Г¬Г»Г«ГЁ", "ГЉГіГµГ­Гї", 0,null);
 			}
 		});
 		btnNewButton_2.setBounds(306, 179, 164, 23);
@@ -532,13 +530,13 @@ public class FormKitchen {
 					checkBox_1.setSelected(false);
 				}
 				if (!waterTap.getState()) {
-					JOptionPane.showMessageDialog(null, "воды нет", "Кухня", 0, null);
+					JOptionPane.showMessageDialog(null, "ГўГ®Г¤Г» Г­ГҐГІ", "ГЉГіГµГ­Гї", 0, null);
 					return;
 				}
 				
 				 if (!waterTap.State)
 		            {
-					 JOptionPane.showMessageDialog(null,"Кран закрыт, как мыть?", "Ошибка логики",0,null);
+					 JOptionPane.showMessageDialog(null,"ГЉГ°Г Г­ Г§Г ГЄГ°Г»ГІ, ГЄГ ГЄ Г¬Г»ГІГј?", "ГЋГёГЁГЎГЄГ  Г«Г®ГЈГЁГЄГЁ",0,null);
 		                return;
 		            }
 		           
@@ -555,7 +553,7 @@ public class FormKitchen {
 					}
 
 
-				 JOptionPane.showMessageDialog(null,"Лук помыли", "Кухня", 0,null);
+				 JOptionPane.showMessageDialog(null,"Г‹ГіГЄ ГЇГ®Г¬Г»Г«ГЁ", "ГЉГіГµГ­Гї", 0,null);
 			}
 		});
 		btnNewButton_3.setBounds(306, 219, 164, 23);
