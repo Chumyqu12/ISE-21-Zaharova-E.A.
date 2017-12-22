@@ -1,6 +1,6 @@
 import java.awt.Color;
 import java.awt.EventQueue;
-
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -24,7 +24,7 @@ public class Form2 {
 	private Dragg_label_color label_color;
 	public static Drop_panel panel;
 	private CallbackKut scb ;
-
+	private Logger logger;
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +37,7 @@ public class Form2 {
 	public Form2(CallbackKut scb) {
 		initialize();
 		this.scb=scb;
+		logger = Logger.getGlobal();
 			
 	}
 
@@ -60,6 +61,7 @@ public class Form2 {
 				if(scb != null) {
 					if(panel.GetKut()!=null) {
 						scb.takekut(panel.GetKut());
+						logger.info("Лодка создана");
 					}
 				}
 				frame.dispose();
@@ -77,7 +79,16 @@ public class Form2 {
 		frame.getContentPane().add(label_gorbach);
 
 		
-		
+		JButton button_cancel = new JButton("\u041E\u0442\u043C\u0435\u043D\u0430");
+		 		button_cancel.addActionListener(new ActionListener() {
+		 			public void actionPerformed(ActionEvent e) {
+		 				logger.info("Выход из формы для создания лодки");
+		 				frame.dispose();
+		 			}
+		 		});
+		 		button_cancel.setBounds(524, 460, 89, 23);
+		 		frame.getContentPane().add(button_cancel);
+		 		frame.setVisible(true);
 				
 
 		JButton button_color = new JButton("Выбор цвета");

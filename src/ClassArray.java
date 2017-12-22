@@ -1,14 +1,10 @@
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ClassArray<T extends ITransport> implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7595082343786554865L;
+	
+	private static final long serialVersionUID = 1L;
 
 	private Map<Integer, T> places;
 
@@ -22,33 +18,29 @@ public class ClassArray<T extends ITransport> implements Serializable {
 		maxCount = size;
 	}
 
-	public T GetKut(int index) {
+	public T GetKut(int index) throws ParkingIndexOutOfRangeException {
 		if (places.containsKey(index)) {
 			return places.get(index);
 		}
-		return defaultValue;
+		throw new ParkingIndexOutOfRangeException();
 	}
 
-	public int Add(T kut) {
-		if (places.size() == maxCount) {
-			return -1;
-		}
-
-		for (int i = 0; i < places.size(); i++) {
+	public int Add(T kut) throws ParkingOverflowException {
+		for (int i = 0; i < 15; i++) {
 			if (CheakFreePlace(i)) {
 				places.put(i, kut);
 				return i;
 			}
 		}
-		places.put(places.size(), kut);
-		return places.size() - 1;
+		
+		throw new ParkingOverflowException();
 	}
 
-	public T Get(int index) {
+	public T Get(int index) throws ParkingIndexOutOfRangeException {
 		if (places.containsKey(index)) {
 			return places.remove(index);
 		}
-		return defaultValue;
+		throw new ParkingIndexOutOfRangeException();
 	}
 
 	private boolean CheakFreePlace(int index) {

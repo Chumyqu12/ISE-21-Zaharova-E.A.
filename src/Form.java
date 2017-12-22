@@ -7,7 +7,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 public class Form {
 
@@ -23,7 +26,7 @@ public class Form {
 	private JPanel panel_1;
 	private JList listBoxLevels;
 	private Form2 form2;
-
+	private Logger logger;
 	/**
 	 * Launch the application.
 	 */
@@ -43,9 +46,13 @@ public class Form {
 	/**
 	 * Create the application.
 	 */
-	public Form() {
+	public Form() throws SecurityException, IOException {
 		parking= new Parking(20);
 		initialize();	
+		logger = Logger.getGlobal();
+		 		Handler h = new FileHandler();
+		 		logger.addHandler(h);
+		 	logger.setUseParentHandlers(false);
 		listBoxLevels.setSelectedIndex(parking.getCurrentLevel());
 	}
 
@@ -62,7 +69,7 @@ public class Form {
 				returnPanel.setBackground(Color.WHITE);
 				returnPanel.setBounds(10, 94, 139, 201);
 				panelGet.add(returnPanel);
-				
+				logger.info("Лодку забрали c "+ formattedTextField.getText() +" места "+ listBoxLevels.getSelectedIndex() +"lvl");
 				panel.repaint();
 			}
 		}catch(Exception e){
@@ -89,10 +96,19 @@ public class Form {
 
 					@Override
 					public void takekut(ITransport kut) {
-						int place = parking.PutkutiInparking(kut);
+						
+						int place=0;
+						try {
+							place = parking.PutkutiInparking(kut);
+						} catch (ParkingOverflowException e) {
+							
+							e.printStackTrace();
+						}
+						if (place!=-1){
 						panel.repaint();
 						JOptionPane.showMessageDialog(frame, "Ваше место " + place);
-						
+						logger.info("Лодка причалила на "+place + "место");
+						}
 					}
 				}));
 				form2.frame.setVisible(true);	
@@ -150,6 +166,7 @@ public class Form {
 			public void valueChanged(ListSelectionEvent e) {
 				parking.setCurrentLevel(listBoxLevels.getSelectedIndex());
 				panel.repaint();
+				logger.info("Вы перешли на "+ listBoxLevels.getSelectedIndex() +"lvl");
 			}
 
 		});
@@ -172,6 +189,7 @@ public class Form {
 				    try {  
 				        ((Ris) panel).saveParking(fc.getSelectedFile().getPath()); 
 				        JOptionPane.showMessageDialog(frame, "сохранение успешно");
+				        logger.info("СОхранение в файл");
 				    }  
 				    catch (Exception e) {
 				    	System.out.println("что-то пошло не так");
@@ -185,6 +203,7 @@ public class Form {
 				if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {  
 					((Ris) panel).loadParking(fc.getSelectedFile().getPath());
 					JOptionPane.showMessageDialog(frame, "Загрузка успешна");
+					logger.info("Загрузка из файла");
 				}
 			}
 		});

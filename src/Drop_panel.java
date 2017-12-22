@@ -12,7 +12,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
-
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
@@ -24,13 +24,13 @@ import javax.swing.TransferHandler;
 public class Drop_panel extends JPanel implements DropTargetListener {
 	private  JLabel label_color_cutter;
 	private JLabel label_color_lodka;
-	
+	private Logger logger;
 	ITransport kut;
 	Color color;
 	Color dopColor;
 	public Drop_panel(){
 		new DropTarget(this,this);
-		
+		logger = Logger.getGlobal();
 		
 		label_color_lodka = new Drop_label_color("цвет лодки",new Callback() {
 			@Override
@@ -38,6 +38,7 @@ public class Drop_panel extends JPanel implements DropTargetListener {
 				if(kut!=null && bred) {
 					color=label_color_lodka.getForeground();
 					kut.SetColor(color);
+					logger.info("Выбран " + color.toString() +"Цвет лодки");
 					repaint();
 				}
 				bred=false;
@@ -56,6 +57,7 @@ public class Drop_panel extends JPanel implements DropTargetListener {
 									dopColor=label_color_cutter.getForeground();
 									kut.SetColor(color);
 									kut.SetdopColor(dopColor);
+									logger.info("Выбран " + dopColor.toString() + "цвет катера");
 									repaint();
 								}
 								bred=false;
@@ -128,7 +130,7 @@ public class Drop_panel extends JPanel implements DropTargetListener {
 					color=label_color_lodka.getForeground();
 					kut =new Lodka(150, 7, 300, 300, color);
 					kut.SetPosition(150, 150);
-					
+					logger.info("Выбрана лодка");
 					repaint();
 					
 					
@@ -137,7 +139,7 @@ public class Drop_panel extends JPanel implements DropTargetListener {
 					dopColor=label_color_cutter.getForeground();
 					kut= new Cutter(150,7,300,250,color,true,dopColor);
 					kut.SetPosition(150, 150);
-					
+					logger.info("Выбран катер");
 					repaint();
 				} 
 				

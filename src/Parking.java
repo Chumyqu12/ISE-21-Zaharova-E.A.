@@ -31,11 +31,11 @@ public class Parking {
 		this.currentLevel = currentLevel;
 	}
 
-	public int PutkutiInparking(ITransport kut) {
+	public int PutkutiInparking(ITransport kut) throws ParkingOverflowException {
 		return parking.get(currentLevel).Add(kut);
 	}
 
-	public ITransport GetkutInparking(int ticket) {
+	public ITransport GetkutInparking(int ticket)  throws ParkingIndexOutOfRangeException {
 		return parking.get(currentLevel).Get(ticket);
 
 	}
@@ -44,7 +44,13 @@ public class Parking {
 		DrawMarking(g);
 		for (int i = 0; i < countPlaces; i++) {
 
-			ITransport kut = parking.get(currentLevel).GetKut(i);
+			ITransport kut = null;
+			 			try {
+			 				kut = parking.get(currentLevel).GetKut(i);
+			 				
+			 			} catch (ParkingIndexOutOfRangeException e) {
+			 				e.getMessage();
+			 			}
 			if (kut != null) {
 				kut.SetPosition(5 + i / 5 * placesSizeWidth + 5, i % 5 * placesSizeHeight + 15);
 				kut.drawLodka(g);
