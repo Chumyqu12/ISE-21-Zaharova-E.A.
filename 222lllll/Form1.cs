@@ -132,7 +132,7 @@ namespace _222lllll
 			form.AddEvent(AddLodka);
 			form.ShowDialog();
 		}
-		//var lodka = form.getlodka;
+		
 			private void AddLodka(ITransport lodka) {
 			if (lodka != null) {
 				int place = parking.PutCarInParking(lodka);
