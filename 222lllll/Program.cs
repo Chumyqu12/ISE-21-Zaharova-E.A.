@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace _222lllll
 {
+	public delegate void myDel(_222lllll.ITransport lodka);
 	static class Program
 	{
 		/// <summary>

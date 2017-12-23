@@ -33,5 +33,8 @@ namespace _222lllll
 			countPassengers = 0;
 			return count;
 		}
+		public virtual void setMainColor(Color color) {
+			ColorBody = color;
+		}
 	}
 }

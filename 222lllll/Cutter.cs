@@ -11,6 +11,10 @@ namespace _222lllll
 	{
 		private bool motor;
 		private Color dopColor;
+		public void setDopColor(Color color)
+		{
+			dopColor = color;
+		}
 		public Cutter(int maxSpeed, int maxCountPassenger, double weigth, int vodoizmeshenie, Color color,
             bool motor, Color dopColor) :
 			base(maxSpeed, maxCountPassenger, weigth, vodoizmeshenie, color)
@@ -19,17 +23,19 @@ namespace _222lllll
 			this.dopColor = dopColor;
           
         }
+		
 
         protected override void draw(Graphics g)
         {
             base.draw(g);
             if (motor)
             {
-                Brush brush = new SolidBrush(Color.Beige);
+                Brush brush = new SolidBrush(dopColor);
                 g.FillRectangle(brush, startPosX + 22, startPosY + 20, 20, 20);
             }
 
 
         }
+		
     }
 }

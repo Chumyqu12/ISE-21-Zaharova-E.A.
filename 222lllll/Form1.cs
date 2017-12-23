@@ -12,10 +12,11 @@ namespace _222lllll
 {
 	public partial class Form1 : Form
 	{
+	
 		Parking parking;
-
+		Form2 form;
       
-       // private ITransport Transport;
+       
         public Form1()
 		{
 
@@ -80,6 +81,7 @@ namespace _222lllll
 
 		private void button6_Click(object sender, EventArgs e)
 		{
+
 			if (maskedTextBox1.Text != "")
 			{
 				var car = parking.GetCarInParking(Convert.ToInt32(maskedTextBox1.Text));
@@ -92,6 +94,8 @@ namespace _222lllll
 				Draw();
 			}
 		}
+		
+
 		private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -120,6 +124,27 @@ namespace _222lllll
 			parking.LevelUp();
 			listBox1.SelectedIndex = parking.getCurrentLevel;
 			Draw();
+		}
+
+		private void button1_Click_1(object sender, EventArgs e)
+		{
+			form = new Form2();
+			form.AddEvent(AddLodka);
+			form.ShowDialog();
+		}
+		
+			private void AddLodka(ITransport lodka) {
+			if (lodka != null) {
+				int place = parking.PutCarInParking(lodka);
+				if (place > -1)
+				{
+					Draw();
+					MessageBox.Show("Your place" + place);
+				}
+				else {
+					MessageBox.Show("Sorry");
+				}
+			}
 		}
 	}
 }
