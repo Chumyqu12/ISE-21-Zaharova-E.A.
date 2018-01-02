@@ -42,6 +42,68 @@ namespace _222lllll
             
         }
 
+        public int CompareTo(Cutter other)
+        {
+            var res = (this is Lodka).CompareTo(other is Lodka);
+            if (res != 0)
+            {
+                return res;
+            }
+            if (motor != other.motor)
+            {
+                return motor.CompareTo(other.motor);
+            }
+            if (dopColor != other.dopColor)
+            {
+                return dopColor.Name.CompareTo(other.dopColor.Name);
+            }
+            return 0;
+        }
+
+        public bool Equals(Cutter other)
+        {
+            var res = (this as Lodka).Equals(other as Lodka);
+            if (!res)
+            {
+                return res;
+            }
+            if (motor != other.motor)
+            {
+                return false;
+            }
+           
+            if (dopColor != other.dopColor)
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+          Cutter locObj = obj as Cutter;
+            if (locObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(locObj);
+            }
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+
+
+
         protected override void draw(Graphics g)
         {
             base.draw(g);

@@ -16,7 +16,7 @@ namespace _222lllll
 		int placeSizeHeight = 80;
 		int currentLevel;
 		public int getCurrentLevel {get {return currentLevel; } }
-		//СПИСОЧЕК!!!
+		
 		public Parking(int countStages) {
 			parkingStages = new List<ClassArray<ITransport>>();
 			for (int i = 0; i < countStages; i++)
@@ -43,17 +43,17 @@ namespace _222lllll
 		}
 		public void Draw(Graphics g) {
 			DrawMarking(g);
-			for (int i = 0; i < countPlaces; i++)
-			{
-				var car = parkingStages[currentLevel][i];
-				if (car != null)
-				{
+            int i = 0;
+			foreach (var car in parkingStages[currentLevel]) { 
 					car.SetPosition(5 + i / 5 * placeSizeWidth + 5, i % 5 * placeSizeHeight + 15);
 					car.drawLodka(g);
+                i++;
 				}
 			}
-			}
-	
+
+        public void Sort() {
+            parkingStages.Sort();
+        }
 			private void DrawMarking(Graphics g) {
 			Pen pen = new Pen(Color.Blue, 3);
 			g.DrawString("L" + (currentLevel + 1), new Font("Arial", 30), new SolidBrush(Color.Blue),
