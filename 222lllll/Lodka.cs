@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace _222lllll
 {
-	public class Lodka : WaterTransport
-	{
+	public class Lodka : WaterTransport, IComparable<Lodka>, IEquatable<Lodka>
+    {
 
 		public override int MaxSpeed
 		{
@@ -122,7 +122,90 @@ namespace _222lllll
             startPosX = rand.Next(10, 200);
             startPosY = rand.Next(10, 200);
         }
-		public override void moveLodka(Graphics g) {
+
+
+        public int CompareTo(Lodka other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return MaxSpeed.CompareTo(other.MaxSpeed);
+            }
+            if (MaxCountPassengers != other.MaxCountPassengers)
+            {
+                return MaxCountPassengers.CompareTo(other.MaxCountPassengers);
+            }
+            if (Weigth != other.Weigth)
+            {
+                return Weigth.CompareTo(other.Weigth);
+            }
+            if (vodoizmeshenie != other.vodoizmeshenie)
+            {
+                return vodoizmeshenie.CompareTo(other.vodoizmeshenie);
+            }
+            if (ColorBody != other.ColorBody)
+            {
+                return ColorBody.Name.CompareTo(other.ColorBody.Name);
+            }
+ 
+            return 0;
+        }
+
+        public bool Equals(Lodka other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            if (MaxSpeed != other.MaxSpeed)
+            {
+                return false;
+            }
+            if (MaxCountPassengers != other.MaxCountPassengers)
+            {
+                return false;
+            }
+            if (Weigth != other.Weigth)
+            {
+                return false;
+            }
+            
+            if (ColorBody != other.ColorBody)
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Lodka locObj = obj as Lodka;
+            if (locObj == null)
+            {
+                return false;
+            }
+            else
+            {
+                return Equals(locObj);
+            }
+        }
+
+
+        public override int GetHashCode()
+        {
+            return MaxSpeed.GetHashCode();
+        }
+
+
+        public override void moveLodka(Graphics g) {
 			startPosX += (MaxSpeed * 50) / (float)Weigth / (countPassengers == 0 ? 1 : countPassengers);
 			drawLodka(g);
 

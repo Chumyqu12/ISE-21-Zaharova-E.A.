@@ -60,6 +60,7 @@
     <Compile Include="Lodka.cs" />
     <Compile Include="Cutter.cs" />
     <Compile Include="Parking.cs" />
+    <Compile Include="ParkingAlreadyHaveException.cs" />
     <Compile Include="ParkingIndexOutOfRangeException.cs" />
     <Compile Include="ParkingOverflowException.cs" />
     <Compile Include="WaterTransport.cs" />
