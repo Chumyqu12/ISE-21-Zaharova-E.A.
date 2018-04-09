@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace AbstractShopView
+namespace SoftwareDevelopmentView
 {
     public partial class FormPutOnWarehouse : Form
     {
@@ -35,15 +35,15 @@ namespace AbstractShopView
                 List<PartViewModel> listC = serviceC.GetList();
                 if (listC != null)
                 {
-                    comboBoxComponent.DisplayMember = "ComponentName";
-                    comboBoxComponent.ValueMember = "Id";
-                    comboBoxComponent.DataSource = listC;
-                    comboBoxComponent.SelectedItem = null;
+                    comboBoxPart.DisplayMember = "PartName";
+                    comboBoxPart.ValueMember = "Id";
+                    comboBoxPart.DataSource = listC;
+                    comboBoxPart.SelectedItem = null;
                 }
                 List<WarehouseViewModel> listS = serviceS.GetList();
                 if (listS != null)
                 {
-                    comboBoxStock.DisplayMember = "StockName";
+                    comboBoxStock.DisplayMember = "WarehouseName";
                     comboBoxStock.ValueMember = "Id";
                     comboBoxStock.DataSource = listS;
                     comboBoxStock.SelectedItem = null;
@@ -62,7 +62,7 @@ namespace AbstractShopView
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (comboBoxComponent.SelectedValue == null)
+            if (comboBoxPart.SelectedValue == null)
             {
                 MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -76,7 +76,7 @@ namespace AbstractShopView
             {
                 serviceM.PutPartOnWarehouse(new WarehousePartBindingModel
                 {
-                    PartId = Convert.ToInt32(comboBoxComponent.SelectedValue),
+                    PartId = Convert.ToInt32(comboBoxPart.SelectedValue),
                     WarehouseId = Convert.ToInt32(comboBoxStock.SelectedValue),
                     Number = Convert.ToInt32(textBoxCount.Text)
                 });

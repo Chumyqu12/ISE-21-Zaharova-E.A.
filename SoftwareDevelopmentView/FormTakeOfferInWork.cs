@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace AbstractShopView
+namespace SoftwareDevelopmentView
 {
     public partial class FormTakeOfferInWork : Form
     {
@@ -47,7 +47,7 @@ namespace AbstractShopView
                 List<DeveloperViewModel> listI = serviceI.GetList();
                 if (listI != null)
                 {
-                    comboBoxImplementer.DisplayMember = "ImplementerFIO";
+                    comboBoxImplementer.DisplayMember = "DeveloperName";
                     comboBoxImplementer.ValueMember = "Id";
                     comboBoxImplementer.DataSource = listI;
                     comboBoxImplementer.SelectedItem = null;

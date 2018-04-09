@@ -1,11 +1,14 @@
-﻿using SoftwareDevelopmentService.ImplementationsList;
+﻿using SoftwareDevelopmentService;
 using SoftwareDevelopmentService.Interfaces;
+using SoftwareDevelopmentService.ImplementationsBD;
+using SoftwareDevelopmentService.ImplementationsList;
 using System;
+using System.Data.Entity;
 using System.Windows.Forms;
 using Unity;
 using Unity.Lifetime;
 
-namespace AbstractShopView
+namespace SoftwareDevelopmentView
 {
     static class Program
     {
@@ -25,13 +28,14 @@ namespace AbstractShopView
         public static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IPartService, ComponentServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IDeveloperService, DeveloperServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<ISoftwareService, SoftwareServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IWarehouseService, WarehouseServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IGeneralService, GeneralServiceList>(new HierarchicalLifetimeManager());
-            
+            currentContainer.RegisterType<DbContext, SoftwareDbContext>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ICustomerService, CustomerServiceBD>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IPartService, PartServiceBD>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IDeveloperService, DeveloperServiceBD>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ISoftwareService, SoftwareServiceBD>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IWarehouseService, WarehouseServiceBD>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IGeneralService, GeneralServiceBD>(new HierarchicalLifetimeManager());
+
             return currentContainer;
         }
     }

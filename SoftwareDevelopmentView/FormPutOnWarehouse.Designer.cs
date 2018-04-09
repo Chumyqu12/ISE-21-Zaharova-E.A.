@@ -1,11 +1,11 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
     partial class FormPutOnWarehouse
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer Parts = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Parts != null))
             {
-                components.Dispose();
+                Parts.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.labelCount = new System.Windows.Forms.Label();
-            this.comboBoxComponent = new System.Windows.Forms.ComboBox();
+            this.comboBoxPart = new System.Windows.Forms.ComboBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxCount = new System.Windows.Forms.TextBox();
-            this.labelComponent = new System.Windows.Forms.Label();
+            this.labelPart = new System.Windows.Forms.Label();
             this.comboBoxStock = new System.Windows.Forms.ComboBox();
             this.labelStock = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -47,14 +47,14 @@
             this.labelCount.TabIndex = 4;
             this.labelCount.Text = "Количество:";
             // 
-            // comboBoxComponent
+            // comboBoxPart
             // 
-            this.comboBoxComponent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxComponent.FormattingEnabled = true;
-            this.comboBoxComponent.Location = new System.Drawing.Point(87, 33);
-            this.comboBoxComponent.Name = "comboBoxComponent";
-            this.comboBoxComponent.Size = new System.Drawing.Size(217, 21);
-            this.comboBoxComponent.TabIndex = 3;
+            this.comboBoxPart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPart.FormattingEnabled = true;
+            this.comboBoxPart.Location = new System.Drawing.Point(87, 33);
+            this.comboBoxPart.Name = "comboBoxPart";
+            this.comboBoxPart.Size = new System.Drawing.Size(217, 21);
+            this.comboBoxPart.TabIndex = 3;
             // 
             // buttonCancel
             // 
@@ -83,14 +83,14 @@
             this.textBoxCount.Size = new System.Drawing.Size(217, 20);
             this.textBoxCount.TabIndex = 5;
             // 
-            // labelComponent
+            // labelPart
             // 
-            this.labelComponent.AutoSize = true;
-            this.labelComponent.Location = new System.Drawing.Point(12, 36);
-            this.labelComponent.Name = "labelComponent";
-            this.labelComponent.Size = new System.Drawing.Size(66, 13);
-            this.labelComponent.TabIndex = 2;
-            this.labelComponent.Text = "Компонент:";
+            this.labelPart.AutoSize = true;
+            this.labelPart.Location = new System.Drawing.Point(12, 36);
+            this.labelPart.Name = "labelPart";
+            this.labelPart.Size = new System.Drawing.Size(66, 13);
+            this.labelPart.TabIndex = 2;
+            this.labelPart.Text = "Компонент:";
             // 
             // comboBoxStock
             // 
@@ -118,11 +118,11 @@
             this.Controls.Add(this.comboBoxStock);
             this.Controls.Add(this.labelStock);
             this.Controls.Add(this.labelCount);
-            this.Controls.Add(this.comboBoxComponent);
+            this.Controls.Add(this.comboBoxPart);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxCount);
-            this.Controls.Add(this.labelComponent);
+            this.Controls.Add(this.labelPart);
             this.Name = "FormPutOnStock";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пополнение хранилища";
@@ -135,11 +135,11 @@
         #endregion
 
         private System.Windows.Forms.Label labelCount;
-        private System.Windows.Forms.ComboBox comboBoxComponent;
+        private System.Windows.Forms.ComboBox comboBoxPart;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.TextBox textBoxCount;
-        private System.Windows.Forms.Label labelComponent;
+        private System.Windows.Forms.Label labelPart;
         private System.Windows.Forms.ComboBox comboBoxStock;
         private System.Windows.Forms.Label labelStock;
     }

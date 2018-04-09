@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace AbstractShopView
+namespace SoftwareDevelopmentView
 {
     public partial class FormPart : Form
     {
@@ -25,7 +25,7 @@ namespace AbstractShopView
             this.service = service;
         }
 
-        private void FormComponent_Load(object sender, EventArgs e)
+        private void FormPart_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
             {

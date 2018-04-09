@@ -1,11 +1,11 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
     partial class FormWarehouse
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer Parts = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Parts != null))
             {
-                components.Dispose();
+                Parts.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBoxComponents = new System.Windows.Forms.GroupBox();
+            this.groupBoxParts = new System.Windows.Forms.GroupBox();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.labelName = new System.Windows.Forms.Label();
-            this.groupBoxComponents.SuspendLayout();
+            this.groupBoxParts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBoxComponents
+            // groupBoxParts
             // 
-            this.groupBoxComponents.Controls.Add(this.dataGridView);
-            this.groupBoxComponents.Location = new System.Drawing.Point(12, 32);
-            this.groupBoxComponents.Name = "groupBoxComponents";
-            this.groupBoxComponents.Size = new System.Drawing.Size(358, 250);
-            this.groupBoxComponents.TabIndex = 11;
-            this.groupBoxComponents.TabStop = false;
-            this.groupBoxComponents.Text = "Компоненты";
+            this.groupBoxParts.Controls.Add(this.dataGridView);
+            this.groupBoxParts.Location = new System.Drawing.Point(12, 32);
+            this.groupBoxParts.Name = "groupBoxParts";
+            this.groupBoxParts.Size = new System.Drawing.Size(358, 250);
+            this.groupBoxParts.TabIndex = 11;
+            this.groupBoxParts.TabStop = false;
+            this.groupBoxParts.Text = "Компоненты";
             // 
             // dataGridView
             // 
@@ -102,7 +102,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 320);
-            this.Controls.Add(this.groupBoxComponents);
+            this.Controls.Add(this.groupBoxParts);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxName);
@@ -111,7 +111,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Хранилище";
             this.Load += new System.EventHandler(this.FormStock_Load);
-            this.groupBoxComponents.ResumeLayout(false);
+            this.groupBoxParts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -120,7 +120,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBoxComponents;
+        private System.Windows.Forms.GroupBox groupBoxParts;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;

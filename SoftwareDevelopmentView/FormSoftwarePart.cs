@@ -6,9 +6,9 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace AbstractShopView
+namespace SoftwareDevelopmentView
 {
-    public partial class FormSoftwarePart : Form
+    public partial class FormProductPart : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
@@ -19,23 +19,23 @@ namespace AbstractShopView
 
         private SoftwarePartViewModel model;
 
-        public FormSoftwarePart(IPartService service)
+        public FormProductPart(IPartService service)
         {
             InitializeComponent();
             this.service = service;
         }
 
-        private void FormSoftwarePart_Load(object sender, EventArgs e)
+        private void FormProductPart_Load(object sender, EventArgs e)
         {
             try
             {
                 List<PartViewModel> list = service.GetList();
                 if (list != null)
                 {
-                    comboBoxComponent.DisplayMember = "ComponentName";
-                    comboBoxComponent.ValueMember = "Id";
-                    comboBoxComponent.DataSource = list;
-                    comboBoxComponent.SelectedItem = null;
+                    comboBoxPart.DisplayMember = "PartName";
+                    comboBoxPart.ValueMember = "Id";
+                    comboBoxPart.DataSource = list;
+                    comboBoxPart.SelectedItem = null;
                 }
             }
             catch (Exception ex)
@@ -44,8 +44,8 @@ namespace AbstractShopView
             }
             if (model != null)
             {
-                comboBoxComponent.Enabled = false;
-                comboBoxComponent.SelectedValue = model.PartId;
+                comboBoxPart.Enabled = false;
+                comboBoxPart.SelectedValue = model.PartId;
                 textBoxCount.Text = model.Number.ToString();
             }
         }
@@ -57,7 +57,7 @@ namespace AbstractShopView
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (comboBoxComponent.SelectedValue == null)
+            if (comboBoxPart.SelectedValue == null)
             {
                 MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -68,8 +68,8 @@ namespace AbstractShopView
                 {
                     model = new SoftwarePartViewModel
                     {
-                        PartId = Convert.ToInt32(comboBoxComponent.SelectedValue),
-                        PartName = comboBoxComponent.Text,
+                        PartId = Convert.ToInt32(comboBoxPart.SelectedValue),
+                        PartName = comboBoxPart.Text,
                        Number = Convert.ToInt32(textBoxCount.Text)
                     };
                 }

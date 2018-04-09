@@ -1,11 +1,11 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
     partial class FormPart
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer Parts = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Parts != null))
             {
-                components.Dispose();
+                Parts.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -70,7 +70,7 @@
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Название:";
             // 
-            // FormComponent
+            // FormPart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,10 +79,10 @@
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.labelName);
-            this.Name = "FormComponent";
+            this.Name = "FormPart";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компонент";
-            this.Load += new System.EventHandler(this.FormComponent_Load);
+            this.Load += new System.EventHandler(this.FormPart_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

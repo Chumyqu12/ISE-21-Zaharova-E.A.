@@ -1,11 +1,11 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
-    partial class FormSoftwarePart
+    partial class FormProductPart
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer Parts = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Parts != null))
             {
-                components.Dispose();
+                Parts.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -30,9 +30,9 @@
         {
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.labelComponent = new System.Windows.Forms.Label();
+            this.labelPart = new System.Windows.Forms.Label();
             this.textBoxCount = new System.Windows.Forms.TextBox();
-            this.comboBoxComponent = new System.Windows.Forms.ComboBox();
+            this.comboBoxPart = new System.Windows.Forms.ComboBox();
             this.labelCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -56,14 +56,14 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // labelComponent
+            // labelPart
             // 
-            this.labelComponent.AutoSize = true;
-            this.labelComponent.Location = new System.Drawing.Point(12, 9);
-            this.labelComponent.Name = "labelComponent";
-            this.labelComponent.Size = new System.Drawing.Size(66, 13);
-            this.labelComponent.TabIndex = 0;
-            this.labelComponent.Text = "Компонент:";
+            this.labelPart.AutoSize = true;
+            this.labelPart.Location = new System.Drawing.Point(12, 9);
+            this.labelPart.Name = "labelPart";
+            this.labelPart.Size = new System.Drawing.Size(66, 13);
+            this.labelPart.TabIndex = 0;
+            this.labelPart.Text = "Компонент:";
             // 
             // textBoxCount
             // 
@@ -72,14 +72,14 @@
             this.textBoxCount.Size = new System.Drawing.Size(217, 20);
             this.textBoxCount.TabIndex = 3;
             // 
-            // comboBoxComponent
+            // comboBoxPart
             // 
-            this.comboBoxComponent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxComponent.FormattingEnabled = true;
-            this.comboBoxComponent.Location = new System.Drawing.Point(87, 6);
-            this.comboBoxComponent.Name = "comboBoxComponent";
-            this.comboBoxComponent.Size = new System.Drawing.Size(217, 21);
-            this.comboBoxComponent.TabIndex = 1;
+            this.comboBoxPart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPart.FormattingEnabled = true;
+            this.comboBoxPart.Location = new System.Drawing.Point(87, 6);
+            this.comboBoxPart.Name = "comboBoxPart";
+            this.comboBoxPart.Size = new System.Drawing.Size(217, 21);
+            this.comboBoxPart.TabIndex = 1;
             // 
             // labelCount
             // 
@@ -90,21 +90,21 @@
             this.labelCount.TabIndex = 2;
             this.labelCount.Text = "Количество:";
             // 
-            // FormSoftwarePart
+            // FormProductPart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(320, 96);
             this.Controls.Add(this.labelCount);
-            this.Controls.Add(this.comboBoxComponent);
+            this.Controls.Add(this.comboBoxPart);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxCount);
-            this.Controls.Add(this.labelComponent);
-            this.Name = "FormSoftwarePart";
+            this.Controls.Add(this.labelPart);
+            this.Name = "FormProductPart";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компонент ПО";
-            this.Load += new System.EventHandler(this.FormSoftwarePart_Load);
+            this.Load += new System.EventHandler(this.FormProductPart_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,9 +114,9 @@
 
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Label labelComponent;
+        private System.Windows.Forms.Label labelPart;
         private System.Windows.Forms.TextBox textBoxCount;
-        private System.Windows.Forms.ComboBox comboBoxComponent;
+        private System.Windows.Forms.ComboBox comboBoxPart;
         private System.Windows.Forms.Label labelCount;
     }
 }

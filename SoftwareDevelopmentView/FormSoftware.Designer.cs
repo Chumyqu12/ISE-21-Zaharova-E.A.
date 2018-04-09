@@ -1,11 +1,11 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
     partial class FormSoftware
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer Parts = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Parts != null))
             {
-                components.Dispose();
+                Parts.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -34,13 +34,13 @@
             this.labelName = new System.Windows.Forms.Label();
             this.textBoxPrice = new System.Windows.Forms.TextBox();
             this.labelPrice = new System.Windows.Forms.Label();
-            this.groupBoxComponents = new System.Windows.Forms.GroupBox();
+            this.groupBoxParts = new System.Windows.Forms.GroupBox();
             this.buttonRef = new System.Windows.Forms.Button();
             this.buttonDel = new System.Windows.Forms.Button();
             this.buttonUpd = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.groupBoxComponents.SuspendLayout();
+            this.groupBoxParts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,19 +96,19 @@
             this.labelPrice.TabIndex = 2;
             this.labelPrice.Text = "Цена:";
             // 
-            // groupBoxComponents
+            // groupBoxParts
             // 
-            this.groupBoxComponents.Controls.Add(this.buttonRef);
-            this.groupBoxComponents.Controls.Add(this.buttonDel);
-            this.groupBoxComponents.Controls.Add(this.buttonUpd);
-            this.groupBoxComponents.Controls.Add(this.buttonAdd);
-            this.groupBoxComponents.Controls.Add(this.dataGridView);
-            this.groupBoxComponents.Location = new System.Drawing.Point(12, 58);
-            this.groupBoxComponents.Name = "groupBoxComponents";
-            this.groupBoxComponents.Size = new System.Drawing.Size(478, 250);
-            this.groupBoxComponents.TabIndex = 4;
-            this.groupBoxComponents.TabStop = false;
-            this.groupBoxComponents.Text = "Компоненты";
+            this.groupBoxParts.Controls.Add(this.buttonRef);
+            this.groupBoxParts.Controls.Add(this.buttonDel);
+            this.groupBoxParts.Controls.Add(this.buttonUpd);
+            this.groupBoxParts.Controls.Add(this.buttonAdd);
+            this.groupBoxParts.Controls.Add(this.dataGridView);
+            this.groupBoxParts.Location = new System.Drawing.Point(12, 58);
+            this.groupBoxParts.Name = "groupBoxParts";
+            this.groupBoxParts.Size = new System.Drawing.Size(478, 250);
+            this.groupBoxParts.TabIndex = 4;
+            this.groupBoxParts.TabStop = false;
+            this.groupBoxParts.Text = "Компоненты";
             // 
             // buttonRef
             // 
@@ -168,7 +168,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(502, 348);
-            this.Controls.Add(this.groupBoxComponents);
+            this.Controls.Add(this.groupBoxParts);
             this.Controls.Add(this.textBoxPrice);
             this.Controls.Add(this.labelPrice);
             this.Controls.Add(this.buttonCancel);
@@ -179,7 +179,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ПО";
             this.Load += new System.EventHandler(this.FormProduct_Load);
-            this.groupBoxComponents.ResumeLayout(false);
+            this.groupBoxParts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -194,7 +194,7 @@
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.TextBox textBoxPrice;
         private System.Windows.Forms.Label labelPrice;
-        private System.Windows.Forms.GroupBox groupBoxComponents;
+        private System.Windows.Forms.GroupBox groupBoxParts;
         private System.Windows.Forms.Button buttonRef;
         private System.Windows.Forms.Button buttonDel;
         private System.Windows.Forms.Button buttonUpd;
