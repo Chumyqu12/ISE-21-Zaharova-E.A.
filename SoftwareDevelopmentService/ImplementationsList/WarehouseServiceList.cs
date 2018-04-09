@@ -4,6 +4,7 @@ using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoftwareDevelopmentService.ImplementationsList
 {
@@ -18,148 +19,99 @@ namespace SoftwareDevelopmentService.ImplementationsList
 
         public List<WarehouseViewModel> GetList()
         {
-            List<WarehouseViewModel> result = new List<WarehouseViewModel>();
-            for (int i = 0; i < source.Warehouses.Count; ++i)
-            {
-                // требуется дополнительно получить список компонентов на складе и их количество
-                List<WarehousePartViewModel> StockComponents = new List<WarehousePartViewModel>();
-                for (int j = 0; j < source.WarehouseParts.Count; ++j)
-                {
-                    if (source.WarehouseParts[j].WarehouseId == source.Warehouses[i].Id)
-                    {
-                        string ParttName = string.Empty;
-                        for (int k = 0; k < source.Parts.Count; ++k)
-                        {
-                            if (source.SoftwareParts[j].PartId == source.Parts[k].Id)
-                            {
-                                ParttName = source.Parts[k].PartName;
-                                break;
-                            }
-                        }
-                        StockComponents.Add(new WarehousePartViewModel
-                        {
-                            Id = source.WarehouseParts[j].Id,
-                            WarehouseId = source.WarehouseParts[j].WarehouseId,
-                            PartId = source.WarehouseParts[j].PartId,
-                            PartName = ParttName,
-                            Number = source.WarehouseParts[j].Number
-                        });
-                    }
-                }
-                result.Add(new WarehouseViewModel
-                {
-                    Id = source.Warehouses[i].Id,
-                    WarehouseName = source.Warehouses[i].WarehouseName,
-                    WarehouseParts = StockComponents
-                });
-            }
-            return result;
-        }
+			List<WarehouseViewModel> result = source.Warehouses
+				.Select(rec => new WarehouseViewModel
+				{
+					Id = rec.Id,
+					WarehouseName = rec.WarehouseName,
+					WarehouseParts = source.WarehouseParts
+							.Where(recPC => recPC.WarehouseId == rec.Id)
+							.Select(recPC => new WarehousePartViewModel
+							{
+								Id = recPC.Id,
+								WarehouseId = recPC.PartId,
+								PartId = recPC.PartId,
+								PartName = source.Parts
+									.FirstOrDefault(recC => recC.Id == recPC.PartId)?.PartName,
+								Number = recPC.Number
+							})
+							.ToList()
+				})
+				.ToList();
+			return result;
+		}
 
         public WarehouseViewModel GetElement(int id)
         {
-            for (int i = 0; i < source.Warehouses.Count; ++i)
-            {
-                // требуется дополнительно получить список компонентов на складе и их количество
-                List<WarehousePartViewModel> WarehouseParts = new List<WarehousePartViewModel>();
-                for (int j = 0; j < source.WarehouseParts.Count; ++j)
-                {
-                    if (source.WarehouseParts[j].WarehouseId == source.Warehouses[i].Id)
-                    {
-                        string componentName = string.Empty;
-                        for (int k = 0; k < source.Parts.Count; ++k)
-                        {
-                            if (source.SoftwareParts[j].PartId == source.Parts[k].Id)
-                            {
-                                componentName = source.Parts[k].PartName;
-                                break;
-                            }
-                        }
-                        WarehouseParts.Add(new WarehousePartViewModel
-                        {
-                            Id = source.WarehouseParts[j].Id,
-                            WarehouseId = source.WarehouseParts[j].WarehouseId,
-                            PartId = source.WarehouseParts[j].PartId,
-                            PartName = componentName,
-                            Number = source.WarehouseParts[j].Number
-                        });
-                    }
-                }
-                if (source.Warehouses[i].Id == id)
-                {
-                    return new WarehouseViewModel
-                    {
-                        Id = source.Warehouses[i].Id,
-                        WarehouseName = source.Warehouses[i].WarehouseName,
-                        WarehouseParts = WarehouseParts
-                    };
-                }
-            }
-            throw new Exception("Элемент не найден");
-        }
+			Warehouse element = source.Warehouses.FirstOrDefault(rec => rec.Id == id);
+			if (element != null)
+			{
+				return new WarehouseViewModel
+				{
+					Id = element.Id,
+					WarehouseName = element.WarehouseName,
+					WarehouseParts = source.WarehouseParts
+							.Where(recPC => recPC.WarehouseId == element.Id)
+							.Select(recPC => new WarehousePartViewModel
+							{
+								Id = recPC.Id,
+								WarehouseId = recPC.WarehouseId,
+								PartId = recPC.PartId,
+								PartName = source.Parts
+									.FirstOrDefault(recC => recC.Id == recPC.PartId)?.PartName,
+								Number = recPC.Number
+							})
+							.ToList()
+				};
+			}
+			throw new Exception("Элемент не найден");
+		}
 
         public void AddElement(WarehouseBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Warehouses.Count; ++i)
-            {
-                if (source.Warehouses[i].Id > maxId)
-                {
-                    maxId = source.Warehouses[i].Id;
-                }
-                if (source.Warehouses[i].WarehouseName == model.WarehouseName)
-                {
-                    throw new Exception("Уже есть склад с таким названием");
-                }
-            }
-            source.Warehouses.Add(new Warehouse
-            {
-                Id = maxId + 1,
-                WarehouseName = model.WarehouseName
-            });
-        }
+			Warehouse element = source.Warehouses.FirstOrDefault(rec => rec.WarehouseName == model.WarehouseName);
+			if (element != null)
+			{
+				throw new Exception("Уже есть склад с таким названием");
+			}
+			int maxId = source.Warehouses.Count > 0 ? source.Warehouses.Max(rec => rec.Id) : 0;
+			source.Warehouses.Add(new Warehouse
+			{
+				Id = maxId + 1,
+				WarehouseName = model.WarehouseName
+			});
+		}
 
         public void UpdateElement(WarehouseBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Warehouses.Count; ++i)
-            {
-                if (source.Warehouses[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Warehouses[i].WarehouseName == model.WarehouseName && 
-                    source.Warehouses[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть склад с таким названием");
-                }
-            }
-            if (index == -1)
-            {
-                throw new Exception("Элемент не найден");
-            }
-            source.Warehouses[index].WarehouseName = model.WarehouseName;
-        }
+			Warehouse element = source.Warehouses.FirstOrDefault(rec =>
+										rec.WarehouseName == model.WarehouseName && rec.Id != model.Id);
+			if (element != null)
+			{
+				throw new Exception("Уже есть склад с таким названием");
+			}
+			element = source.Warehouses.FirstOrDefault(rec => rec.Id == model.Id);
+			if (element == null)
+			{
+				throw new Exception("Элемент не найден");
+			}
+			element.WarehouseName = model.WarehouseName;
+		}
 
         public void DeleteElement(int id)
         {
-            // при удалении удаляем все записи о компонентах на удаляемом складе
-            for (int i = 0; i < source.WarehouseParts.Count; ++i)
-            {
-                if (source.WarehouseParts[i].WarehouseId == id)
-                {
-                    source.WarehouseParts.RemoveAt(i--);
-                }
-            }
-            for (int i = 0; i < source.Warehouses.Count; ++i)
-            {
-                if (source.Warehouses[i].Id == id)
-                {
-                    source.Warehouses.RemoveAt(i);
-                    return;
-                }
-            }
-            throw new Exception("Элемент не найден");
-        }
+			// при удалении удаляем все записи о компонентах на удаляемом складе
+			Warehouse element = source.Warehouses.FirstOrDefault(rec => rec.Id == id);
+			if (element != null)
+			{
+				// при удалении удаляем все записи о компонентах на удаляемом складе
+				source.WarehouseParts.RemoveAll(rec => rec.WarehouseId == id);
+				source.Warehouses.Remove(element);
+			}
+			else
+			{
+				throw new Exception("Элемент не найден");
+			}
+		}
     }
 }

@@ -4,261 +4,185 @@ using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoftwareDevelopmentService.ImplementationsList
 {
-    public class SoftwareServiceList : ISoftwareService
-    {
-        private DataListSingleton source;
+	public class SoftwareServiceList : ISoftwareService
+	{
+		private DataListSingleton source;
 
-        public SoftwareServiceList()
-        {
-            source = DataListSingleton.GetInstance();
-        }
+		public SoftwareServiceList()
+		{
+			source = DataListSingleton.GetInstance();
+		}
 
-        public List<SoftwareViewModel> GetList()
-        {
-            List<SoftwareViewModel> result = new List<SoftwareViewModel>();
-            for (int i = 0; i < source.Softwares.Count; ++i)
-            {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-                List<SoftwarePartViewModel> SoftwareParts = new List<SoftwarePartViewModel>();
-                for (int j = 0; j < source.SoftwareParts.Count; ++j)
-                {
-                    if (source.SoftwareParts[j].SoftwareId == source.Softwares[i].Id)
-                    {
-                        string PartName = string.Empty;
-                        for (int k = 0; k < source.Parts.Count; ++k)
-                        {
-                            if (source.SoftwareParts[j].PartId == source.Parts[k].Id)
-                            {
-                                PartName = source.Parts[k].PartName;
-                                break;
-                            }
-                        }
-                        SoftwareParts.Add(new SoftwarePartViewModel
-                        {
-                            Id = source.SoftwareParts[j].Id,
-                            SoftwareId = source.SoftwareParts[j].SoftwareId,
-                            PartId = source.SoftwareParts[j].PartId,
-                            PartName = PartName,
-                            Number = source.SoftwareParts[j].Number
-                        });
-                    }
-                }
-                result.Add(new SoftwareViewModel
-                {
-                    Id = source.Softwares[i].Id,
-                    SoftwareName = source.Softwares[i].SoftwareName,
-                    Cost = source.Softwares[i].Cost,
-                    SoftwareParts = SoftwareParts
-                });
-            }
-            return result;
-        }
+		public List<SoftwareViewModel> GetList()
+		{
+			List<SoftwareViewModel> result = source.Softwares.Select(rec => new SoftwareViewModel
+			{
+				// требуется дополнительно получить список компонентов для изделия и их количество
 
-        public SoftwareViewModel GetElement(int id)
-        {
-            for (int i = 0; i < source.Softwares.Count; ++i)
-            {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-                List<SoftwarePartViewModel> SoftwareParts = new List<SoftwarePartViewModel>();
-                for (int j = 0; j < source.SoftwareParts.Count; ++j)
-                {
-                    if (source.SoftwareParts[j].SoftwareId == source.Softwares[i].Id)
-                    {
-                        string PartName = string.Empty;
-                        for (int k = 0; k < source.Softwares.Count; ++k)
-                        {
-                            if (source.SoftwareParts[j].PartId == source.Parts[k].Id)
-                            {
-                                PartName = source.Parts[k].PartName;
-                                break;
-                            }
-                        }
-                        SoftwareParts.Add(new SoftwarePartViewModel
-                        {
-                            Id = source.SoftwareParts[j].Id,
-                            SoftwareId = source.SoftwareParts[j].SoftwareId,
-                            PartId = source.SoftwareParts[j].PartId,
-                            PartName = PartName,
-                            Number = source.SoftwareParts[j].Number
-                        });
-                    }
-                }
-                if (source.Softwares[i].Id == id)
-                {
-                    return new SoftwareViewModel
-                    {
-                        Id = source.Softwares[i].Id,
-                        SoftwareName = source.Softwares[i].SoftwareName,
-                        Cost = source.Softwares[i].Cost,
-                        SoftwareParts = SoftwareParts
-                    };
-                }
-            }
+				Id = rec.Id,
+				SoftwareName = rec.SoftwareName,
+				Cost = rec.Cost,
+				SoftwareParts = source.SoftwareParts
+							.Where(recPC => recPC.SoftwareId == rec.Id)
+							.Select(recPC => new SoftwarePartViewModel
+							{
+								Id = recPC.Id,
+								SoftwareId = recPC.SoftwareId,
+								PartId = recPC.PartId,
+								PartName = source.Parts
+								.FirstOrDefault(recC => recC.Id == recPC.PartId)?.PartName,
+								Number = recPC.Number
 
+							})
+.ToList()
+			})
+			.ToList();
+			return result;
+		}
+
+		public SoftwareViewModel GetElement(int id)
+		{
+			Software element = source.Softwares.FirstOrDefault(rec => rec.Id == id);
+			if (element!=null)
+			{
+				return new SoftwareViewModel
+				{
+					Id = element.Id,
+					SoftwareName = element.SoftwareName,
+					Cost=element.Cost,
+					SoftwareParts=source.SoftwareParts
+					.Where(recPC=>recPC.SoftwareId==element.Id)
+					.Select(recPC=>new SoftwarePartViewModel
+					{ 
+						Id=recPC.Id,
+						SoftwareId=recPC.PartId,
+						PartName=source.Parts
+						.FirstOrDefault(recC=>recC.Id==recPC.PartId)?.PartName,
+						Number=recPC.Number
+		})
+			.ToList()
+		};
+	}
             throw new Exception("Элемент не найден");
         }
 
         public void AddElement(SoftwareBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Softwares.Count; ++i)
-            {
-                if (source.Softwares[i].Id > maxId)
-                {
-                    maxId = source.Softwares[i].Id;
-                }
-                if (source.Softwares[i].SoftwareName == model.SoftwareName)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
-            }
-            source.Softwares.Add(new Software
+			Software element = source.Softwares.FirstOrDefault(rec => rec.SoftwareName == model.SoftwareName);
+			if (element != null) {
+				throw new Exception("Уже есть изделие с таким названием");
+			}
+			int maxId = source.Softwares.Count>0?source.Softwares.Max(rec=>rec.Id):0;
+			source.Softwares.Add(new Software
+           
             {
                 Id = maxId + 1,
                 SoftwareName = model.SoftwareName,
                 Cost = model.Cost
             });
-            // компоненты для изделия
-            int maxPCId = 0;
-            for (int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if (source.SoftwareParts[i].Id > maxPCId)
-                {
-                    maxPCId = source.SoftwareParts[i].Id;
-                }
-            }
-            // убираем дубли по компонентам
-            for (int i = 0; i < model.SoftwareParts.Count; ++i)
-            {
-                for (int j = 1; j < model.SoftwareParts.Count; ++j)
-                {
-                    if(model.SoftwareParts[i].PartId ==
-                        model.SoftwareParts[j].PartId)
-                    {
-                        model.SoftwareParts[i].Number +=
-                            model.SoftwareParts[j].Number;
-                        model.SoftwareParts.RemoveAt(j--);
-                    }
-                }
-            }
+			// компоненты для изделия
+			int maxPCId = source.SoftwareParts.Count > 0 ?
+				source.SoftwareParts.Max(rec => rec.Id) : 0;
+			// убираем дубли по компонентам
+			var groupParts = model.SoftwareParts
+				 .GroupBy(rec => rec.PartId)
+				 .Select(rec => new
+				 {
+					 PartId = rec.Key,
+					 Number = rec.Sum(r => r.Number)
+				 });
             // добавляем компоненты
-            for (int i = 0; i < model.SoftwareParts.Count; ++i)
+           foreach (var groupPart in groupParts)
             {
                 source.SoftwareParts.Add(new SoftwarePart
                 {
                     Id = ++maxPCId,
                     SoftwareId = maxId + 1,
-                    PartId = model.SoftwareParts[i].PartId,
-                    Number = model.SoftwareParts[i].Number
+                    PartId = groupPart.PartId,
+                    Number = groupPart.Number
                 });
             }
         }
 
         public void UpdateElement(SoftwareBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Softwares.Count; ++i)
-            {
-                if (source.Softwares[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Softwares[i].SoftwareName == model.SoftwareName && 
-                    source.Softwares[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
-            }
-            if (index == -1)
-            {
-                throw new Exception("Элемент не найден");
-            }
-            source.Softwares[index].SoftwareName = model.SoftwareName;
-            source.Softwares[index].Cost = model.Cost;
-            int maxPCId = 0;
-            for (int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if (source.SoftwareParts[i].Id > maxPCId)
-                {
-                    maxPCId = source.SoftwareParts[i].Id;
-                }
-            }
-            // обновляем существуюущие компоненты
-            for (int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if (source.SoftwareParts[i].SoftwareId == model.Id)
-                {
-                    bool flag = true;
-                    for (int j = 0; j < model.SoftwareParts.Count; ++j)
-                    {
-                        // если встретили, то изменяем количество
-                        if (source.SoftwareParts[i].Id == model.SoftwareParts[j].Id)
-                        {
-                            source.SoftwareParts[i].Number = model.SoftwareParts[j].Number;
-                            flag = false;
-                            break;
-                        }
-                    }
-                    // если не встретили, то удаляем
-                    if(flag)
-                    {
-                        source.SoftwareParts.RemoveAt(i--);
-                    }
-                }
-            }
-            // новые записи
-            for(int i = 0; i < model.SoftwareParts.Count; ++i)
-            {
-                if(model.SoftwareParts[i].Id == 0)
-                {
-                    // ищем дубли
-                    for (int j = 0; j < source.SoftwareParts.Count; ++j)
-                    {
-                        if (source.SoftwareParts[j].SoftwareId == model.Id &&
-                            source.SoftwareParts[j].PartId == model.SoftwareParts[i].PartId)
-                        {
-                            source.SoftwareParts[j].Number += model.SoftwareParts[i].Number;
-                            model.SoftwareParts[i].Id = source.SoftwareParts[j].Id;
-                            break;
-                        }
-                    }
-                    // если не нашли дубли, то новая запись
-                    if (model.SoftwareParts[i].Id == 0)
-                    {
-                        source.SoftwareParts.Add(new SoftwarePart
-                        {
-                            Id = ++maxPCId,
-                            SoftwareId = model.Id,
-                            PartId = model.SoftwareParts[i].PartId,
-                            Number = model.SoftwareParts[i].Number
-                        });
-                    }
-                }
-            }
-        }
+			Software element = source.Softwares.FirstOrDefault(rec =>
+										 rec.SoftwareName == model.SoftwareName && rec.Id != model.Id);
+			if (element != null)
+			{
+				throw new Exception("Уже есть изделие с таким названием");
+			}
+			element = source.Softwares.FirstOrDefault(rec => rec.Id == model.Id);
+			if (element == null)
+			{
+				throw new Exception("Элемент не найден");
+			}
+			element.SoftwareName = model.SoftwareName;
+			element.Cost = model.Cost;
 
-        public void DeleteElement(int id)
+			int maxPCId = source.SoftwareParts.Count > 0 ? source.SoftwareParts.Max(rec => rec.Id) : 0;
+			// обновляем существуюущие компоненты
+			var compIds = model.SoftwareParts.Select(rec => rec.PartId).Distinct();
+			var updateParts = source.SoftwareParts
+											.Where(rec => rec.SoftwareId == model.Id &&
+										   compIds.Contains(rec.PartId));
+			foreach (var updatePart in updateParts)
+			{
+				updatePart.Number = model.SoftwareParts
+												.FirstOrDefault(rec => rec.Id == updatePart.Id).Number;
+			}
+			source.SoftwareParts.RemoveAll(rec => rec.SoftwareId == model.Id &&
+									   !compIds.Contains(rec.PartId));
+			// новые записи
+			var groupParts = model.SoftwareParts
+										.Where(rec => rec.Id == 0)
+										.GroupBy(rec => rec.PartId)
+										.Select(rec => new
+										{
+											PartId = rec.Key,
+											Count = rec.Sum(r => r.Number)
+										});
+			foreach (var groupPart in groupParts)
+			{
+				SoftwarePart elementPC = source.SoftwareParts
+										.FirstOrDefault(rec => rec.SoftwareId == model.Id &&
+														rec.PartId == groupPart.PartId);
+				if (elementPC != null)
+				{
+					elementPC.Number += groupPart.Count;
+				}
+				else
+				{
+					source.SoftwareParts.Add(new SoftwarePart
+					{
+						Id = ++maxPCId,
+						SoftwareId = model.Id,
+						PartId = groupPart.PartId,
+						Number = groupPart.Count
+					});
+				}
+			}
+		}
+
+		public void DeleteElement(int id)
         {
-            // удаяем записи по компонентам при удалении изделия
-            for (int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if (source.SoftwareParts[i].SoftwareId == id)
-                {
-                    source.SoftwareParts.RemoveAt(i--);
-                }
-            }
-            for (int i = 0; i < source.Softwares.Count; ++i)
-            {
-                if (source.Softwares[i].Id == id)
-                {
-                    source.Softwares.RemoveAt(i);
-                    return;
-                }
-            }
-            throw new Exception("Элемент не найден");
-        }
+			Software element = source.Softwares.FirstOrDefault(rec => rec.Id == id);
+			if (element != null)
+			{
+				// удаяем записи по компонентам при удалении изделия
+				source.SoftwareParts.RemoveAll(rec => rec.SoftwareId == id);
+				source.Softwares.Remove(element);
+			}
+			else
+			{
+				throw new Exception("Элемент не найден");
+			}
+		}
+	
+
     }
 }
