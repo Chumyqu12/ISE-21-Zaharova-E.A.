@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace SoftwareDevelopmentView
+namespace AbstractShopView
 {
     public partial class FormCreateOffer : Form
     {
@@ -35,7 +35,7 @@ namespace SoftwareDevelopmentView
                 List<CustomerViewModel> listC = serviceC.GetList();
                 if (listC != null)
                 {
-                    comboBoxClient.DisplayMember = "CustomerName";
+                    comboBoxClient.DisplayMember = "ClientFIO";
                     comboBoxClient.ValueMember = "Id";
                     comboBoxClient.DataSource = listC;
                     comboBoxClient.SelectedItem = null;
@@ -43,7 +43,7 @@ namespace SoftwareDevelopmentView
                 List<SoftwareViewModel> listP = serviceP.GetList();
                 if (listP != null)
                 {
-                    comboBoxProduct.DisplayMember = "SoftwareName";
+                    comboBoxProduct.DisplayMember = "ProductName";
                     comboBoxProduct.ValueMember = "Id";
                     comboBoxProduct.DataSource = listP;
                     comboBoxProduct.SelectedItem = null;

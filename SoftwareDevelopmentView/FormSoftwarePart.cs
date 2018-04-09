@@ -6,9 +6,9 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace SoftwareDevelopmentView
+namespace AbstractShopView
 {
-    public partial class FormProductComponent : Form
+    public partial class FormSoftwarePart : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
@@ -19,20 +19,20 @@ namespace SoftwareDevelopmentView
 
         private SoftwarePartViewModel model;
 
-        public FormProductComponent(IPartService service)
+        public FormSoftwarePart(IPartService service)
         {
             InitializeComponent();
             this.service = service;
         }
 
-        private void FormProductComponent_Load(object sender, EventArgs e)
+        private void FormSoftwarePart_Load(object sender, EventArgs e)
         {
             try
             {
                 List<PartViewModel> list = service.GetList();
                 if (list != null)
                 {
-                    comboBoxComponent.DisplayMember = "PartName";
+                    comboBoxComponent.DisplayMember = "ComponentName";
                     comboBoxComponent.ValueMember = "Id";
                     comboBoxComponent.DataSource = list;
                     comboBoxComponent.SelectedItem = null;

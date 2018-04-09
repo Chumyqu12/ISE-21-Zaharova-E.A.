@@ -1,6 +1,6 @@
-﻿namespace SoftwareDevelopmentView
+﻿namespace AbstractShopView
 {
-    partial class FormProductComponent
+    partial class FormSoftwarePart
     {
         /// <summary>
         /// Required designer variable.
@@ -90,7 +90,7 @@
             this.labelCount.TabIndex = 2;
             this.labelCount.Text = "Количество:";
             // 
-            // FormProductComponent
+            // FormSoftwarePart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -101,10 +101,10 @@
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxCount);
             this.Controls.Add(this.labelComponent);
-            this.Name = "FormProductComponent";
+            this.Name = "FormSoftwarePart";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компонент ПО";
-            this.Load += new System.EventHandler(this.FormProductComponent_Load);
+            this.Load += new System.EventHandler(this.FormSoftwarePart_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

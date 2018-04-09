@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace SoftwareDevelopmentView
+namespace AbstractShopView
 {
     public partial class FormPutOnWarehouse : Form
     {
@@ -35,7 +35,7 @@ namespace SoftwareDevelopmentView
                 List<PartViewModel> listC = serviceC.GetList();
                 if (listC != null)
                 {
-                    comboBoxComponent.DisplayMember = "PartName";
+                    comboBoxComponent.DisplayMember = "ComponentName";
                     comboBoxComponent.ValueMember = "Id";
                     comboBoxComponent.DataSource = listC;
                     comboBoxComponent.SelectedItem = null;
@@ -43,7 +43,7 @@ namespace SoftwareDevelopmentView
                 List<WarehouseViewModel> listS = serviceS.GetList();
                 if (listS != null)
                 {
-                    comboBoxStock.DisplayMember = "WarehouseName";
+                    comboBoxStock.DisplayMember = "StockName";
                     comboBoxStock.ValueMember = "Id";
                     comboBoxStock.DataSource = listS;
                     comboBoxStock.SelectedItem = null;

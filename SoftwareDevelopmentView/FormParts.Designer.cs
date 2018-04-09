@@ -1,4 +1,4 @@
-﻿namespace SoftwareDevelopmentView
+﻿namespace AbstractShopView
 {
     partial class FormParts
     {
@@ -89,7 +89,7 @@
             this.dataGridView.Size = new System.Drawing.Size(350, 312);
             this.dataGridView.TabIndex = 0;
             // 
-            // FormComponents
+            // FormParts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -99,10 +99,10 @@
             this.Controls.Add(this.buttonUpd);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.dataGridView);
-            this.Name = "FormComponents";
+            this.Name = "FormParts";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компоненты";
-            this.Load += new System.EventHandler(this.FormComponents_Load);
+            this.Load += new System.EventHandler(this.FormParts_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 

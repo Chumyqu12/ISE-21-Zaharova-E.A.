@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace SoftwareDevelopmentView
+namespace AbstractShopView
 {
     public partial class FormParts : Form
     {
@@ -21,7 +21,7 @@ namespace SoftwareDevelopmentView
             this.service = service;
         }
 
-        private void FormComponents_Load(object sender, EventArgs e)
+        private void FormParts_Load(object sender, EventArgs e)
         {
             LoadData();
         }

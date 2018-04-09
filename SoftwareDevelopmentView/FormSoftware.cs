@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Unity;
 using Unity.Attributes;
 
-namespace SoftwareDevelopmentView
+namespace AbstractShopView
 {
     public partial class FormSoftware : Form
     {
@@ -20,7 +20,7 @@ namespace SoftwareDevelopmentView
 
         private int? id;
 
-        private List<SoftwarePartViewModel> productComponents;
+        private List<SoftwarePartViewModel> SoftwareParts;
 
         public FormSoftware(ISoftwareService service)
         {
@@ -39,7 +39,7 @@ namespace SoftwareDevelopmentView
                     {
                         textBoxName.Text = view.SoftwareName;
                         textBoxPrice.Text = view.Cost.ToString();
-                        productComponents = view.SoftwareParts;
+                        SoftwareParts = view.SoftwareParts;
                         LoadData();
                     }
                 }
@@ -50,7 +50,7 @@ namespace SoftwareDevelopmentView
             }
             else
             {
-                productComponents = new List<SoftwarePartViewModel>();
+                SoftwareParts = new List<SoftwarePartViewModel>();
             }
         }
 
@@ -58,10 +58,10 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                if (productComponents != null)
+                if (SoftwareParts != null)
                 {
                     dataGridView.DataSource = null;
-                    dataGridView.DataSource = productComponents;
+                    dataGridView.DataSource = SoftwareParts;
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
                     dataGridView.Columns[2].Visible = false;
@@ -76,7 +76,7 @@ namespace SoftwareDevelopmentView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormProductComponent>();
+            var form = Container.Resolve<FormSoftwarePart>();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if(form.Model != null)
@@ -85,7 +85,7 @@ namespace SoftwareDevelopmentView
                     {
                         form.Model.SoftwareId = id.Value;
                     }
-                    productComponents.Add(form.Model);
+                    SoftwareParts.Add(form.Model);
                 }
                 LoadData();
             }
@@ -95,11 +95,11 @@ namespace SoftwareDevelopmentView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormProductComponent>();
-                form.Model = productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex];
+                var form = Container.Resolve<FormSoftwarePart>();
+                form.Model = SoftwareParts[dataGridView.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.Model;
+                    SoftwareParts[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -113,7 +113,7 @@ namespace SoftwareDevelopmentView
                 {
                     try
                     {
-                        productComponents.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
+                        SoftwareParts.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
                     {
@@ -141,22 +141,22 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (productComponents == null || productComponents.Count == 0)
+            if (SoftwareParts == null || SoftwareParts.Count == 0)
             {
                 MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
-                List<SoftwarePartBindingModel> productComponentBM = new List<SoftwarePartBindingModel>();
-                for (int i = 0; i < productComponents.Count; ++i)
+                List<SoftwarePartBindingModel> SoftwarePartBM = new List<SoftwarePartBindingModel>();
+                for (int i = 0; i < SoftwareParts.Count; ++i)
                 {
-                    productComponentBM.Add(new SoftwarePartBindingModel
+                    SoftwarePartBM.Add(new SoftwarePartBindingModel
                     {
-                        Id = productComponents[i].Id,
-                        SoftwareId = productComponents[i].SoftwareId,
-                        PartId = productComponents[i].PartId,
-                        Number = productComponents[i].Number
+                        Id = SoftwareParts[i].Id,
+                        SoftwareId = SoftwareParts[i].SoftwareId,
+                        PartId = SoftwareParts[i].PartId,
+                        Number = SoftwareParts[i].Number
                     });
                 }
                 if (id.HasValue)
@@ -166,7 +166,7 @@ namespace SoftwareDevelopmentView
                         Id = id.Value,
                         SoftwareName = textBoxName.Text,
                         Cost = Convert.ToInt32(textBoxPrice.Text),
-                        SoftwareParts = productComponentBM
+                        SoftwareParts = SoftwarePartBM
                     });
                 }
                 else
@@ -175,7 +175,7 @@ namespace SoftwareDevelopmentView
                     {
                         SoftwareName = textBoxName.Text,
                         Cost = Convert.ToInt32(textBoxPrice.Text),
-                        SoftwareParts = productComponentBM
+                        SoftwareParts = SoftwarePartBM
                     });
                 }
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
