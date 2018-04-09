@@ -26,7 +26,7 @@ namespace AbstractShopView
         {
             var currentContainer = new UnityContainer();
             currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IPartService, ComponentServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IPartService, PartServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IDeveloperService, DeveloperServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<ISoftwareService, SoftwareServiceList>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IWarehouseService, WarehouseServiceList>(new HierarchicalLifetimeManager());
