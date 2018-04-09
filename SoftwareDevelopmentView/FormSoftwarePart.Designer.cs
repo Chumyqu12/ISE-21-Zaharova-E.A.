@@ -1,4 +1,4 @@
-﻿namespace AbstractShopView
+﻿namespace SoftwareDevelopmentView
 {
     partial class FormProductComponent
     {
