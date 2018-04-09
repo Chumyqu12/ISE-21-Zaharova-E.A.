@@ -30,7 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,6 +58,12 @@
     <Compile Include="BindingModels\WarehouseBindingModel.cs" />
     <Compile Include="BindingModels\WarehousePartBindingModel.cs" />
     <Compile Include="DataList.cs" />
+    <Compile Include="ImplementationsBD\CustomerServiceBD.cs" />
+    <Compile Include="ImplementationsBD\DeveloperServiceBD.cs" />
+    <Compile Include="ImplementationsBD\GeneralServiceBD.cs" />
+    <Compile Include="ImplementationsBD\PartServiceBD.cs" />
+    <Compile Include="ImplementationsBD\SoftwareServiceBD.cs" />
+    <Compile Include="ImplementationsBD\WarehouseServiceBD.cs" />
     <Compile Include="ImplementationsList\CustomerServiceList.cs" />
     <Compile Include="ImplementationsList\PartServiceList.cs" />
     <Compile Include="ImplementationsList\DeveloperServiceList.cs" />
@@ -61,7 +76,13 @@
     <Compile Include="Interfaces\IGeneralService.cs" />
     <Compile Include="Interfaces\ISoftwareService.cs" />
     <Compile Include="Interfaces\IWarehouseService.cs" />
+    <Compile Include="Migrations\201803161603007_FirstMigration.cs" />
+    <Compile Include="Migrations\201803161603007_FirstMigration.Designer.cs">
+      <DependentUpon>201803161603007_FirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoftwareDbContext.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\PartViewModel.cs" />
     <Compile Include="ViewModels\DeveloperViewModel.cs" />
@@ -76,6 +97,15 @@
       <Project>{5edcfafa-0f3a-4810-8489-4d221a86ad1e}</Project>
       <Name>SoftwareDevelopment</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803161603007_FirstMigration.resx">
+      <DependentUpon>201803161603007_FirstMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

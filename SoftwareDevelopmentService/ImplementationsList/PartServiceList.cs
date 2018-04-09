@@ -19,13 +19,15 @@ namespace SoftwareDevelopmentService.ImplementationsList
 
         public List<PartViewModel> GetList()
         {
-            List<PartViewModel> result = source.Parts
-              .Select(rec => new PartViewModel
-              {
-                  Id = rec.Id,
-                 PartName = rec.PartName
-              })
-               .ToList();
+			List<PartViewModel> result = new List<PartViewModel>(from Part in source.Parts
+																 select new PartViewModel
+				/*source.Parts
+				 .Select(rec => new PartViewModel*/
+				 {
+					 Id = Part.Id,
+					 PartName = Part.PartName
+				 })
+				 .ToList();
 			return result;
 		}
 
