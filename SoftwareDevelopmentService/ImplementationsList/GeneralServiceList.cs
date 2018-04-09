@@ -4,6 +4,7 @@ using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoftwareDevelopmentService.ImplementationsList
 {
@@ -18,57 +19,28 @@ namespace SoftwareDevelopmentService.ImplementationsList
 
         public List<OfferViewModel> GetList()
         {
-            List<OfferViewModel> result = new List<OfferViewModel>();
-            for (int i = 0; i < source.Offers.Count; ++i)
-            {
-                string CustomerName = string.Empty;
-                for (int j = 0; j < source.Customers.Count; ++j)
-                {
-                    if(source.Customers[j].Id == source.Offers[i].CustomerId)
-                    {
-                        CustomerName = source.Customers[j].CustomerName;
-                        break;
-                    }
-                }
-                string SoftwareName = string.Empty;
-                for (int j = 0; j < source.Softwares.Count; ++j)
-                {
-                    if (source.Softwares[j].Id == source.Offers[i].SoftwareId)
-                    {
-                        SoftwareName = source.Softwares[j].SoftwareName;
-                        break;
-                    }
-                }
-                string DeveloperName = string.Empty;
-                if(source.Offers[i].DeveloperId.HasValue)
-                {
-                    for (int j = 0; j < source.Developers.Count; ++j)
-                    {
-                        if (source.Developers[j].Id == source.Offers[i].DeveloperId.Value)
-                        {
-                            DeveloperName = source.Developers[j].DeveloperName;
-                            break;
-                        }
-                    }
-                }
-                result.Add(new OfferViewModel
-                {
-                    Id = source.Offers[i].Id,
-                    CustomerId = source.Offers[i].CustomerId,
-                    CustomerName= CustomerName,
-                    SoftwareId = source.Offers[i].SoftwareId,
-                    SoftwareName = SoftwareName,
-                    DeveloperId = source.Offers[i].DeveloperId,
-                    DeveloperName = DeveloperName,
-                    Number = source.Offers[i].Number,
-                    Summa = source.Offers[i].Summa,
-                    Creation = source.Offers[i].Creation.ToLongDateString(),
-                    Implementation = source.Offers[i].Implementation?.ToLongDateString(),
-                    Condition = source.Offers[i].Condition.ToString()
-                });
-            }
-            return result;
-        }
+			List<OfferViewModel> result = source.Offers
+				 .Select(rec => new OfferViewModel
+				 {
+					 Id = rec.Id,
+					 CustomerId = rec.CustomerId,
+					 SoftwareId = rec.SoftwareId,
+					 DeveloperId = rec.DeveloperId,
+					 Creation = rec.Creation.ToLongDateString(),
+					 Implementation = rec.Implementation?.ToLongDateString(),
+					 Condition = rec.Condition.ToString(),
+					 Number = rec.Number,
+					 Summa = rec.Summa,
+					 CustomerName = source.Customers
+									 .FirstOrDefault(recC => recC.Id == rec.CustomerId)?.CustomerName,
+					 SoftwareName = source.Softwares
+									 .FirstOrDefault(recP => recP.Id == rec.SoftwareId)?.SoftwareName,
+					 DeveloperName = source.Developers
+									 .FirstOrDefault(recI => recI.Id == rec.DeveloperId)?.DeveloperName
+				 })
+				 .ToList();
+			return result;
+		}
 
         public void CreateOffer(OfferBindingModel model)
         {
@@ -94,74 +66,51 @@ namespace SoftwareDevelopmentService.ImplementationsList
 
         public void TakeOfferInWork(OfferBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Offers.Count; ++i)
-            {
-                if (source.Offers[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
-            {
-                throw new Exception("Элемент не найден");
-            }
-            // смотрим по количеству компонентов на складах
-            for(int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if(source.SoftwareParts[i].SoftwareId == source.Offers[index].SoftwareId)
-                {
-                    int countOnStocks = 0;
-                    for(int j = 0; j < source.SoftwareParts.Count; ++j)
-                    {
-                        if(source.SoftwareParts[j].PartId == source.SoftwareParts[i].PartId)
-                        {
-                            countOnStocks += source.SoftwareParts[j].Number;
-                        }
-                    }
-                    if(countOnStocks < source.SoftwareParts[i].Number * source.Offers[index].Number)
-                    {
-                        for (int j = 0; j < source.Parts.Count; ++j)
-                        {
-                            if (source.Parts[j].Id == source.SoftwareParts[i].PartId)
-                            {
-                                throw new Exception("Не достаточно компонента " + source.Parts[j].PartName + 
-                                    " требуется " + source.SoftwareParts[i].Number + ", в наличии " + countOnStocks);
-                            }
-                        }
-                    }
-                }
-            }
-            // списываем
-            for (int i = 0; i < source.SoftwareParts.Count; ++i)
-            {
-                if (source.SoftwareParts[i].SoftwareId == source.Offers[index].SoftwareId)
-                {
-                    int countOnStocks = source.SoftwareParts[i].Number * source.Offers[index].Number;
-                    for (int j = 0; j < source.WarehouseParts.Count; ++j)
-                    {
-                        if (source.WarehouseParts[j].PartId == source.SoftwareParts[i].PartId)
-                        {
-                            // компонентов на одном слкаде может не хватать
-                            if (source.WarehouseParts[j].Number >= countOnStocks)
-                            {
-                                source.WarehouseParts[j].Number -= countOnStocks;
-                                break;
-                            }
-                            else
-                            {
-                                countOnStocks -= source.WarehouseParts[j].Number;
-                                source.WarehouseParts[j].Number = 0;
-                            }
-                        }
-                    }
-                }
-            }
-            source.Offers[index].DeveloperId = model.DeveloperId;
-            source.Offers[index].Implementation = DateTime.Now;
-            source.Offers[index].Condition = OfferCondition.Выполняется;
-        }
+			Offer element = source.Offers.FirstOrDefault(rec => rec.Id == model.Id);
+			if (element == null)
+			{
+				throw new Exception("Элемент не найден");
+			}
+			// смотрим по количеству компонентов на складах
+			var SoftwareParts = source.SoftwareParts.Where(rec => rec.SoftwareId == element.SoftwareId);
+			foreach (var softwarePart in SoftwareParts)
+			{
+				int countOnWarehouses = source.WarehouseParts
+											.Where(rec => rec.PartId == softwarePart.PartId)
+											.Sum(rec => rec.Number);
+				if (countOnWarehouses < softwarePart.Number * element.Number)
+				{
+					var partName = source.Parts
+									.FirstOrDefault(rec => rec.Id == softwarePart.PartId);
+					throw new Exception("Не достаточно компонента " + partName?.PartName +
+						" требуется " + softwarePart.Number + ", в наличии " + countOnWarehouses);
+				}
+			}
+			// списываем
+			foreach (var softwarePart in SoftwareParts)
+			{
+				int countOnWarehouses = softwarePart.Number * element.Number;
+				var WarehouseParts = source.WarehouseParts
+											.Where(rec => rec.PartId == softwarePart.PartId);
+				foreach (var warehousePart in WarehouseParts)
+				{
+					// компонентов на одном слкаде может не хватать
+					if (warehousePart.Number >= countOnWarehouses)
+					{
+						warehousePart.Number -= countOnWarehouses;
+						break;
+					}
+					else
+					{
+						countOnWarehouses -= warehousePart.Number;
+						warehousePart.Number = 0;
+					}
+				}
+			}
+			element.DeveloperId = model.DeveloperId;
+			element.Implementation = DateTime.Now;
+			element.Condition = OfferCondition.Выполняется;
+		}
 
         public void FinalOffer(int id)
         {
@@ -199,29 +148,26 @@ namespace SoftwareDevelopmentService.ImplementationsList
             source.Offers[index].Condition = OfferCondition.Оплачен;
         }
 
-        public void PutPartOnWarehouse(WarehousePartBindingModel model)
-        {
-            int maxId = 0;
-            for (int i = 0; i < source.WarehouseParts.Count; ++i)
-            {
-                if(source.WarehouseParts[i].WarehouseId == model.WarehouseId && 
-                    source.WarehouseParts[i].PartId == model.PartId)
-                {
-                    source.WarehouseParts[i].Number += model.Number;
-                    return;
-                }
-                if (source.WarehouseParts[i].Id > maxId)
-                {
-                    maxId = source.WarehouseParts[i].Id;
-                }
-            }
-            source.WarehouseParts.Add(new WarehousePart
-            {
-                Id = ++maxId,
-                WarehouseId = model.WarehouseId,
-                PartId = model.PartId,
-                Number = model.Number
-            });
-        }
+		public void PutPartOnWarehouse(WarehousePartBindingModel model)
+		{
+			WarehousePart element = source.WarehouseParts
+												  .FirstOrDefault(rec => rec.WarehouseId == model.WarehouseId &&
+																	  rec.PartId == model.PartId);
+			if (element != null)
+			{
+				element.Number += model.Number;
+			}
+			else
+			{
+				int maxId = source.WarehouseParts.Count > 0 ? source.WarehouseParts.Max(rec => rec.Id) : 0;
+				source.WarehouseParts.Add(new WarehousePart
+				{
+					Id = ++maxId,
+					WarehouseId = model.WarehouseId,
+					PartId = model.PartId,
+					Number = model.Number
+				});
+			}
+		}
     }
 }
