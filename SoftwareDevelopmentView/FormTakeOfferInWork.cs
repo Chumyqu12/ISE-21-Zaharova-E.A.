@@ -47,7 +47,7 @@ namespace AbstractShopView
                 List<DeveloperViewModel> listI = serviceI.GetList();
                 if (listI != null)
                 {
-                    comboBoxImplementer.DisplayMember = "DeveloperFIO";
+                    comboBoxImplementer.DisplayMember = "DeveloperName";
                     comboBoxImplementer.ValueMember = "Id";
                     comboBoxImplementer.DataSource = listI;
                     comboBoxImplementer.SelectedItem = null;
