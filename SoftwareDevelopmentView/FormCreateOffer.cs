@@ -124,10 +124,5 @@ namespace SoftwareDevelopmentView
             DialogResult = DialogResult.Cancel;
             Close();
         }
-
-        private void labelProduct_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
