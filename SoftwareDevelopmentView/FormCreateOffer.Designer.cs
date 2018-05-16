@@ -113,7 +113,7 @@
             this.labelProduct.Size = new System.Drawing.Size(26, 13);
             this.labelProduct.TabIndex = 2;
             this.labelProduct.Text = "ПО:";
-            this.labelProduct.Click += new System.EventHandler(this.labelProduct_Click);
+            
             // 
             // labelSum
             // 

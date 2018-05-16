@@ -2,27 +2,24 @@
 using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormWarehouse : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
 
         public int Id { set { id = value; } }
 
-        private readonly IWarehouseService service;
-
         private int? id;
 
-        public FormWarehouse(IWarehouseService service)
+        public FormWarehouse()
         {
             InitializeComponent();
-            this.service = service;
+            
         }
 
         private void FormStock_Load(object sender, EventArgs e)
@@ -31,16 +28,21 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    WarehouseViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    var response = APICustomer.GetRequest("api/Warehouse/Get/" + id.Value);
+                                      if (response.Result.IsSuccessStatusCode)
                     {
-                        textBoxName.Text = view.WarehouseName;
-                        dataGridView.DataSource = view.WarehouseParts;
+                        var stock = APICustomer.GetElement<WarehouseViewModel>(response);
+                        textBoxName.Text = stock.WarehouseName;
+                        dataGridView.DataSource = stock.WarehouseParts;
                         dataGridView.Columns[0].Visible = false;
                         dataGridView.Columns[1].Visible = false;
                         dataGridView.Columns[2].Visible = false;
                         dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     }
+                    else
+                                            {
+                        throw new Exception(APICustomer.GetError(response));
+                                            }
                 }
                 catch (Exception ex)
                 {
@@ -58,9 +60,10 @@ namespace SoftwareDevelopmentView
             }
             try
             {
+                Task<HttpResponseMessage> response;
                 if (id.HasValue)
                 {
-                    service.UpdateElement(new WarehouseBindingModel
+                    response = APICustomer.PostRequest("api/Warehouse/UpdateElement", new WarehouseBindingModel
                     {
                         Id = id.Value,
                         WarehouseName = textBoxName.Text
@@ -68,14 +71,21 @@ namespace SoftwareDevelopmentView
                 }
                 else
                 {
-                    service.AddElement(new WarehouseBindingModel
+                    response = APICustomer.PostRequest("api/Warehouse/AddElement", new WarehouseBindingModel
                     {
                        WarehouseName = textBoxName.Text
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

@@ -4,49 +4,56 @@ using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormCreateOffer : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly ICustomerService serviceC;
-
-        private readonly ISoftwareService serviceP;
-
-        private readonly IGeneralService serviceM;
-
-        public FormCreateOffer(ICustomerService serviceC, ISoftwareService serviceP, IGeneralService serviceM)
+        
+        public FormCreateOffer()
         {
             InitializeComponent();
-            this.serviceC = serviceC;
-            this.serviceP = serviceP;
-            this.serviceM = serviceM;
+           
         }
 
         private void FormCreateOrder_Load(object sender, EventArgs e)
         {
             try
             {
-                List<CustomerViewModel> listC = serviceC.GetList();
-                if (listC != null)
+                var responseC = APICustomer.GetRequest("api/Customer/GetList");
+                                if (responseC.Result.IsSuccessStatusCode)
+                                    {
+                    List <CustomerViewModel> list = APICustomer.GetElement<List<CustomerViewModel>>(responseC);
+                                        if (list != null)
+                                            {
+                        comboBoxClient.DisplayMember = "CustomerName";
+                        comboBoxClient.ValueMember = "Id";
+                        comboBoxClient.DataSource = list;
+                        comboBoxClient.SelectedItem = null;
+                                            }
+                                    }
+                                else
                 {
-                    comboBoxClient.DisplayMember = "CustomerName";
-                    comboBoxClient.ValueMember = "Id";
-                    comboBoxClient.DataSource = listC;
-                    comboBoxClient.SelectedItem = null;
+                    throw new Exception(APICustomer.GetError(responseC));
                 }
-                List<SoftwareViewModel> listP = serviceP.GetList();
-                if (listP != null)
+
+
+                var responseP = APICustomer.GetRequest("api/Software/GetList");
+                               if (responseP.Result.IsSuccessStatusCode)
                 {
-                    comboBoxProduct.DisplayMember = "SoftwareName";
-                    comboBoxProduct.ValueMember = "Id";
-                    comboBoxProduct.DataSource = listP;
-                    comboBoxProduct.SelectedItem = null;
+                    List<SoftwareViewModel> list = APICustomer.GetElement<List<SoftwareViewModel>>(responseP);
+                                        if (list != null)
+                                            {
+                        comboBoxProduct.DisplayMember = "SoftwareName";
+                        comboBoxProduct.ValueMember = "Id";
+                        comboBoxProduct.DataSource = list;
+                        comboBoxProduct.SelectedItem = null;
+                                            }
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(responseP));
                 }
             }
             catch (Exception ex)
@@ -62,9 +69,17 @@ namespace SoftwareDevelopmentView
                 try
                 {
                     int id = Convert.ToInt32(comboBoxProduct.SelectedValue);
-                    SoftwareViewModel product = serviceP.GetElement(id);
-                    int count = Convert.ToInt32(textBoxCount.Text);
-                    textBoxSum.Text = (count * product.Cost).ToString();
+                    var responseP = APICustomer.GetRequest("api/Software/Get/" + id);
+                                        if (responseP.Result.IsSuccessStatusCode)
+                                            {
+                        SoftwareViewModel product = APICustomer.GetElement<SoftwareViewModel>(responseP);
+                        int count = Convert.ToInt32(textBoxCount.Text);
+                        textBoxSum.Text = (count * (int)product.Cost).ToString();
+                                           }
+                                        else
+                   {
+                        throw new Exception(APICustomer.GetError(responseP));
+                                            }
                 }
                 catch(Exception ex)
                 {
@@ -102,16 +117,23 @@ namespace SoftwareDevelopmentView
             }
             try
             {
-                serviceM.CreateOffer(new OfferBindingModel
+                var response = APICustomer.PostRequest("api/General/CreateOffer", new OfferBindingModel
                 {
                     CustomerId = Convert.ToInt32(comboBoxClient.SelectedValue),
                     SoftwareId = Convert.ToInt32(comboBoxProduct.SelectedValue),
                     Number = Convert.ToInt32(textBoxCount.Text),
                     Summa = Convert.ToInt32(textBoxSum.Text)
                 });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+               {
+                    throw new Exception(APICustomer.GetError(response));
+                                   }
             }
             catch (Exception ex)
             {
@@ -125,9 +147,6 @@ namespace SoftwareDevelopmentView
             Close();
         }
 
-        private void labelProduct_Click(object sender, EventArgs e)
-        {
-
-        }
+      
     }
 }

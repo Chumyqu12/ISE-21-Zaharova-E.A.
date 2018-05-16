@@ -2,27 +2,25 @@
 using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormDeveloper : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
+      
 
         public int Id { set { id = value; } }
 
-        private readonly IDeveloperService service;
 
         private int? id;
 
-        public FormDeveloper(IDeveloperService service)
+        public FormDeveloper()
         {
             InitializeComponent();
-            this.service = service;
+           
         }
 
         private void FormImplementer_Load(object sender, EventArgs e)
@@ -31,10 +29,15 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    DeveloperViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    var response = APICustomer.GetRequest("api/Developer/Get/" + id.Value);
+                    if (response.Result.IsSuccessStatusCode)
                     {
-                        textBoxFIO.Text = view.DeveloperName;
+                        var developer = APICustomer.GetElement<DeveloperViewModel>(response);
+                        textBoxFIO.Text = developer.DeveloperName;
+                                            }
+                                        else
+                   {
+                        throw new Exception(APICustomer.GetError(response));
                     }
                 }
                 catch (Exception ex)
@@ -53,9 +56,10 @@ namespace SoftwareDevelopmentView
             }
             try
             {
+                Task<HttpResponseMessage> response;
                 if (id.HasValue)
                 {
-                    service.UpdateElement(new DeveloperBindingModel
+                    response = APICustomer.PostRequest("api/Developer/UpdateElement", new DeveloperBindingModel
                     {
                         Id = id.Value,
                         DeveloperName = textBoxFIO.Text
@@ -63,14 +67,21 @@ namespace SoftwareDevelopmentView
                 }
                 else
                 {
-                    service.AddElement(new DeveloperBindingModel
+                    response = APICustomer.PostRequest("api/Developer/AddElement", new DeveloperBindingModel
                     {
                         DeveloperName = textBoxFIO.Text
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                   {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

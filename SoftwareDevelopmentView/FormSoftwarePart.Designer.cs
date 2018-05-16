@@ -1,6 +1,6 @@
 ﻿namespace SoftwareDevelopmentView
 {
-    partial class FormProductPart
+    partial class FormSoftwarePart
     {
         /// <summary>
         /// Required designer variable.

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace SoftwareDevelopmentService
 {
-    [Table("SoftwareDatabase")]
+   // [Table("SoftwareDatabase")]
 	public class SoftwareDbContext : DbContext
     {
          
-        public SoftwareDbContext()
+        public SoftwareDbContext() : base("SoftwareDatabase")
         {
             //настройки конфигурации для entity
             Configuration.ProxyCreationEnabled = false;

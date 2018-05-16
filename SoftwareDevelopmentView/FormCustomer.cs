@@ -2,27 +2,25 @@
 using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
+using System.Net.Http;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+using System.Threading.Tasks;
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormCustomer : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
+       
 
         public int Id { set { id = value; } }
 
-        private readonly ICustomerService service;
 
         private int? id;
 
-        public FormCustomer(ICustomerService service)
+        public FormCustomer()
         {
             InitializeComponent();
-            this.service = service;
+           
         }
 
         private void FormClient_Load(object sender, EventArgs e)
@@ -31,10 +29,15 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    CustomerViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    var response = APICustomer.GetRequest("api/Customer/Get/" + id.Value);
+                                        if (response.Result.IsSuccessStatusCode)
+                                            {
+                        var client = APICustomer.GetElement<CustomerViewModel>(response);
+                        textBoxFIO.Text = client.CustomerName;
+                                            }
+                                        else
                     {
-                        textBoxFIO.Text = view.CustomerName;
+                        throw new Exception(APICustomer.GetError(response));
                     }
                 }
                 catch (Exception ex)
@@ -53,9 +56,10 @@ namespace SoftwareDevelopmentView
             }
             try
             {
+                Task<HttpResponseMessage> response;
                 if (id.HasValue)
                 {
-                    service.UpdateElement(new CustomerBindingModel
+                    response = APICustomer.PostRequest("api/Customer/UpdateElement", new CustomerBindingModel
                     {
                         Id = id.Value,
                         CustomerName = textBoxFIO.Text
@@ -63,14 +67,21 @@ namespace SoftwareDevelopmentView
                 }
                 else
                 {
-                    service.AddElement(new CustomerBindingModel
+                    response = APICustomer.PostRequest("api/Customer/AddElement", new CustomerBindingModel
                     {
                         CustomerName = textBoxFIO.Text
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {
