@@ -20,7 +20,7 @@ namespace SoftwareDevelopmentView
 
         private int? id;
 
-        private List<SoftwarePartViewModel> SoftwareParts;
+        private List<SoftwarePartViewModel> productParts;
 
         public FormSoftware(ISoftwareService service)
         {
@@ -39,7 +39,7 @@ namespace SoftwareDevelopmentView
                     {
                         textBoxName.Text = view.SoftwareName;
                         textBoxPrice.Text = view.Cost.ToString();
-                        SoftwareParts = view.SoftwareParts;
+                        productParts = view.SoftwareParts;
                         LoadData();
                     }
                 }
@@ -50,7 +50,7 @@ namespace SoftwareDevelopmentView
             }
             else
             {
-                SoftwareParts = new List<SoftwarePartViewModel>();
+                productParts = new List<SoftwarePartViewModel>();
             }
         }
 
@@ -58,10 +58,10 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                if (SoftwareParts != null)
+                if (productParts != null)
                 {
                     dataGridView.DataSource = null;
-                    dataGridView.DataSource = SoftwareParts;
+                    dataGridView.DataSource = productParts;
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
                     dataGridView.Columns[2].Visible = false;
@@ -76,7 +76,7 @@ namespace SoftwareDevelopmentView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormSoftwarePart>();
+            var form = Container.Resolve<FormProductPart>();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if(form.Model != null)
@@ -85,7 +85,7 @@ namespace SoftwareDevelopmentView
                     {
                         form.Model.SoftwareId = id.Value;
                     }
-                    SoftwareParts.Add(form.Model);
+                    productParts.Add(form.Model);
                 }
                 LoadData();
             }
@@ -95,11 +95,11 @@ namespace SoftwareDevelopmentView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormSoftwarePart>();
-                form.Model = SoftwareParts[dataGridView.SelectedRows[0].Cells[0].RowIndex];
+                var form = Container.Resolve<FormProductPart>();
+                form.Model = productParts[dataGridView.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    SoftwareParts[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.Model;
+                    productParts[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -113,7 +113,7 @@ namespace SoftwareDevelopmentView
                 {
                     try
                     {
-                        SoftwareParts.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
+                        productParts.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
                     {
@@ -141,22 +141,22 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (SoftwareParts == null || SoftwareParts.Count == 0)
+            if (productParts == null || productParts.Count == 0)
             {
                 MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
-                List<SoftwarePartBindingModel> SoftwarePartBM = new List<SoftwarePartBindingModel>();
-                for (int i = 0; i < SoftwareParts.Count; ++i)
+                List<SoftwarePartBindingModel> productPartBM = new List<SoftwarePartBindingModel>();
+                for (int i = 0; i < productParts.Count; ++i)
                 {
-                    SoftwarePartBM.Add(new SoftwarePartBindingModel
+                    productPartBM.Add(new SoftwarePartBindingModel
                     {
-                        Id = SoftwareParts[i].Id,
-                        SoftwareId = SoftwareParts[i].SoftwareId,
-                        PartId = SoftwareParts[i].PartId,
-                        Number = SoftwareParts[i].Number
+                        Id = productParts[i].Id,
+                        SoftwareId = productParts[i].SoftwareId,
+                        PartId = productParts[i].PartId,
+                        Number = productParts[i].Number
                     });
                 }
                 if (id.HasValue)
@@ -166,7 +166,7 @@ namespace SoftwareDevelopmentView
                         Id = id.Value,
                         SoftwareName = textBoxName.Text,
                         Cost = Convert.ToInt32(textBoxPrice.Text),
-                        SoftwareParts = SoftwarePartBM
+                        SoftwareParts = productPartBM
                     });
                 }
                 else
@@ -175,7 +175,7 @@ namespace SoftwareDevelopmentView
                     {
                         SoftwareName = textBoxName.Text,
                         Cost = Convert.ToInt32(textBoxPrice.Text),
-                        SoftwareParts = SoftwarePartBM
+                        SoftwareParts = productPartBM
                     });
                 }
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);

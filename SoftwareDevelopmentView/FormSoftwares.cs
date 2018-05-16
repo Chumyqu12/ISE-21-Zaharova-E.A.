@@ -8,20 +8,20 @@ using Unity.Attributes;
 
 namespace SoftwareDevelopmentView
 {
-    public partial class FormSoftwares : Form
+    public partial class FormProducts : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
 
         private readonly ISoftwareService service;
 
-        public FormSoftwares(ISoftwareService service)
+        public FormProducts(ISoftwareService service)
         {
             InitializeComponent();
             this.service = service;
         }
 
-        private void FormSoftwares_Load(object sender, EventArgs e)
+        private void FormProducts_Load(object sender, EventArgs e)
         {
             LoadData();
         }

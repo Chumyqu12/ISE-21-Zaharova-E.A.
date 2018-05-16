@@ -25,7 +25,7 @@ namespace SoftwareDevelopmentView
             this.service = service;
         }
 
-        private void FormWarehouse_Load(object sender, EventArgs e)
+        private void FormStock_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
             {

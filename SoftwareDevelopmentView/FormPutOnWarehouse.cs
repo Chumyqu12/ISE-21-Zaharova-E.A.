@@ -28,17 +28,17 @@ namespace SoftwareDevelopmentView
             this.serviceM = serviceM;
         }
 
-        private void FormPutOnWarehouse_Load(object sender, EventArgs e)
+        private void FormPutOnStock_Load(object sender, EventArgs e)
         {
             try
             {
                 List<PartViewModel> listC = serviceC.GetList();
                 if (listC != null)
                 {
-                    comboBoxComponent.DisplayMember = "PartName";
-                    comboBoxComponent.ValueMember = "Id";
-                    comboBoxComponent.DataSource = listC;
-                    comboBoxComponent.SelectedItem = null;
+                    comboBoxPart.DisplayMember = "PartName";
+                    comboBoxPart.ValueMember = "Id";
+                    comboBoxPart.DataSource = listC;
+                    comboBoxPart.SelectedItem = null;
                 }
                 List<WarehouseViewModel> listS = serviceS.GetList();
                 if (listS != null)
@@ -62,7 +62,7 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (comboBoxComponent.SelectedValue == null)
+            if (comboBoxPart.SelectedValue == null)
             {
                 MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -76,7 +76,7 @@ namespace SoftwareDevelopmentView
             {
                 serviceM.PutPartOnWarehouse(new WarehousePartBindingModel
                 {
-                    PartId = Convert.ToInt32(comboBoxComponent.SelectedValue),
+                    PartId = Convert.ToInt32(comboBoxPart.SelectedValue),
                     WarehouseId = Convert.ToInt32(comboBoxStock.SelectedValue),
                     Number = Convert.ToInt32(textBoxCount.Text)
                 });

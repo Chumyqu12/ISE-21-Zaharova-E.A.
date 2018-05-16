@@ -21,7 +21,7 @@ namespace SoftwareDevelopmentView
             this.service = service;
         }
 
-        private void FormWarehouses_Load(object sender, EventArgs e)
+        private void FormStocks_Load(object sender, EventArgs e)
         {
             LoadData();
         }

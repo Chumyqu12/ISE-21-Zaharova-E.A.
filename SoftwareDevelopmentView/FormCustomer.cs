@@ -25,7 +25,7 @@ namespace SoftwareDevelopmentView
             this.service = service;
         }
 
-        private void FormCustomer_Load(object sender, EventArgs e)
+        private void FormClient_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
             {

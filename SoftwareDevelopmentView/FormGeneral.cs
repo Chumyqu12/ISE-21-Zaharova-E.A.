@@ -1,4 +1,5 @@
-﻿using SoftwareDevelopmentService.Interfaces;
+﻿using SoftwareDevelopmentService.BindingModels;
+using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,13 @@ namespace SoftwareDevelopmentView
         public new IUnityContainer Container { get; set; }
 
         private readonly IGeneralService service;
-
-        public FormGeneral(IGeneralService service)
+		private readonly IReportService reportService;
+		public FormGeneral(IGeneralService service, IReportService reportService)
         {
             InitializeComponent();
             this.service = service;
-        }
+			this.reportService = reportService;
+		}
 
         private void LoadData()
         {
@@ -56,7 +58,7 @@ namespace SoftwareDevelopmentView
 
         private void изделияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormSoftwares>();
+            var form = Container.Resolve<FormProducts>();
             form.ShowDialog();
         }
 
@@ -113,7 +115,7 @@ namespace SoftwareDevelopmentView
             }
         }
 
-        private void buttonPayOffer_Click(object sender, EventArgs e)
+        private void buttonPayOrder_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
@@ -134,5 +136,43 @@ namespace SoftwareDevelopmentView
         {
             LoadData();
         }
-    }
+		
+
+		private void прайсИзделийToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			SaveFileDialog sfd = new SaveFileDialog
+			{
+				Filter = "doc|*.doc|docx|*.docx"
+			};
+			if (sfd.ShowDialog() == DialogResult.OK)
+			{
+				try
+				{
+					reportService.SaveSoftwareCost(new ReportBindingModel
+					{
+						FileName = sfd.FileName
+					});
+					MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
+
+		private void загруженностьСкладовToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			var form = Container.Resolve<FormWarehousesLoad>();
+			form.ShowDialog();
+		}
+
+		private void заказыКлиентовToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var form = Container.Resolve<FormCustomerOffers>();
+			form.ShowDialog();
+		}
+
+		
+	}
 }

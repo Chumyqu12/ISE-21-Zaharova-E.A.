@@ -8,7 +8,7 @@ using Unity.Attributes;
 
 namespace SoftwareDevelopmentView
 {
-    public partial class FormSoftwarePart : Form
+    public partial class FormProductPart : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
@@ -19,23 +19,23 @@ namespace SoftwareDevelopmentView
 
         private SoftwarePartViewModel model;
 
-        public FormSoftwarePart(IPartService service)
+        public FormProductPart(IPartService service)
         {
             InitializeComponent();
             this.service = service;
         }
 
-        private void FormSoftwarePart_Load(object sender, EventArgs e)
+        private void FormProductPart_Load(object sender, EventArgs e)
         {
             try
             {
                 List<PartViewModel> list = service.GetList();
                 if (list != null)
                 {
-                    comboBoxComponent.DisplayMember = "PartName";
-                    comboBoxComponent.ValueMember = "Id";
-                    comboBoxComponent.DataSource = list;
-                    comboBoxComponent.SelectedItem = null;
+                    comboBoxPart.DisplayMember = "PartName";
+                    comboBoxPart.ValueMember = "Id";
+                    comboBoxPart.DataSource = list;
+                    comboBoxPart.SelectedItem = null;
                 }
             }
             catch (Exception ex)
@@ -44,8 +44,8 @@ namespace SoftwareDevelopmentView
             }
             if (model != null)
             {
-                comboBoxComponent.Enabled = false;
-                comboBoxComponent.SelectedValue = model.PartId;
+                comboBoxPart.Enabled = false;
+                comboBoxPart.SelectedValue = model.PartId;
                 textBoxCount.Text = model.Number.ToString();
             }
         }
@@ -57,7 +57,7 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (comboBoxComponent.SelectedValue == null)
+            if (comboBoxPart.SelectedValue == null)
             {
                 MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -68,8 +68,8 @@ namespace SoftwareDevelopmentView
                 {
                     model = new SoftwarePartViewModel
                     {
-                        PartId = Convert.ToInt32(comboBoxComponent.SelectedValue),
-                        PartName = comboBoxComponent.Text,
+                        PartId = Convert.ToInt32(comboBoxPart.SelectedValue),
+                        PartName = comboBoxPart.Text,
                        Number = Convert.ToInt32(textBoxCount.Text)
                     };
                 }
