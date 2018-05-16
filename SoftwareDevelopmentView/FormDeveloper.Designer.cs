@@ -82,7 +82,7 @@
             this.Name = "FormDeveloper";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Разработчик";
-            this.Load += new System.EventHandler(this.FormImplementer_Load);
+            this.Load += new System.EventHandler(this.FormDeveloper_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

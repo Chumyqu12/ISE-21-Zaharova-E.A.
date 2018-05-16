@@ -29,19 +29,16 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    var response = APICustomer.GetRequest("api/Part/Get/" + id.Value);
-                                        if (response.Result.IsSuccessStatusCode)
-                    {
-                        var component = APICustomer.GetElement<PartViewModel>(response);
-                        textBoxName.Text = component.PartName;
-                                            }
-                                        else
-                    {
-                        throw new Exception(APICustomer.GetError(response));
-                    }
+
+                    var component = Task.Run(() => APICustomer.GetRequestData<PartViewModel>("api/Part/Get/" + id.Value)).Result;
+                    textBoxName.Text = component.PartName;
                 }
                 catch (Exception ex)
                 {
+                    while (ex.InnerException != null)
+                                            {
+                        ex = ex.InnerException;
+                                            }
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -54,44 +51,42 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            try
+            string name = textBoxName.Text;
+            Task task;
+            if (id.HasValue)
             {
-                Task<HttpResponseMessage> response;
-                if (id.HasValue)
+                task = Task.Run(() => APICustomer.PostRequestData("api/Part/UpdateElement", new PartBindingModel
                 {
-                    response = APICustomer.PostRequest("api/Part/UpdateElement", new PartBindingModel
-                    {
-                        Id = id.Value,
-                        PartName = textBoxName.Text
-                    });
-                }
-                else
+                    Id = id.Value,
+                    PartName = name
+                }));
+                            }
+                        else
+            {
+                task = Task.Run(() => APICustomer.PostRequestData("api/Part/AddElement", new PartBindingModel
                 {
-                    response = APICustomer.PostRequest("api/Part/AddElement", new PartBindingModel
-                    {
-                        PartName = textBoxName.Text
-                    });
-                }
-                if (response.Result.IsSuccessStatusCode)
+                    PartName = name
+                }));
+            }
+            task.ContinueWith((prevTask) => MessageBox.Show("Сохранение прошло успешно. Обновите список", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information),
+TaskContinuationOptions.OnlyOnRanToCompletion);
+            task.ContinueWith((prevTask) =>
+            {
+                var ex = (Exception)prevTask.Exception;
+                                while (ex.InnerException != null)
                                     {
-                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    DialogResult = DialogResult.OK;
-                    Close();
+                    ex = ex.InnerException;
                                     }
-                                else
-                {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
-            }
-            catch (Exception ex)
-            {
+                
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, TaskContinuationOptions.OnlyOnFaulted);
+            
+            Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
+          
             Close();
         }
     }

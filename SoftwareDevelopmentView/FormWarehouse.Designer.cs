@@ -110,7 +110,7 @@
             this.Name = "FormWarehouse";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Хранилище";
-            this.Load += new System.EventHandler(this.FormStock_Load);
+            this.Load += new System.EventHandler(this.FormWarehouse_Load);
             this.groupBoxParts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);

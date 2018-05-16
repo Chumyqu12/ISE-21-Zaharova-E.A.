@@ -36,25 +36,21 @@ namespace SoftwareDevelopmentView
                     MessageBox.Show("Не указан заказ", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                 }
-                var response = APICustomer.GetRequest("api/Developer/GetList");
-                               if (response.Result.IsSuccessStatusCode)
-                                    {
-                    List <DeveloperViewModel> list = APICustomer.GetElement<List<DeveloperViewModel>>(response);
-                                        if (list != null)
-                                           {
-                        comboBoxImplementer.DisplayMember = "DeveloperName";
-                        comboBoxImplementer.ValueMember = "Id";
-                        comboBoxImplementer.DataSource = list;
-                        comboBoxImplementer.SelectedItem = null;
-                                            }
-                                    }
-                                else
+                List<DeveloperViewModel> list = Task.Run(() => APICustomer.GetRequestData<List<DeveloperViewModel>>("api/Developer/GetList")).Result;
+                if (list != null)
                 {
-                    throw new Exception(APICustomer.GetError(response));
+                    comboBoxImplementer.DisplayMember = "DeveloperName";
+                    comboBoxImplementer.ValueMember = "Id";
+                    comboBoxImplementer.DataSource = list;
+                    comboBoxImplementer.SelectedItem = null;
                 }
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -68,31 +64,39 @@ namespace SoftwareDevelopmentView
             }
             try
             {
-                var response = APICustomer.PostRequest("api/General/TakeOfferInWork", new OfferBindingModel
+                int DeveloperId = Convert.ToInt32(comboBoxImplementer.SelectedValue);
+                Task task = Task.Run(() => APICustomer.PostRequestData("api/General/TakeOfferInWork", new OfferBindingModel
                 {
                     Id = id.Value,
-                    DeveloperId = Convert.ToInt32(comboBoxImplementer.SelectedValue)
-                });
-                if (response.Result.IsSuccessStatusCode)
-                                    {
-                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                                    }
-                                else
+                    DeveloperId = DeveloperId
+                }));
+
+                task.ContinueWith((prevTask) => MessageBox.Show("Заказ передан в работу. Обновите список", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information),
+                    TaskContinuationOptions.OnlyOnRanToCompletion);
+                task.ContinueWith((prevTask) =>
                 {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
+                    var ex = (Exception)prevTask.Exception;
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }, TaskContinuationOptions.OnlyOnFaulted);
+
+                Close();
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
             Close();
         }
     }

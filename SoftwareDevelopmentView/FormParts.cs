@@ -3,6 +3,7 @@ using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -27,24 +28,20 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                var response = APICustomer.GetRequest("api/Part/GetList");
-                                if (response.Result.IsSuccessStatusCode)
-                                   {
-                    List < PartViewModel > list = APICustomer.GetElement<List<PartViewModel>>(response);
-                                       if (list != null)
-                                            {
-                        dataGridView.DataSource = list;
-                        dataGridView.Columns[0].Visible = false;
-                        dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                                            }
-                                    }
-                                else
+                List<PartViewModel> list = Task.Run(() => APICustomer.GetRequestData<List<PartViewModel>>("api/Part/GetList")).Result;
+                                if (list != null)
                 {
-                    throw new Exception(APICustomer.GetError(response));
+                    dataGridView.DataSource = list;
+                    dataGridView.Columns[0].Visible = false;
+                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                                    {
+                    ex = ex.InnerException;
+                                    }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -52,22 +49,18 @@ namespace SoftwareDevelopmentView
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             var form = new FormPart();
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                LoadData();
-            }
+            form.ShowDialog();
         }
 
         private void buttonUpd_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = new FormPart();
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                if (form.ShowDialog() == DialogResult.OK)
+                var form = new FormPart
                 {
-                    LoadData();
-                }
+                    Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value)
+                };
+                form.ShowDialog();
             }
         }
 
@@ -78,19 +71,21 @@ namespace SoftwareDevelopmentView
                 if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                    try
+                    Task task = Task.Run(() => APICustomer.PostRequestData("api/Part/DeleteElement", new CustomerBindingModel { Id = id }));
+                    
+                    task.ContinueWith((prevTask) => MessageBox.Show("Запись удалена. Обновите список", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information),
+                    TaskContinuationOptions.OnlyOnRanToCompletion);
+                    
+                    task.ContinueWith((prevTask) =>
                     {
-                        var response = APICustomer.PostRequest("api/Part/DeleteElement", new CustomerBindingModel { Id = id });
-                                                if (!response.Result.IsSuccessStatusCode)
-                                                    {
-                            throw new Exception(APICustomer.GetError(response));
-                                                    }
-                    }
-                    catch (Exception ex)
-                    {
+                        var ex = (Exception)prevTask.Exception;
+                                                while (ex.InnerException != null)
+                        {
+                            ex = ex.InnerException;
+                        }
+                    
                         MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    LoadData();
+                    }, TaskContinuationOptions.OnlyOnFaulted);
                 }
             }
         }

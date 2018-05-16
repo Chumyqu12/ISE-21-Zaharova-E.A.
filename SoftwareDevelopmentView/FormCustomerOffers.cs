@@ -37,26 +37,23 @@ namespace SoftwareDevelopmentView
                                             " по " + dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
 
-                var response = APICustomer.PostRequest("api/Report/GetCustomerOffers", new ReportBindingModel
-                {
+                var dataSource = Task.Run(() => APICustomer.PostRequestData<ReportBindingModel, List<CustomerOffersModel>>("api/Report/GetCustomerOffers",
+ new ReportBindingModel
+                     {
                     DateFrom = dateTimePickerFrom.Value,
-                    DateTo = dateTimePickerTo.Value
-                });
-                if (response.Result.IsSuccessStatusCode)
-                                    {
-                    var dataSource = APICustomer.GetElement<List<CustomerOffersModel>>(response);
-                    ReportDataSource source = new ReportDataSource("DataSetOffers", dataSource);
-                    reportViewer.LocalReport.DataSources.Add(source);
-                                   }
-                                else
-                  {
-                   throw new Exception(APICustomer.GetError(response));
-                  }
+DateTo = dateTimePickerTo.Value
+                    })).Result;
+                ReportDataSource source = new ReportDataSource("DataSetOrders", dataSource);
+                reportViewer.LocalReport.DataSources.Add(source);
 
                 reportViewer.RefreshReport();
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                                    {
+                    ex = ex.InnerException;
+                                    }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -74,27 +71,27 @@ namespace SoftwareDevelopmentView
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                try
+                string fileName = sfd.FileName;
+                Task task = Task.Run(() => APICustomer.PostRequestData("api/Report/SaveCustomerOffers", new ReportBindingModel
                 {
-                    var response = APICustomer.PostRequest("api/Report/SaveCustomerOffers", new ReportBindingModel
+                    FileName = fileName,
+                    DateFrom = dateTimePickerFrom.Value,
+                    DateTo = dateTimePickerTo.Value
+                }));
+                
+                task.ContinueWith((prevTask) => MessageBox.Show("Список заказов сохранен", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information),
+                TaskContinuationOptions.OnlyOnRanToCompletion);
+                
+                task.ContinueWith((prevTask) =>
+                                {
+                    var ex = (Exception)prevTask.Exception;
+                                        while (ex.InnerException != null)
                     {
-                        FileName = sfd.FileName,
-                        DateFrom = dateTimePickerFrom.Value,
-                        DateTo = dateTimePickerTo.Value
-                    });
-                    if (response.Result.IsSuccessStatusCode)
-                                           {
-                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                           }
-                                       else
-                    {
-                        throw new Exception(APICustomer.GetError(response));
-                                            }
-                }
-                catch (Exception ex)
-                {
+                                        ex = ex.InnerException;
+                                    }
+                
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                                }, TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 

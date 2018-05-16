@@ -22,32 +22,28 @@ namespace SoftwareDevelopmentView
             InitializeComponent();
         }
 
-        private void FormStocksLoad_Load(object sender, EventArgs e)
+        private void FormWarehousesLoad_Load(object sender, EventArgs e)
         {
             try
             {
-                var response = APICustomer.GetRequest("api/Report/GetWarehousesLoad");
-                               if (response.Result.IsSuccessStatusCode)
+                dataGridView.Rows.Clear();
+                foreach (var elem in Task.Run(() => APICustomer.GetRequestData<List<WarehousesLoadViewModel>>("api/Report/GetWarehousesLoad")).Result)
                 {
-                    dataGridView.Rows.Clear();
-                    foreach (var elem in APICustomer.GetElement<List<WarehousesLoadViewModel>>(response))
+                    dataGridView.Rows.Add(new object[] { elem.WarehouseName, "", "" });
+                    foreach (var listElem in elem.Parts)
                     {
-                        dataGridView.Rows.Add(new object[] { elem.WarehouseName, "", "" });
-                        foreach (var listElem in elem.Parts)
-                        {
-                            dataGridView.Rows.Add(new object[] { "", listElem.PartName, listElem.Number });
-                        }
-                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
-                        dataGridView.Rows.Add(new object[] { });
+                        dataGridView.Rows.Add(new object[] { "", listElem.PartName, listElem.Number });
                     }
+                    dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
+                    dataGridView.Rows.Add(new object[] { });
                 }
-                else
-                                    {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -60,25 +56,23 @@ namespace SoftwareDevelopmentView
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                try
+                string fileName = sfd.FileName;
+                Task task = Task.Run(() => APICustomer.PostRequestData("api/Report/SaveWarehousesLoad", new ReportBindingModel
                 {
-                    var response = APICustomer.PostRequest("api/Report/SaveWarehousesLoad", new ReportBindingModel
+                    FileName = fileName
+                }));
+
+                task.ContinueWith((prevTask) => MessageBox.Show("Выполнено", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information),
+                    TaskContinuationOptions.OnlyOnRanToCompletion);
+                task.ContinueWith((prevTask) =>
+                {
+                    var ex = (Exception)prevTask.Exception;
+                    while (ex.InnerException != null)
                     {
-                        FileName = sfd.FileName
-                    });
-                    if (response.Result.IsSuccessStatusCode)
-                                            {
-                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                            }
-                                        else
-                   {
-                        throw new Exception(APICustomer.GetError(response));
-                                            }
-                }
-                catch (Exception ex)
-                {
+                        ex = ex.InnerException;
+                    }
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                }, TaskContinuationOptions.OnlyOnFaulted);
             }
         }
     }
