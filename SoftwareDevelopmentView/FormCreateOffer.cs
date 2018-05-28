@@ -28,7 +28,7 @@ namespace SoftwareDevelopmentView
             this.serviceM = serviceM;
         }
 
-        private void FormCreateOffer_Load(object sender, EventArgs e)
+        private void FormCreateOrder_Load(object sender, EventArgs e)
         {
             try
             {

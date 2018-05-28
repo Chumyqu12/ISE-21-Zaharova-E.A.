@@ -27,7 +27,7 @@ namespace SoftwareDevelopmentView
             this.service = service;
         }
 
-        private void FormDevelopers_Load(object sender, EventArgs e)
+        private void FormImplementers_Load(object sender, EventArgs e)
         {
             LoadData();
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SoftwareDevelopmentService
 {
     [Table("SoftwareDatabase")]
-    class SoftwareDbContext : DbContext
+	public class SoftwareDbContext : DbContext
     {
          
         public SoftwareDbContext()
