@@ -1,4 +1,5 @@
-﻿using SoftwareDevelopmentService.BindingModels;
+﻿using SoftwareDevelopmentRestApi.Services;
+using SoftwareDevelopmentService.BindingModels;
 using SoftwareDevelopmentService.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,19 @@ namespace SoftwareDevelopmentRestApi.Controllers
         public void PutPartOnWarehouse(WarehousePartBindingModel model)
         {
             _service.PutPartOnWarehouse(model);
+        }
+
+
+        [HttpGet]
+        public IHttpActionResult GetInfo()
+        {
+            ReflectionService service = new ReflectionService();
+            var list = service.GetInfoByAssembly();
+            if (list == null)
+            {
+                InternalServerError(new Exception("Нет данных"));
+            }
+            return Ok(list);
         }
     }
 }
