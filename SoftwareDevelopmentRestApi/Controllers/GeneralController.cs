@@ -41,11 +41,10 @@ namespace SoftwareDevelopmentRestApi.Controllers
             _service.TakeOfferInWork(model);
         }
 
-        [HttpGet]
-        public IHttpActionResult FinalOffer(/*OfferBindingModel model*/)
+        [HttpPost]
+        public void FinalOffer(OfferBindingModel model)
         {
-            _service.FinalOffer(1);
-            return Ok();
+            _service.FinalOffer(model.Id);
         }
 
         [HttpPost]

@@ -9,6 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Net;
+using System.Configuration;
+using System.Net.Mail;
 
 namespace SoftwareDevelopmentService.ImplementationsBD
 {
@@ -50,7 +53,7 @@ namespace SoftwareDevelopmentService.ImplementationsBD
 
         public void CreateOffer(OfferBindingModel model)
         {
-            context.Offers.Add(new Offer
+            var offer = new Offer
             {
                 CustomerId = model.CustomerId,
                 SoftwareId = model.SoftwareId,
@@ -58,8 +61,14 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                 Number = model.Number,
                 Summa = model.Summa,
                 Condition = OfferCondition.Принят
-            });
+            };
+            context.Offers.Add(offer);
             context.SaveChanges();
+
+            var customer = context.Customers.FirstOrDefault(x => x.Id == model.CustomerId);
+            SendEmail(customer.Mail, "Оповещение по заказам",
+            string.Format("Заказ №{0} от {1} создан успешно", offer.Id,
+            offer.Creation.ToShortDateString()));
         }
 
         public void TakeOfferInWork(OfferBindingModel model)
@@ -69,7 +78,7 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                 try
                 {
 
-                    Offer element = context.Offers.FirstOrDefault(rec => rec.Id == model.Id);
+                    Offer element = context.Offers.Include(rec => rec.Customer).FirstOrDefault(rec => rec.Id == model.Id);
                     if (element == null)
                     {
                         throw new Exception("Элемент не найден");
@@ -111,6 +120,8 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                     element.Implementation = DateTime.Now;
                     element.Condition = OfferCondition.Выполняется;
                     context.SaveChanges();
+                    SendEmail(element.Customer.Mail, "Оповещение по заказам",
+                    string.Format("Заказ №{0} от {1} передеан в работу", element.Id, element.Creation.ToShortDateString()));
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -123,24 +134,29 @@ namespace SoftwareDevelopmentService.ImplementationsBD
 
         public void FinalOffer(int id)
         {
-            Offer element = context.Offers.FirstOrDefault(rec => rec.Id == id);
+            Offer element = context.Offers.Include(rec => rec.Customer).FirstOrDefault(rec => rec.Id == id);
             if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
             element.Condition = OfferCondition.Готов;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам",
+            string.Format("Заказ №{0} от {1} передан на оплату", element.Id,
+            element.Creation.ToShortDateString()));
         }
 
         public void CostOffer(int id)
         {
-            Offer element = context.Offers.FirstOrDefault(rec => rec.Id == id);
+            Offer element = context.Offers.Include(rec => rec.Customer).FirstOrDefault(rec => rec.Id == id);
             if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
             element.Condition = OfferCondition.Оплачен;
             context.SaveChanges();
+            SendEmail(element.Customer.Mail, "Оповещение по заказам",
+            string.Format("Заказ №{0} от {1} оплачен успешно", element.Id, element.Creation.ToShortDateString()));
         }
 
         public void PutPartOnWarehouse(WarehousePartBindingModel model)
@@ -163,5 +179,40 @@ namespace SoftwareDevelopmentService.ImplementationsBD
             }
             context.SaveChanges();
         }
+
+        private void SendEmail(string mailAddress, string subject, string text)
+        {
+            MailMessage objMailMessage = new MailMessage();
+            SmtpClient objSmtpClient = null;
+
+            try
+            {
+                objMailMessage.From = new MailAddress(ConfigurationManager.AppSettings["MailLogin"]);
+                objMailMessage.To.Add(new MailAddress(mailAddress));
+                objMailMessage.Subject = subject;
+                objMailMessage.Body = text;
+                objMailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
+                objMailMessage.BodyEncoding = System.Text.Encoding.UTF8;
+
+                objSmtpClient = new SmtpClient("smtp.gmail.com", 587);
+                objSmtpClient.UseDefaultCredentials = false;
+                objSmtpClient.EnableSsl = true;
+                objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                objSmtpClient.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["MailLogin"],
+                    ConfigurationManager.AppSettings["MailPassword"]);
+
+                objSmtpClient.Send(objMailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                objMailMessage = null;
+                objSmtpClient = null;
+            }
+        }
+
     }
 }

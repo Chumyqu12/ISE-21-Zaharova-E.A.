@@ -13,6 +13,8 @@ namespace SoftwareDevelopmentModel
         [Required]
         public string CustomerName { get; set; }
 
+        public string Mail { get; set; }
+
         [ForeignKey("CustomerId")]
         public virtual List<Offer> Offers { get; set; }
        
