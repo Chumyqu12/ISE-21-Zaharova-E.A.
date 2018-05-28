@@ -1,0 +1,15 @@
+﻿@model VirtualSoftware.Part
+@{
+    ViewBag.Title = "Part";
+}
+
+<h2>Create part</h2>
+<form action="/Part/Part" method="post">
+    <div class="item">
+        <label>Название:</label>
+        <input name="PartName" value="Part" />
+    </div>
+    <input type="submit" name="action" value="Сохранить" />
+</form>
+
+

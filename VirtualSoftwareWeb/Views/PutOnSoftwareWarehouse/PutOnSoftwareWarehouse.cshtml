@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "PutOnSoftwareWarehouse";
+}
+
+<style>
+    select {
+        margin-bottom: 50px;
+    }
+
+    .item {
+        margin-bottom: 30px;
+    }
+</style>
+<h2><b>Поместить в хранилище</b></h2><br />
+<form action="/PutOnSoftwareWarehouse/PutOnSoftwareWarehouse" id="PutOnSoftwareWarehouse" method="post">
+    <select name="selectedItem1" form="PutOnSoftwareWarehouse">
+        @using VirtualSoftware;
+        @using VirtualSoftwarePlace.LogicInterface;
+        @using VirtualSoftwarePlace.ConnectingModel;
+        @using VirtualSoftwarePlace.UserViewModel;
+        @{ int index1 = 0;
+            foreach (PartUserViewModel st in @ViewBag.listC)
+            {
+                index1++;
+                <option value="@index1">@st.PartName @index1</option>
+            }
+        }
+    </select>
+    <select name="selectedItem2" form="PutOnSoftwareWarehouse">
+        @{ int index2 = 0;
+            foreach (SoftwareWarehouseUserViewModel st in @ViewBag.listS)
+            {
+                index2++;
+                <option value="@index2">@st.SoftwareWarehouseName @index2</option>
+            }
+        }
+    </select>
+    <div class="item">
+        <label>Количество:</label>
+        <input name="count" value="" />
+    </div>
+    <input type="submit" name="action" value="Проверить" />
+
+    <input type="submit" name="action" value="Сохранить" />
+</form>
