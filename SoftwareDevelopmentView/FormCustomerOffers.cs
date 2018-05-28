@@ -87,10 +87,5 @@ namespace SoftwareDevelopmentView
                 }
             }
         }
-
-		private void FormCustomerOffers_Load(object sender, EventArgs e)
-		{
-
-		}
-	}
+    }
 }
