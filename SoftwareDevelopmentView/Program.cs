@@ -17,7 +17,7 @@ namespace SoftwareDevelopmentView
         static void Main()
         {
             APICustomer.Connect();
-       //     MailCustomer.Connect();
+            MailCustomer.Connect();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormGeneral());
