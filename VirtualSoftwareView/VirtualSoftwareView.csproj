@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{621A07A9-2543-41E1-8453-9AF735A00FF4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>VirtualStoreView</RootNamespace>
+    <AssemblyName>VirtualStoreView</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.7.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.7.2\lib\net46\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomerForm.Designer.cs">
+      <DependentUpon>CustomerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCustomerSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCustomerSelection.Designer.cs">
+      <DependentUpon>FormCustomerSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPart.Designer.cs">
+      <DependentUpon>FormPart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormParts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormParts.Designer.cs">
+      <DependentUpon>FormParts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGeneral.Designer.cs">
+      <DependentUpon>FormGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSoftware.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSoftware.Designer.cs">
+      <DependentUpon>FormSoftware.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSoftwarePart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSoftwarePart.Designer.cs">
+      <DependentUpon>FormSoftwarePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSoftwares.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSoftwares.Designer.cs">
+      <DependentUpon>FormSoftwares.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDevelopers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDevelopers.Designer.cs">
+      <DependentUpon>FormDevelopers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSoftwareWarehouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSoftwareWarehouse.Designer.cs">
+      <DependentUpon>FormSoftwareWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPutOnSoftwareWarehouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPutOnSoftwareWarehouse.Designer.cs">
+      <DependentUpon>FormPutOnSoftwareWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSingleCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSingleCustomer.Designer.cs">
+      <DependentUpon>FormSingleCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTakeFromSoftwareWarehouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTakeFromSoftwareWarehouse.Designer.cs">
+      <DependentUpon>FormTakeFromSoftwareWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FromDeveloper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FromDeveloper.Designer.cs">
+      <DependentUpon>FromDeveloper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SoftwareWarehouses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SoftwareWarehouses.Designer.cs">
+      <DependentUpon>SoftwareWarehouses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualSoftwareForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VirtualSoftwareForm.Designer.cs">
+      <DependentUpon>VirtualSoftwareForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CustomerForm.resx">
+      <DependentUpon>CustomerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCustomerSelection.resx">
+      <DependentUpon>FormCustomerSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPart.resx">
+      <DependentUpon>FormPart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormParts.resx">
+      <DependentUpon>FormParts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGeneral.resx">
+      <DependentUpon>FormGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSoftware.resx">
+      <DependentUpon>FormSoftware.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSoftwarePart.resx">
+      <DependentUpon>FormSoftwarePart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSoftwares.resx">
+      <DependentUpon>FormSoftwares.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDevelopers.resx">
+      <DependentUpon>FormDevelopers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSoftwareWarehouse.resx">
+      <DependentUpon>FormSoftwareWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPutOnSoftwareWarehouse.resx">
+      <DependentUpon>FormPutOnSoftwareWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSingleCustomer.resx">
+      <DependentUpon>FormSingleCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTakeFromSoftwareWarehouse.resx">
+      <DependentUpon>FormTakeFromSoftwareWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FromDeveloper.resx">
+      <DependentUpon>FromDeveloper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoftwareWarehouses.resx">
+      <DependentUpon>SoftwareWarehouses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="VirtualSoftwareForm.resx">
+      <DependentUpon>VirtualSoftwareForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VirtualSoftwarePlace\VirtualSoftwarePlace.csproj">
+      <Project>{d52c7a2b-0ad1-47be-90ce-09336520881f}</Project>
+      <Name>VirtualSoftwarePlace</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
