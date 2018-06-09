@@ -4,38 +4,40 @@ using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormGeneral : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly IGeneralService service;
-		private readonly IReportService reportService;
-		public FormGeneral(IGeneralService service, IReportService reportService)
+     
+		public FormGeneral()
         {
             InitializeComponent();
-            this.service = service;
-			this.reportService = reportService;
+           
 		}
 
         private void LoadData()
         {
             try
             {
-                List<OfferViewModel> list = service.GetList();
-                if (list != null)
+                var response = APICustomer.GetRequest("api/General/GetList");
+                                if (response.Result.IsSuccessStatusCode)
                 {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[3].Visible = false;
-                    dataGridView.Columns[5].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    List<OfferViewModel> list = APICustomer.GetElement<List<OfferViewModel>>(response);
+                                        if (list != null)
+                                            {
+                        dataGridView.DataSource = list;
+                        dataGridView.Columns[0].Visible = false;
+                        dataGridView.Columns[1].Visible = false;
+                        dataGridView.Columns[3].Visible = false;
+                        dataGridView.Columns[5].Visible = false;
+                        dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                                            }
+                                    }
+                                else
+               {
+                    throw new Exception(APICustomer.GetError(response));
                 }
             }
             catch (Exception ex)
@@ -46,43 +48,43 @@ namespace SoftwareDevelopmentView
 
         private void клиентыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomers>();
+            var form = new FormCustomers();
             form.ShowDialog();
         }
 
         private void компонентыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormParts>();
+            var form = new FormParts();
             form.ShowDialog();
         }
 
         private void изделияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormProducts>();
+            var form = new FormSoftwares();
             form.ShowDialog();
         }
 
         private void складыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormWarehouses>();
+            var form = new FormWarehouses();
             form.ShowDialog();
         }
 
         private void сотрудникиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormDevelopers>();
+            var form = new FormDevelopers();
             form.ShowDialog();
         }
 
         private void пополнитьСкладToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormPutOnWarehouse>();
+            var form = new FormPutOnWarehouse();
             form.ShowDialog();
         }
 
         private void buttonCreateOrder_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCreateOffer>();
+            var form = new FormCreateOffer ();
             form.ShowDialog();
             LoadData();
         }
@@ -91,8 +93,10 @@ namespace SoftwareDevelopmentView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormTakeOfferInWork>();
-                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                var form = new FormTakeOfferInWork
+                {
+                    Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value)
+                                    };
                 form.ShowDialog();
                 LoadData();
             }
@@ -105,8 +109,18 @@ namespace SoftwareDevelopmentView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.FinalOffer(id);
-                    LoadData();
+                    var response = APICustomer.PostRequest("api/General/FinalOffer", new OfferBindingModel
+                     {
+                        Id = id
+                                            });
+                                        if (response.Result.IsSuccessStatusCode)
+                                            {
+                        LoadData();
+                                           }
+                                        else
+                                            {
+                       throw new Exception(APICustomer.GetError(response));
+                                            }
                 }
                 catch (Exception ex)
                 {
@@ -122,8 +136,18 @@ namespace SoftwareDevelopmentView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.CostOffer(id);
-                    LoadData();
+                    var response = APICustomer.PostRequest("api/General/.CostOffer", new OfferBindingModel
+                      {
+                        Id = id
+                                           });
+                                       if (response.Result.IsSuccessStatusCode)
+                                           {
+                        LoadData();
+                                           }
+                                        else
+                    {
+                        throw new Exception(APICustomer.GetError(response));
+                                           }
                 }
                 catch (Exception ex)
                 {
@@ -148,12 +172,19 @@ namespace SoftwareDevelopmentView
 			{
 				try
 				{
-					reportService.SaveSoftwareCost(new ReportBindingModel
+                    var response = APICustomer.PostRequest("api/Report/SaveSoftwareCost", new ReportBindingModel
 					{
 						FileName = sfd.FileName
 					});
-					MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
+                    if (response.Result.IsSuccessStatusCode)
+                                            {
+                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            }
+                                        else
+                                            {
+                        throw new Exception(APICustomer.GetError(response));
+                                            }
+                }
 				catch (Exception ex)
 				{
 					MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -163,14 +194,14 @@ namespace SoftwareDevelopmentView
 
 		private void загруженностьСкладовToolStripMenuItem_Click_1(object sender, EventArgs e)
 		{
-			var form = Container.Resolve<FormWarehousesLoad>();
-			form.ShowDialog();
+            var form = new FormWarehousesLoad();
+            form.ShowDialog();
 		}
 
 		private void заказыКлиентовToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var form = Container.Resolve<FormCustomerOffers>();
-			form.ShowDialog();
+            var form = new FormCustomerOffers();
+            form.ShowDialog();
 		}
 
 		

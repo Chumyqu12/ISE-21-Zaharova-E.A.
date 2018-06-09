@@ -131,9 +131,9 @@ namespace SoftwareDevelopmentService.ImplementationsBD
 			{
 				WarehouseName = Warehouse.WarehouseName,
 				TotalCount = WarehouseCompList.Sum(r => r.Number),
-				Parts = WarehouseCompList.Select(r => new Tuple<string, int>(r.Part.PartName, r.Number))
-			})
-							.ToList();
+                Parts = WarehouseCompList.Select(r => new WarehousesPartLoadViewModel { PartName = r.Part.PartName, Number = r.Number }).ToList()
+            })
+                            .ToList();
 		}
 
 		public void SaveWarehousesLoad(ReportBindingModel model)
@@ -218,10 +218,10 @@ namespace SoftwareDevelopmentService.ImplementationsBD
 
 							foreach (var listElem in elem.Parts)
 							{
-								excelcells.Value2 = listElem.Item1;
-								excelcells.ColumnWidth = 10;
-								excelcells.get_Offset(0, 1).Value2 = listElem.Item2;
-								excelcells = excelcells.get_Offset(1, 0);
+                                excelcells.Value2 = listElem.PartName;
+                                excelcells.ColumnWidth = 10;
+                                excelcells.get_Offset(0, 1).Value2 = listElem.Number;
+                                excelcells = excelcells.get_Offset(1, 0);
 							}
 						}
 						excelcells = excelcells.get_Offset(0, -1);

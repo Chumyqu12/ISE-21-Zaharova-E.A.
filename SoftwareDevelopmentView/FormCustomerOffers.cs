@@ -10,22 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+using SoftwareDevelopmentService.ViewModels;
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormCustomerOffers : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly IReportService service;
-
-        public FormCustomerOffers(IReportService service)
+        
+        public FormCustomerOffers()
         {
             InitializeComponent();
-            this.service = service;
+           
         }
 
         private void buttonMake_Click(object sender, EventArgs e)
@@ -42,13 +37,21 @@ namespace SoftwareDevelopmentView
                                             " по " + dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
 
-                var dataSource = service.GetCustomerOffers(new ReportBindingModel
+                var response = APICustomer.PostRequest("api/Report/GetCustomerOffers", new ReportBindingModel
                 {
                     DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
                 });
-                ReportDataSource source = new ReportDataSource("DataSetOffers", dataSource);
-                reportViewer.LocalReport.DataSources.Add(source);
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    var dataSource = APICustomer.GetElement<List<CustomerOffersModel>>(response);
+                    ReportDataSource source = new ReportDataSource("DataSetOffers", dataSource);
+                    reportViewer.LocalReport.DataSources.Add(source);
+                                   }
+                                else
+                  {
+                   throw new Exception(APICustomer.GetError(response));
+                  }
 
                 reportViewer.RefreshReport();
             }
@@ -73,13 +76,20 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    service.SaveCustomerOffers(new ReportBindingModel
+                    var response = APICustomer.PostRequest("api/Report/SaveCustomerOffers", new ReportBindingModel
                     {
                         FileName = sfd.FileName,
                         DateFrom = dateTimePickerFrom.Value,
                         DateTo = dateTimePickerTo.Value
                     });
-                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (response.Result.IsSuccessStatusCode)
+                                           {
+                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                           }
+                                       else
+                    {
+                        throw new Exception(APICustomer.GetError(response));
+                                            }
                 }
                 catch (Exception ex)
                 {
@@ -87,5 +97,9 @@ namespace SoftwareDevelopmentView
                 }
             }
         }
-    }
+
+
+		
+	}
+
 }

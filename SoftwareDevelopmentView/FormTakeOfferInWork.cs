@@ -10,29 +10,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormTakeOfferInWork : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
 
         public int Id { set { id = value; } }
 
-        private readonly IDeveloperService serviceI;
-
-        private readonly IGeneralService serviceM;
 
         private int? id;
 
-        public FormTakeOfferInWork(IDeveloperService serviceI, IGeneralService serviceM)
+        public FormTakeOfferInWork()
         {
             InitializeComponent();
-            this.serviceI = serviceI;
-            this.serviceM = serviceM;
         }
 
         private void FormTakeOrderInWork_Load(object sender, EventArgs e)
@@ -44,13 +36,21 @@ namespace SoftwareDevelopmentView
                     MessageBox.Show("Не указан заказ", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                 }
-                List<DeveloperViewModel> listI = serviceI.GetList();
-                if (listI != null)
+                var response = APICustomer.GetRequest("api/Developer/GetList");
+                               if (response.Result.IsSuccessStatusCode)
+                                    {
+                    List <DeveloperViewModel> list = APICustomer.GetElement<List<DeveloperViewModel>>(response);
+                                        if (list != null)
+                                           {
+                        comboBoxImplementer.DisplayMember = "DeveloperName";
+                        comboBoxImplementer.ValueMember = "Id";
+                        comboBoxImplementer.DataSource = list;
+                        comboBoxImplementer.SelectedItem = null;
+                                            }
+                                    }
+                                else
                 {
-                    comboBoxImplementer.DisplayMember = "DeveloperName";
-                    comboBoxImplementer.ValueMember = "Id";
-                    comboBoxImplementer.DataSource = listI;
-                    comboBoxImplementer.SelectedItem = null;
+                    throw new Exception(APICustomer.GetError(response));
                 }
             }
             catch (Exception ex)
@@ -68,14 +68,21 @@ namespace SoftwareDevelopmentView
             }
             try
             {
-                serviceM.TakeOfferInWork(new OfferBindingModel
+                var response = APICustomer.PostRequest("api/General/TakeOfferInWork", new OfferBindingModel
                 {
                     Id = id.Value,
                     DeveloperId = Convert.ToInt32(comboBoxImplementer.SelectedValue)
                 });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

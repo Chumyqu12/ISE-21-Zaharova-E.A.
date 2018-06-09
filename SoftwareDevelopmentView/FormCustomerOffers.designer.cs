@@ -125,7 +125,6 @@
 			this.Name = "FormCustomerOffers";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Заказы клиентов";
-			this.Load += new System.EventHandler(this.FormCustomerOffers_Load);
 			this.panel.ResumeLayout(false);
 			this.panel.PerformLayout();
 			this.ResumeLayout(false);

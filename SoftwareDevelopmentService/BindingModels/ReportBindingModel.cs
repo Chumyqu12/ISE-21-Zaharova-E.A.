@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SoftwareDevelopmentService.BindingModels
 {
-	public class ReportBindingModel
+    [DataContract]
+    public class ReportBindingModel
 	{
-		public string FileName { get; set; }
-
-		public DateTime? DateFrom { get; set; }
-
-		public DateTime? DateTo { get; set; }
+        [DataMember]
+        public string FileName { get; set; }
+        [DataMember]
+        public DateTime? DateFrom { get; set; }
+        [DataMember]
+        public DateTime? DateTo { get; set; }
 	}
 }

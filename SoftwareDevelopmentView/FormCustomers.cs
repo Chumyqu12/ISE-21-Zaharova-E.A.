@@ -1,24 +1,20 @@
-﻿using SoftwareDevelopmentService.Interfaces;
+﻿using SoftwareDevelopmentService.BindingModels;
+using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormCustomers : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
-        private readonly ICustomerService service;
-
-        public FormCustomers(ICustomerService service)
+      
+        public FormCustomers()
         {
             InitializeComponent();
-            this.service = service;
+            
         }
 
         private void FormClients_Load(object sender, EventArgs e)
@@ -30,12 +26,20 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                List<CustomerViewModel> list = service.GetList();
-                if (list != null)
+                var response = APICustomer.GetRequest("api/Customer/GetList");
+                           if (response.Result.IsSuccessStatusCode)
                 {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    List<CustomerViewModel> list = APICustomer.GetElement<List<CustomerViewModel>>(response);
+                                        if (list != null)
+                                           {
+                        dataGridView.DataSource = list;
+                        dataGridView.Columns[0].Visible = false;
+                        dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                                            }
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
                 }
             }
             catch (Exception ex)
@@ -46,8 +50,8 @@ namespace SoftwareDevelopmentView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomer>();
-            if(form.ShowDialog() == DialogResult.OK)
+            var form = new FormCustomer();
+                        if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
             }
@@ -57,7 +61,7 @@ namespace SoftwareDevelopmentView
         {
             if(dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormCustomer>();
+                var form = new FormCustomer();
                 form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -75,7 +79,12 @@ namespace SoftwareDevelopmentView
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DeleteElement(id);
+                        var response = APICustomer.PostRequest("api/Customer/DeleteElement", new CustomerBindingModel { Id = id });
+                                               if (!response.Result.IsSuccessStatusCode)
+                                                    {
+                            throw new Exception(APICustomer.GetError(response));
+                                                    }
+
                     }
                     catch (Exception ex)
                     {

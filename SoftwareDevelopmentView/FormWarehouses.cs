@@ -1,24 +1,21 @@
-﻿using SoftwareDevelopmentService.Interfaces;
+﻿using SoftwareDevelopmentService.BindingModels;
+using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormWarehouses : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
+        
 
-        private readonly IWarehouseService service;
-
-        public FormWarehouses(IWarehouseService service)
+        public FormWarehouses()
         {
             InitializeComponent();
-            this.service = service;
+         
         }
 
         private void FormStocks_Load(object sender, EventArgs e)
@@ -30,12 +27,20 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                List<WarehouseViewModel> list = service.GetList();
-                if (list != null)
+                var response = APICustomer.GetRequest("api/Warehouse/GetList");
+                                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    List <WarehouseViewModel> list = APICustomer.GetElement<List<WarehouseViewModel>>(response);
+                                        if (list != null)
+                                            {
+                        dataGridView.DataSource = list;
+                        dataGridView.Columns[0].Visible = false;
+                        dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                                            }
+                                    }
+                               else
                 {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    throw new Exception(APICustomer.GetError(response));
                 }
             }
             catch (Exception ex)
@@ -46,7 +51,7 @@ namespace SoftwareDevelopmentView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormWarehouse>();
+            var form = new FormWarehouse();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -57,7 +62,7 @@ namespace SoftwareDevelopmentView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormWarehouse>();
+                var form = new FormWarehouse();
                 form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -75,7 +80,11 @@ namespace SoftwareDevelopmentView
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DeleteElement(id);
+                        var response = APICustomer.PostRequest("api/Warehouse/DeleteElement", new CustomerBindingModel { Id = id });
+                                                if (!response.Result.IsSuccessStatusCode)
+                                                    {
+                            throw new Exception(APICustomer.GetError(response));
+                                                    }
                     }
                     catch (Exception ex)
                     {

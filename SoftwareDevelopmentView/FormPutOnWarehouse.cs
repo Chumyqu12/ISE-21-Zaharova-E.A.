@@ -4,49 +4,54 @@ using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormPutOnWarehouse : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
 
-        private readonly IWarehouseService serviceS;
-
-        private readonly IPartService serviceC;
-
-        private readonly IGeneralService serviceM;
-
-        public FormPutOnWarehouse(IWarehouseService serviceS, IPartService serviceC, IGeneralService serviceM)
+        public FormPutOnWarehouse()
         {
             InitializeComponent();
-            this.serviceS = serviceS;
-            this.serviceC = serviceC;
-            this.serviceM = serviceM;
+            
         }
 
         private void FormPutOnStock_Load(object sender, EventArgs e)
         {
             try
             {
-                List<PartViewModel> listC = serviceC.GetList();
-                if (listC != null)
+                var responseC = APICustomer.GetRequest("api/Part/GetList");
+                                if (responseC.Result.IsSuccessStatusCode)
+                                    {
+                    List < PartViewModel > list = APICustomer.GetElement<List<PartViewModel>>(responseC);
+                                        if (list != null)
+                                            {
+                        comboBoxPart.DisplayMember = "PartName";
+                        comboBoxPart.ValueMember = "Id";
+                        comboBoxPart.DataSource = list;
+                        comboBoxPart.SelectedItem = null;
+                                            }
+                                    }
+                                else
                 {
-                    comboBoxPart.DisplayMember = "PartName";
-                    comboBoxPart.ValueMember = "Id";
-                    comboBoxPart.DataSource = listC;
-                    comboBoxPart.SelectedItem = null;
+                    throw new Exception(APICustomer.GetError(responseC));
                 }
-                List<WarehouseViewModel> listS = serviceS.GetList();
-                if (listS != null)
+                var responseS = APICustomer.GetRequest("api/Warehouse/GetList");
+                                if (responseS.Result.IsSuccessStatusCode)
                 {
-                    comboBoxStock.DisplayMember = "WarehouseName";
-                    comboBoxStock.ValueMember = "Id";
-                    comboBoxStock.DataSource = listS;
-                    comboBoxStock.SelectedItem = null;
+                    List<WarehouseViewModel> list = APICustomer.GetElement<List<WarehouseViewModel>>(responseS);
+                                        if (list != null)
+                                            {
+                        comboBoxStock.DisplayMember = "WarehouseName";
+                        comboBoxStock.ValueMember = "Id";
+                        comboBoxStock.DataSource = list;
+                        comboBoxStock.SelectedItem = null;
+                                            }
+                                   }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(responseC));
                 }
             }
             catch (Exception ex)
@@ -74,15 +79,22 @@ namespace SoftwareDevelopmentView
             }
             try
             {
-                serviceM.PutPartOnWarehouse(new WarehousePartBindingModel
+                var response = APICustomer.PostRequest("api/General/PutPartOnWarehouse", new WarehousePartBindingModel
                 {
                     PartId = Convert.ToInt32(comboBoxPart.SelectedValue),
                     WarehouseId = Convert.ToInt32(comboBoxStock.SelectedValue),
                     Number = Convert.ToInt32(textBoxCount.Text)
                 });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

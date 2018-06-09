@@ -2,27 +2,25 @@
 using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormPart : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-
+     
         public int Id { set { id = value; } }
 
-        private readonly IPartService service;
 
         private int? id;
 
-        public FormPart(IPartService service)
+        public FormPart()
         {
             InitializeComponent();
-            this.service = service;
+            
         }
 
         private void FormPart_Load(object sender, EventArgs e)
@@ -31,10 +29,15 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    PartViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    var response = APICustomer.GetRequest("api/Part/Get/" + id.Value);
+                                        if (response.Result.IsSuccessStatusCode)
                     {
-                        textBoxName.Text = view.PartName;
+                        var component = APICustomer.GetElement<PartViewModel>(response);
+                        textBoxName.Text = component.PartName;
+                                            }
+                                        else
+                    {
+                        throw new Exception(APICustomer.GetError(response));
                     }
                 }
                 catch (Exception ex)
@@ -53,9 +56,10 @@ namespace SoftwareDevelopmentView
             }
             try
             {
+                Task<HttpResponseMessage> response;
                 if (id.HasValue)
                 {
-                    service.UpdateElement(new PartBindingModel
+                    response = APICustomer.PostRequest("api/Part/UpdateElement", new PartBindingModel
                     {
                         Id = id.Value,
                         PartName = textBoxName.Text
@@ -63,14 +67,21 @@ namespace SoftwareDevelopmentView
                 }
                 else
                 {
-                    service.AddElement(new PartBindingModel
+                    response = APICustomer.PostRequest("api/Part/AddElement", new PartBindingModel
                     {
                         PartName = textBoxName.Text
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                                else
+                {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

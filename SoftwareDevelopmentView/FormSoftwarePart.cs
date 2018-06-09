@@ -3,40 +3,42 @@ using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
-    public partial class FormProductPart : Form
+    public partial class FormSoftwarePart : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
+       
 
         public SoftwarePartViewModel Model { set { model = value; }  get { return model; } }
 
-        private readonly IPartService service;
+       
 
         private SoftwarePartViewModel model;
 
-        public FormProductPart(IPartService service)
+        public FormSoftwarePart()
         {
             InitializeComponent();
-            this.service = service;
+          
         }
 
         private void FormProductPart_Load(object sender, EventArgs e)
         {
             try
             {
-                List<PartViewModel> list = service.GetList();
-                if (list != null)
+                var response = APICustomer.GetRequest("api/Part/GetList");
+                                if (response.Result.IsSuccessStatusCode)
                 {
                     comboBoxPart.DisplayMember = "PartName";
                     comboBoxPart.ValueMember = "Id";
-                    comboBoxPart.DataSource = list;
+                    comboBoxPart.DataSource = APICustomer.GetElement<List<PartViewModel>>(response);
                     comboBoxPart.SelectedItem = null;
                 }
+                else
+                                   {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {

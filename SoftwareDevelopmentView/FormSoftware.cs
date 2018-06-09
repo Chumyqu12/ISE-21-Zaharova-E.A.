@@ -3,29 +3,29 @@ using SoftwareDevelopmentService.Interfaces;
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
-using Unity.Attributes;
+
 
 namespace SoftwareDevelopmentView
 {
     public partial class FormSoftware : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
+        
 
         public int Id { set { id = value; } }
 
-        private readonly ISoftwareService service;
+     
 
         private int? id;
 
         private List<SoftwarePartViewModel> productParts;
 
-        public FormSoftware(ISoftwareService service)
+        public FormSoftware()
         {
             InitializeComponent();
-            this.service = service;
+        
         }
 
         private void FormProduct_Load(object sender, EventArgs e)
@@ -34,14 +34,19 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    SoftwareViewModel view = service.GetElement(id.Value);
-                    if (view != null)
+                    var response = APICustomer.GetRequest("api/Software/Get/" + id.Value);
+                    if (response.Result.IsSuccessStatusCode)
                     {
-                        textBoxName.Text = view.SoftwareName;
-                        textBoxPrice.Text = view.Cost.ToString();
-                        productParts = view.SoftwareParts;
+                        var product = APICustomer.GetElement<SoftwareViewModel>(response);
+                        textBoxName.Text = product.SoftwareName;
+                        textBoxPrice.Text = product.Cost.ToString();
+                        productParts = product.SoftwareParts;
                         LoadData();
                     }
+                    else
+                                           {
+                        throw new Exception(APICustomer.GetError(response));
+                                            }
                 }
                 catch (Exception ex)
                 {
@@ -76,7 +81,7 @@ namespace SoftwareDevelopmentView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormProductPart>();
+            var form = new FormSoftwarePart();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if(form.Model != null)
@@ -95,7 +100,7 @@ namespace SoftwareDevelopmentView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormProductPart>();
+                var form = new FormSoftwarePart();
                 form.Model = productParts[dataGridView.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -159,9 +164,10 @@ namespace SoftwareDevelopmentView
                         Number = productParts[i].Number
                     });
                 }
+                Task<HttpResponseMessage> response;
                 if (id.HasValue)
                 {
-                    service.UpdateElement(new SoftwareBindingModel
+                    response = APICustomer.PostRequest("api/Software/UpdateElement", new SoftwareBindingModel
                     {
                         Id = id.Value,
                         SoftwareName = textBoxName.Text,
@@ -171,16 +177,23 @@ namespace SoftwareDevelopmentView
                 }
                 else
                 {
-                    service.AddElement(new SoftwareBindingModel
+                    response = APICustomer.PostRequest("api/Software/AddElement", new SoftwareBindingModel
                     {
                         SoftwareName = textBoxName.Text,
                         Cost = Convert.ToInt32(textBoxPrice.Text),
                         SoftwareParts = productPartBM
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                if (response.Result.IsSuccessStatusCode)
+                                    {
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                                    }
+                               else
+               {
+                    throw new Exception(APICustomer.GetError(response));
+                                    }
             }
             catch (Exception ex)
             {
