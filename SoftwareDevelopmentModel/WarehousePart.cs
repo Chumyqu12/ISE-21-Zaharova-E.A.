@@ -12,5 +12,9 @@
         public int PartId { get; set; }
 
         public int Number { get; set; }
+
+        public virtual Warehouse Warehouse { get; set; }
+
+        public virtual Part Part { get; set; }
     }
 }

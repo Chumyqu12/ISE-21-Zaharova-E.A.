@@ -24,5 +24,10 @@ namespace SoftwareDevelopmentModel
         public DateTime Creation { get; set; }
 
         public DateTime? Implementation { get; set; }
+        public virtual Customer Customer { get; set; }
+
+        public virtual Software Software { get; set; }
+
+        public virtual Developer Developer { get; set; }
     }
 }

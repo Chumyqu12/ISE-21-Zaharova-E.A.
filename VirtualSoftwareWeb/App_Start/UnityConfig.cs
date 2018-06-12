@@ -1,10 +1,11 @@
 using System;
-
+using System.Data.Entity;
 using Unity;
 using Unity.Lifetime;
+using VirtualSoftwarePlace.ImplementationsBD;
 using VirtualSoftwarePlace.LogicInterface;
 using VirtualSoftwarePlace.RealiseInterface;
-
+using VirtualStorePlace;
 
 namespace VirtualSoftwareWeb
 {
@@ -46,12 +47,13 @@ namespace VirtualSoftwareWeb
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<ISoftwareRepository, SoftwareRepository>();
-            container.RegisterType<ICustomerCustomer, CustomerSelectionList>(new HierarchicalLifetimeManager());
-            container.RegisterType<IPartService, PartSelectionList>(new HierarchicalLifetimeManager());
-            container.RegisterType<IDeveloperService, DeveloperSelectionList>(new HierarchicalLifetimeManager());
-            container.RegisterType<ISoftwareService, SoftwareSelectionList>(new HierarchicalLifetimeManager());
-            container.RegisterType<ISoftwareWarehouseService, SoftwareWarehouseSelectionList>(new HierarchicalLifetimeManager());
-            container.RegisterType<IGeneralSelection, GeneralSelectionList>(new HierarchicalLifetimeManager());
+            container.RegisterType<DbContext, SoftDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICustomerCustomer, CustomerServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<IPartService, PartServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<IDeveloperService, DeveloperServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<ISoftwareService, SoftwareServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<ISoftwareWarehouseService, SoftwareWarehouseServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<IGeneralSelection, GeneralServiceBD>(new HierarchicalLifetimeManager());
         }
     }
 }
