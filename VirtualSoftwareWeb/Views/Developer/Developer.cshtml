@@ -1,0 +1,13 @@
+﻿@model VirtualSoftware.Developer
+@{
+    ViewBag.Title = "Developer";
+}
+
+<h2>Create developer</h2>
+<form action="/Developer/Developer" method="post">
+    <div class="item">
+        <label>Название:</label>
+        <input name="DeveloperFIO" value="Developer" />
+    </div>
+    <input type="submit" name="action" value="Сохранить" />
+</form>

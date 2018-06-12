@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "SoftwarePart";
+}
+
+<style>
+    select {
+        margin-bottom: 50px;
+    }
+
+    .item {
+        margin-bottom: 30px;
+    }
+</style>
+<h2><b>SoftwarePart</b></h2><br />
+<form action="/SoftwarePart/SoftwarePart" id="SoftwarePart" method="post">
+    <select name="selectedItem" form="SoftwarePart">
+        @using VirtualSoftware;
+        @using VirtualSoftwarePlace.LogicInterface;
+        @using VirtualSoftwarePlace.ConnectingModel;
+        @using VirtualSoftwarePlace.UserViewModel;
+        @{ int i = 0;
+            foreach (PartUserViewModel st in @ViewBag.DataList)
+            {
+                i++;
+                <option value="@i">@st.PartName @i</option>
+            }
+        }
+    </select>
+    <div class="item">
+        <label>Количество:</label>
+        @{
+            if (ViewBag.DataCountBox != null)
+            {
+
+                <input name="Count" value=@ViewBag.DataCountBox />
+            }
+            else
+            {
+                <input name="Count" value="" />
+            }
+        }
+    </div>
+    <input type="submit" name="action" value="Сохранить" />
+</form>
