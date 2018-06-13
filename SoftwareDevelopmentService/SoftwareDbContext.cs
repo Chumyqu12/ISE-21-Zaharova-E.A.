@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SoftwareDevelopmentService
 {
-   // [Table("SoftwareDatabase")]
+   
 	public class SoftwareDbContext : DbContext
     {
          
@@ -36,6 +36,33 @@ namespace SoftwareDevelopmentService
         public virtual DbSet<Warehouse> Warehouses { get; set; }
 
         public virtual DbSet<WarehousePart> WarehouseParts { get; set; }
+
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (Exception)
+            {
+                foreach (var entry in ChangeTracker.Entries())
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                            entry.State = EntityState.Unchanged;
+                            break;
+                        case EntityState.Deleted:
+                            entry.Reload();
+                            break;
+                        case EntityState.Added:
+                            entry.State = EntityState.Detached;
+                            break;
+                    }
+                }
+                throw;
+            }
+        }
     }
 }
 

@@ -97,7 +97,7 @@
             this.Controls.Add(this.dataGridView);
             this.Name = "FormStocksLoad";
             this.Text = "Загрузка складов";
-            this.Load += new System.EventHandler(this.FormStocksLoad_Load);
+            this.Load += new System.EventHandler(this.FormWarehousesLoad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 

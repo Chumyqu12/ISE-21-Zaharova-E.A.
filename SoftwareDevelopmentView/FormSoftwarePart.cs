@@ -2,6 +2,7 @@
 using SoftwareDevelopmentService.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -27,21 +28,17 @@ namespace SoftwareDevelopmentView
         {
             try
             {
-                var response = APICustomer.GetRequest("api/Part/GetList");
-                                if (response.Result.IsSuccessStatusCode)
-                {
-                    comboBoxPart.DisplayMember = "PartName";
-                    comboBoxPart.ValueMember = "Id";
-                    comboBoxPart.DataSource = APICustomer.GetElement<List<PartViewModel>>(response);
-                    comboBoxPart.SelectedItem = null;
-                }
-                else
-                                   {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
+                comboBoxPart.DisplayMember = "PartName";
+                comboBoxPart.ValueMember = "Id";
+                comboBoxPart.DataSource = Task.Run(() => APICustomer.GetRequestData<List<PartViewModel>>("api/Part/GetList")).Result;
+                comboBoxPart.SelectedItem = null;
             }
             catch (Exception ex)
             {
+                while (ex.InnerException != null)
+                                    {
+                    ex = ex.InnerException;
+                                    }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             if (model != null)

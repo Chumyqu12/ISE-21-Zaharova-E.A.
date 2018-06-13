@@ -29,19 +29,15 @@ namespace SoftwareDevelopmentView
             {
                 try
                 {
-                    var response = APICustomer.GetRequest("api/Customer/Get/" + id.Value);
-                                        if (response.Result.IsSuccessStatusCode)
-                                            {
-                        var client = APICustomer.GetElement<CustomerViewModel>(response);
-                        textBoxFIO.Text = client.CustomerName;
-                                            }
-                                        else
-                    {
-                        throw new Exception(APICustomer.GetError(response));
-                    }
+                    var client = Task.Run(() => APICustomer.GetRequestData<CustomerViewModel>("api/Customer/Get/" + id.Value)).Result;
+                    textBoxFIO.Text = client.CustomerName;
                 }
                 catch (Exception ex)
                 {
+                    while (ex.InnerException != null)
+                                            {
+                        ex = ex.InnerException;
+                                            }
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -54,44 +50,43 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните ФИО", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            try
+            string fio = textBoxFIO.Text;
+            Task task;
+              if (id.HasValue)
             {
-                Task<HttpResponseMessage> response;
-                if (id.HasValue)
-                {
-                    response = APICustomer.PostRequest("api/Customer/UpdateElement", new CustomerBindingModel
-                    {
-                        Id = id.Value,
-                        CustomerName = textBoxFIO.Text
-                    });
-                }
-                else
-                {
-                    response = APICustomer.PostRequest("api/Customer/AddElement", new CustomerBindingModel
-                    {
-                        CustomerName = textBoxFIO.Text
-                    });
-                }
-                if (response.Result.IsSuccessStatusCode)
+                task = Task.Run(() => APICustomer.PostRequestData("api/Customer/UpdateElement", new CustomerBindingModel
                                     {
-                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                                    }
-                                else
-                {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
-            }
-            catch (Exception ex)
+                    Id = id.Value,
+                    CustomerName = fio
+               }));
+                            }
+                        else
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                task = Task.Run(() => APICustomer.PostRequestData("api/Customer/AddElement", new CustomerBindingModel
+                {
+                    CustomerName = fio
+                }));
             }
+            task.ContinueWith((prevTask) => MessageBox.Show("Сохранение прошло успешно. Обновите список", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information),
+TaskContinuationOptions.OnlyOnRanToCompletion);
+            task.ContinueWith((prevTask) =>
+            {
+                var ex = (Exception)prevTask.Exception;
+                                while (ex.InnerException != null)
+                                    {
+                    ex = ex.InnerException;
+                                    }
+                
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }, 
+TaskContinuationOptions.OnlyOnFaulted);
+            
+            Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
+            
             Close();
         }
     }

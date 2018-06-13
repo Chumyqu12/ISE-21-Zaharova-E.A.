@@ -126,7 +126,7 @@
             this.Name = "FormPutOnStock";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пополнение хранилища";
-            this.Load += new System.EventHandler(this.FormPutOnStock_Load);
+            this.Load += new System.EventHandler(this.FormPutOnWarehouse_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

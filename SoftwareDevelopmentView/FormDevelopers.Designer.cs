@@ -102,7 +102,7 @@
             this.Name = "FormDevelopers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Разработчики";
-            this.Load += new System.EventHandler(this.FormImplementers_Load);
+            this.Load += new System.EventHandler(this.FormDevelopers_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 

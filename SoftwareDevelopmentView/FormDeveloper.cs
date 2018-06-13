@@ -23,25 +23,22 @@ namespace SoftwareDevelopmentView
            
         }
 
-        private void FormImplementer_Load(object sender, EventArgs e)
+        private void FormDeveloper_Load(object sender, EventArgs e)
         {
+
             if (id.HasValue)
             {
                 try
                 {
-                    var response = APICustomer.GetRequest("api/Developer/Get/" + id.Value);
-                    if (response.Result.IsSuccessStatusCode)
-                    {
-                        var developer = APICustomer.GetElement<DeveloperViewModel>(response);
-                        textBoxFIO.Text = developer.DeveloperName;
-                                            }
-                                        else
-                   {
-                        throw new Exception(APICustomer.GetError(response));
-                    }
+                    var implementer = Task.Run(() => APICustomer.GetRequestData<DeveloperViewModel>("api/Developer/Get/" + id.Value)).Result;
+                    textBoxFIO.Text = implementer.DeveloperName;
                 }
                 catch (Exception ex)
                 {
+                    while (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -54,44 +51,41 @@ namespace SoftwareDevelopmentView
                 MessageBox.Show("Заполните ФИО", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            try
+            string fio = textBoxFIO.Text;
+            Task task;
+            if (id.HasValue)
             {
-                Task<HttpResponseMessage> response;
-                if (id.HasValue)
+                task = Task.Run(() => APICustomer.PostRequestData("api/Developer/UpdateElement", new DeveloperBindingModel
                 {
-                    response = APICustomer.PostRequest("api/Developer/UpdateElement", new DeveloperBindingModel
-                    {
-                        Id = id.Value,
-                        DeveloperName = textBoxFIO.Text
-                    });
-                }
-                else
-                {
-                    response = APICustomer.PostRequest("api/Developer/AddElement", new DeveloperBindingModel
-                    {
-                        DeveloperName = textBoxFIO.Text
-                    });
-                }
-                if (response.Result.IsSuccessStatusCode)
-                                   {
-                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                                    }
-                                else
-                {
-                    throw new Exception(APICustomer.GetError(response));
-                                    }
+                    Id = id.Value,
+                    DeveloperName = fio
+                }));
             }
-            catch (Exception ex)
+            else
             {
+                task = Task.Run(() => APICustomer.PostRequestData("api/Developer/AddElement", new DeveloperBindingModel
+                {
+                    DeveloperName = fio
+                }));
+            }
+
+            task.ContinueWith((prevTask) => MessageBox.Show("Сохранение прошло успешно. Обновите список", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information),
+                TaskContinuationOptions.OnlyOnRanToCompletion);
+            task.ContinueWith((prevTask) =>
+            {
+                var ex = (Exception)prevTask.Exception;
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                }
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
             Close();
         }
     }
