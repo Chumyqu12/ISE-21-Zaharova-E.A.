@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SoftwareDevelopmentService.ImplementationsBD
 {
-    class CustomerServiceBD: ICustomerService
+   public class CustomerServiceBD: ICustomerService
     {
         private SoftwareDbContext context;
 

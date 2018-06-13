@@ -54,6 +54,7 @@ namespace VirtualSoftwareWeb
             container.RegisterType<ISoftwareService, SoftwareServiceBD>(new HierarchicalLifetimeManager());
             container.RegisterType<ISoftwareWarehouseService, SoftwareWarehouseServiceBD>(new HierarchicalLifetimeManager());
             container.RegisterType<IGeneralSelection, GeneralServiceBD>(new HierarchicalLifetimeManager());
+            container.RegisterType<IReportService, ReportServiceBD>(new HierarchicalLifetimeManager());
         }
     }
 }
