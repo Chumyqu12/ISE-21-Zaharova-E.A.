@@ -25,7 +25,8 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                 .Select(rec => new CustomerViewModel
                 {
                     Id = rec.Id,
-                    CustomerName = rec.CustomerName
+                    CustomerName = rec.CustomerName,
+                    Mail = rec.Mail
                 })
                 .ToList();
             return result;
@@ -39,7 +40,18 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                 return new CustomerViewModel
                 {
                     Id = element.Id,
-                    CustomerName = element.CustomerName
+                    CustomerName = element.CustomerName,
+                    Mail = element.Mail,
+                    Messages = context.MessageInfos
+                            .Where(recM => recM.CustomerId == element.Id)
+                            .Select(recM => new MessageInfoViewModel
+                           {
+                        MessageId = recM.MessageId,
+                        DateDelivery = recM.DateDelivery,
+                        Subject = recM.Subject,
+                        Body = recM.Body
+                            })
+                           .ToList()
                 };
             }
             throw new Exception("Элемент не найден");
@@ -54,7 +66,8 @@ namespace SoftwareDevelopmentService.ImplementationsBD
             }
             context.Customers.Add(new Customer
             {
-                CustomerName = model.CustomerName
+                CustomerName = model.CustomerName,
+                Mail = model.Mail
             });
             context.SaveChanges();
         }
@@ -73,6 +86,7 @@ namespace SoftwareDevelopmentService.ImplementationsBD
                 throw new Exception("Элемент не найден");
             }
             element.CustomerName = model.CustomerName;
+            element.Mail = model.Mail;
             context.SaveChanges();
         }
 

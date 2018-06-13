@@ -41,11 +41,12 @@ namespace SoftwareDevelopmentRestApi.Controllers
             _service.TakeOfferInWork(model);
         }
 
+
         [HttpGet]
         public IHttpActionResult FinalOffer()
+
         {
-            _service.FinalOffer(1);
-            return Ok();
+            _service.FinalOffer(model.Id);
         }
 
         [HttpPost]
