@@ -8,10 +8,11 @@ using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace SoftwareDevelopmentService.ImplementationsBD
 {
-    class GeneralServiceBD : IGeneralService
+	public class GeneralServiceBD : IGeneralService
     {
         private SoftwareDbContext context;
 
