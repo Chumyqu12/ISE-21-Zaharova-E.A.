@@ -42,7 +42,7 @@ namespace SoftwareDevelopmentRestApi.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult FinalOffer(/*OfferBindingModel model*/)
+        public IHttpActionResult FinalOffer()
         {
             _service.FinalOffer(1);
             return Ok();
