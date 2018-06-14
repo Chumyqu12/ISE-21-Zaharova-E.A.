@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "General";
+}
+
+<style>
+    .dataTeble {
+        margin-top: 50px;
+    }
+
+    input {
+        margin-bottom: 50px;
+        margin-top: 50px;
+    }
+</style>
+<h2>Главная</h2>
+<form method="post">
+    <input type="submit" name="action" value="Создать заказ" />
+    <input type="submit" name="action" value="Отдать на выполнение" />
+    <input type="submit" name="action" value="Заказ готов" />
+    <input type="submit" name="action" value="Заказ оплачен" />
+    <input type="submit" name="action" value="Обновить список" />
+    <br>
+    <table class="dataTeble">
+        @*@Html.TextBox("DataList")*@
+    </table>
+    @using SoftwareDevelopmentModel;
+    @using SoftwareDevelopmentService.Interfaces;
+    @using SoftwareDevelopmentService.BindingModels;
+    @using SoftwareDevelopmentService.ViewModels;
+    <select name="generalList" multiple>
+
+        @{ int i = 0;
+            foreach (OfferViewModel st in @ViewBag.DataList)
+            {
+                i++;
+                <option value="@i">@st.Id @st.CustomerName @st.Implementation @st.Creation @st.SoftwareName @st.DeveloperName @st.Condition @st.Summa @st.Number</option>
+            }
+        }
+    </select>
+</form>
+
+
+
+

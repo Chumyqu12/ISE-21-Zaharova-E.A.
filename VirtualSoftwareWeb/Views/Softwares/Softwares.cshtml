@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Softwares";
+}
+
+<style>
+    .dataTeble {
+        margin-top: 50px;
+    }
+
+    input {
+        margin-bottom: 50px;
+        margin-top: 50px;
+    }
+</style>
+<h2>Softwares</h2>
+<form method="post">
+    <input type="submit" name="action" value="Add" />
+    <input type="submit" name="action" value="Change" />
+    <input type="submit" name="action" value="Delete" />
+    <input type="submit" name="action" value="Update" />
+    <br>
+    <table class="dataTeble">
+    
+    </table>
+    @using SoftwareDevelopmentModel;
+    @using SoftwareDevelopmentService.Interfaces;
+    @using SoftwareDevelopmentService.BindingModels;
+    @using SoftwareDevelopmentService.ViewModels;
+    <select name="SoftwaresList" multiple>
+
+        @{ int i = 0;
+            foreach (SoftwareViewModel st in @ViewBag.DataList)
+            {
+                i++;
+                <option value="@i">@st.Id @st.SoftwareName</option>
+            }
+        }
+    </select>
+</form>
+
+

@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Software";
+}
+
+<style>
+    .dataTeble {
+        margin-top: 50px;
+    }
+
+    input[name=action] {
+        margin-bottom: 50px;
+        margin-top: 50px;
+    }
+
+    .firstpost {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+<h2>ПО</h2>
+<form method="post">
+    <div class="firstpost">
+        <label>Цена:</label>
+        <input name="value" value="0" />
+    </div>
+    <div class="firstpost">
+        <label>Название:</label>
+        <input name="SoftwareName" value="" />
+    </div>
+
+    <div>
+        <input type="submit" name="action" value="Add" />
+      
+        <input type="submit" name="action" value="Change" />
+        <input type="submit" name="action" value="Delete" />
+        <input type="submit" name="action" value="Update" />
+        <br>
+        <table class="dataTeble">
+           
+        </table>
+        @using SoftwareDevelopmentModel;
+        @using SoftwareDevelopmentService.Interfaces;
+        @using SoftwareDevelopmentService.BindingModels;
+        @using SoftwareDevelopmentService.ViewModels;
+        <select name="SoftwareList" multiple>
+
+            @{ int i = 0;
+            foreach (SoftwarePartViewModel st in @ViewBag.DataList)
+            {
+                i++;
+                <option value="@i">@st.PartName   @st.Number </option>
+        }
+            }
+        </select>
+    </div>
+    <input type="submit" name="action" value="Save" />
+    <input type="submit" name="action" value="Cancel" />
+</form>
