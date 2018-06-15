@@ -2,7 +2,6 @@
 using SoftwareDevelopmentService.ViewModels;
 using System.Collections.Generic;
 
-
 namespace SoftwareDevelopmentService.Interfaces
 {
     public interface IDeveloperService
@@ -11,7 +10,6 @@ namespace SoftwareDevelopmentService.Interfaces
 
         DeveloperViewModel GetElement(int id);
     
-
         void AddElement(DeveloperBindingModel model);
 
         void UpdateElement(DeveloperBindingModel model);
