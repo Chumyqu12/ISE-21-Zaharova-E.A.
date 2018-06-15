@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "TakeFromSoftwareWarehouse";
+}
+
+<style>
+    select {
+        margin-bottom: 50px;
+    }
+
+    .item {
+        margin-bottom: 30px;
+    }
+</style>
+<h2><b>Выберите разработчика</b></h2><br />
+<form action="/SoftwareWarehouse/SoftwareWarehouse" id="SoftwareWarehouse" method="post">
+    <select name="selectedItem" form="SoftwarePart">
+        @using SoftwareDevelopmentModel;
+        @using SoftwareDevelopmentService.Interfaces;
+        @using SoftwareDevelopmentService.BindingModels;
+        @using SoftwareDevelopmentService.ViewModels;
+        @{ int i = 0;
+        foreach (DeveloperViewModel st in @ViewBag.DataList)
+        {
+            i++;
+            <option value="@i">Разработчик: @st.DeveloperName @i</option>
+    }
+        }
+    </select>
+    <input type="submit" name="action" value="Сохранить" />
+</form>
+

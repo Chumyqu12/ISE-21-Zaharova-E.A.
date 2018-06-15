@@ -9,7 +9,7 @@ namespace SoftwareDevelopmentService.Interfaces
         List<DeveloperViewModel> GetList();
 
         DeveloperViewModel GetElement(int id);
-
+    
         void AddElement(DeveloperBindingModel model);
 
         void UpdateElement(DeveloperBindingModel model);
