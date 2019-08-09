@@ -23,7 +23,24 @@ namespace _222lllll
 			this.dopColor = dopColor;
           
         }
-		
+        public Cutter(string info) : base(info) {
+            string[] strs = info.Split(';');
+            if (strs.Length == 7) {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                MaxCountPassengers = Convert.ToInt32(strs[1]);
+                Weigth = Convert.ToInt32(strs[2]);
+                vodoizmeshenie = Convert.ToInt32(strs[3]);
+                ColorBody = Color.FromName(strs[4]);
+                motor = Convert.ToBoolean(strs[5]);
+               dopColor = Color.FromName(strs[6]);
+            }
+        }
+        public override string getInfo()
+        {
+            return MaxSpeed+ ";"+ MaxCountPassengers+";"+ Weigth+";"+ vodoizmeshenie+";"+ ColorBody.Name+";"+
+            motor+";"+ dopColor.Name;
+            
+        }
 
         protected override void draw(Graphics g)
         {

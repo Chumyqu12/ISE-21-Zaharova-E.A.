@@ -146,6 +146,40 @@ namespace _222lllll
 				}
 			}
 		}
-	}
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                if (parking.SaveData(saveFileDialog1.FileName))
+                {
+                    MessageBox.Show("Norm save", "",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else {
+                    MessageBox.Show("NO SAVE", "",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                if (parking.LoadData(openFileDialog1.FileName))
+                {
+                    MessageBox.Show("3@GrY}|{EH0", "",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else {
+                    MessageBox.Show("NO 3@GrY}|{EH0", "",
+                                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                Draw();
+            }
+
+        }
+
+       
+    }
 }
 
